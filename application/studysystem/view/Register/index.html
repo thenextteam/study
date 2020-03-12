@@ -1,0 +1,37 @@
+{extend name="template"/}
+{block name="title"}
+注册 - 学习论坛
+{/block}
+{block name="cssname"}logreg{/block}
+
+{block name="content"}
+    <div class="logincon">
+        <div class="lotitle">
+            <h3>注册</h3>
+            <a href="{:url('Login/index')}">已有账号，去登录！</a>
+        </div>
+        <div class="loginin">
+            <form action="register" method="post">
+                <div class="inrow"><label for="user" class="inlabel">用户名：</label><input type="text" name="user" id="user" class="loinput" placeholder="请输入用户名" /></div>
+                <div class="inrow"><label for="email" class="inlabel">邮箱：</label><input type="text" name="email" id="email" class="loinput" placeholder="请输入邮箱" /></div>
+                <div class="inrow"><label for="pwd" class="inlabel">密码：</label><input type="text" name="pwd" id="pwd" class="loinput" placeholder="请输入密码" /></div>
+                <div class="inrow"><label for="veri" class="inlabel">验证码：</label><input type="text" name="veri" id="veri" class="loinput" placeholder="请输入验证码" /></div>
+                <div class="cap"><img id="captcha_img" class="verifyimg" src="{:captcha_src()}" alt="captcha" onclick="refreshVerify()" width="200" height="50" /></div>
+                <div class="inrow2 inrow3"><button class="logbtn" type="submit">提交</button></div>
+            </form>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            // 刷新验证码
+            var verifyimg = $(".verifyimg").attr("src");
+            $(".verifyimg").click(function(){
+                if( verifyimg.indexOf('?')>0){
+                    $(".verifyimg").attr("src", verifyimg+'&random='+Math.random());
+                }else{
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+                }
+            });
+        })
+    </script>
+{/block}

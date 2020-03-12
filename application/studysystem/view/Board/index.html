@@ -1,0 +1,143 @@
+﻿{extend name="template"/}
+{block name="title"}
+论坛板块 - 学习论坛
+{/block}
+{block name="cssname"}board{/block}
+
+{block name="content"}
+<div class="crumb"><a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline><a href="{:url('Bhead/index?hid='.$Board->Bhead->bhead_id)}">{$Board->Bhead->bhead_name}</a><fuline>></fuline><a href="{:url('Board/index?bid='.$Board->board_id)}">{$Board->board_name}</a></div>
+    <div class="content">
+        <div class="blocktop">
+            <div class="btleft">
+                <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->article()->where('art_status',0)->count('art_id')}</span><fuline>|</fuline><a class="fav" href="#">收藏本版</a>
+            </div>
+            <div><a href="#editor"><button class="fabtn">发 帖 <span class="fa fa-pencil"></span></button></a></div>
+        </div>
+
+        <div class="blocktar">
+            <ul>
+                <li class="clied"><a href="#">全部</a></li>
+                {volist name="$Board->atype" id="atype"}
+                <li><a href="#">{$atype->atype_name}<span class="tynum">(250)</span></a></li>
+                {/volist}
+            </ul>
+        </div>
+
+        <div class="blocon">
+            <div class="shai">
+                <div>
+                    <!-- <span>筛选：
+                        <select>
+                            <option value="全部时间">全部时间</option>
+                            <option value="一天内">一天内</option>
+                            <option value="一周内">一周内</option>
+                            <option value="一月内">一月内</option>
+                        </select>
+                    </span>
+                    <fuline></fuline> -->
+                    <span>排序：
+                        <select onchange="window.location=this.value;">
+                            <option id="op0" value="{:url('Board/index?bid='.$Board->board_id.'&oid=0&page=1')}">最后发表</option>
+                            <option id="op1" value="{:url('Board/index?bid='.$Board->board_id.'&oid=1&page=1')}">发帖时间</option>
+                            <option id="op2" value="{:url('Board/index?bid='.$Board->board_id.'&oid=2&page=1')}">热门</option>
+                        </select>
+                    </span>
+                </div>
+                <div><a href="#">最新</a><fuline>|</fuline><a href="#">热门</a><fuline>|</fuline><a href="#">精华</a></div>
+            </div>
+            <div class="polist">
+                <table cellspacing="0">
+                    {volist name="BoardTops" id="BoardTop"}
+                    <tr>
+                        <td class="icon"><img src="__ADMIN__/study/img/userimg/{$BoardTop->User->user_img}" alt="" width="43" height="43"></td>
+                        <td class="zhua"><img src="__ADMIN__/study/img/folder.gif" alt="" width="18" height="18"></td>
+                        <td class="potit"><div><span class="tyname">[<a href="#">{$BoardTop->Atype->atype_name}</a>]</span> <a href="{:url('Article/index?aid=' . $BoardTop->art_id)}">{$BoardTop->art_title}</a><!-- <img src="__ADMIN__/study/img/agree.gif" alt="帖子被加分" title="帖子被加分" /> --></div></td>
+                        <td class="pouser">{$BoardTop->User->nick_name}<a href="#"></a><br /><span class="potime">{$Board->TimeHandle($BoardTop->art_time)}</span></td>
+                        <td class="ponum">{$BoardTop->GetComNum($BoardTop->art_id)}/{$BoardTop->art_view}</td>
+                        {if condition="$BoardTop->GetLastCom($BoardTop->art_id)!=null"}
+                        <td class="reuser"><a href="#">{$BoardTop->User::get($BoardTop->GetLastCom($BoardTop->art_id)['user_id'])->nick_name}</a><br /><span class="potime">{$Board->TimeHandle($BoardTop->GetLastCom($BoardTop->art_id)['com_time'])}</span></td>
+                        {else /}<td class="reuser">暂无</td>
+                        {/if}
+                    </tr>
+                    {/volist}
+                    <tr class="nok"><td colspan="6"></td></tr>
+                    <!-- 置顶帖↑ -->
+                    {volist name="arts" id="art"}
+                    <tr>
+                        <td class="icon"><img src="__ADMIN__/study/img/userimg/{$art->User->user_img}" alt="" width="43" height="43"></td>
+                        <td class="zhua"><img src="__ADMIN__/study/img/folder.gif" alt="" width="18" height="18"></td>
+                        <td class="potit"><div><span class="tyname">[<a href="#">{$art->Atype->atype_name}</a>]</span> <a href="{:url('Article/index?aid=' . $art->art_id)}">{$art->art_title}</a><!-- <img src="__ADMIN__/study/img/agree.gif" alt="帖子被加分" title="帖子被加分" /> --></div></td>
+                        <td class="pouser">{$art->User->nick_name}<a href="#"></a><br /><span class="potime">{$Board->TimeHandle($art->art_time)}</span></td>
+                        <td class="ponum">{$art->GetComNum($art->art_id)}/{$art->art_view}</td>
+                        {if condition="$art->GetLastCom($art->art_id)!=null"}
+                        <td class="reuser"><a href="#">{$art->User::get($art->GetLastCom($art->art_id)['user_id'])->nick_name}</a><br /><span class="potime">{$Board->TimeHandle($art->GetLastCom($art->art_id)['com_time'])}</span></td>
+                        {else /}<td class="reuser">暂无</td>
+                        {/if}
+                    </tr>
+                    {/volist}
+                    <!-- 最多显示20条（不包括置顶帖） -->
+                </table>
+            </div>
+            <div class="page">
+                <a href="#editor"><button href="#editor" class="fabtn">发 帖 <span class="fa fa-pencil"></span></button></a>
+                {$page}
+            </div>
+        </div>
+
+        <div class="rebox">
+            <form action="newArt" method="post">
+                <div class="newinput">
+                    <select name="arttype">
+                        <option value="请选择帖子分类">请选择帖子分类</option>
+                        {volist name="Batypes" id="batype"}
+                        <option value="{$batype->atype_id}">{$batype->atype_name}</option>
+                        {/volist}
+                    </select>
+                    <input name="arttitle" type="text" class="loinput" placeholder="请输入帖子标题" />
+                    <span>还可以输入70个字符</span>
+                </div>
+                <div class="eab">
+                    <div id="editor"></div>
+                    <textarea id="artcontent" name="artcontent" style="display: none;"></textarea>
+                    <input type="hidden" id="par" name="par" value="{$Board->board_id}|{$Think.session.UserId}" />
+                    <button type="submit">发表帖子</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="__ADMIN__/study/js/wangEditor.min.js"></script>
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#editor')
+
+        //开启本地图片上传，上传图片到服务器
+        editor.customConfig.uploadImgServer = 'upAction'
+
+        // 将图片大小限制为 5M
+        editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024
+
+        // 限制一次最多上传 5 张图片
+        editor.customConfig.uploadImgMaxLength = 5
+
+        var $text1 = $('#artcontent')
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text1.val(html)
+        }
+        //创建富文本编辑器
+        editor.create()
+    </script>
+    <script>
+        $(document).ready(function(){
+            //获取参数  
+            function getUrlParam(name) {   
+                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象  
+                 var r = window.location.search.substr(1).match(reg);  //匹配目标参数   
+                 if (r != null) return unescape(r[2]); return null; //返回参数值  
+            } 
+            var oid = getUrlParam('oid');
+            $strop = "#op"+oid;
+            $($strop).attr('selected',true);
+        })
+    </script>
+{/block}

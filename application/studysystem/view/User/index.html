@@ -1,0 +1,116 @@
+{extend name="template"/}
+{block name="title"}
+{$User->nick_name}的个人资料 - 学习论坛
+{/block}
+{block name="cssname"}user{/block}
+
+{block name="content"}
+    <div class="content">
+        <div class="userde">
+            <div class="uimgana">
+                <img src="__ADMIN__/study/img/userimg/{$User->user_img}" alt="" width="70" height="70" />
+                <div class="una">
+                    <p>{$User->nick_name}</p>
+                    <a href="{:url('User/index?uid='.$User->user_id)}">个人主页</a>
+                </div>
+            </div>
+            <div class="opbtn">
+                <a href="#">加为好友</a>
+                <a href="#">发送消息</a>
+            </div>
+        </div>
+        <ul class="ulbtn">
+            <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=0')}" {if condition="($fid==0)"} class="display" {/if}>个人资料</a></li>
+            <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=1')}" {if condition="($fid==1)"} class="display" {/if}>所有帖子</a></li>
+        </ul>
+        <div class="ucon">
+            {if condition="($fid==0)"}
+            <div class="uconrow">
+                {$User->nick_name}(UID:{$User->user_id})
+                <p><span class="grayiro">统计信息</span><fuline></fuline>好友数 0<fuline>|</fuline>发帖数 <a href="{:url('User/index?uid='.$User->user_id.'&fid=1')}">{$User->Comment()->where('com_status',0)->count('com_id')}</a><fuline>|</fuline>回帖数 <a href="{:url('User/index?uid='.$User->user_id.'&fid=1&type=com')}">{$User->Article()->where('art_status',0)->count('art_id')}</a></p>
+                <p>积分 {$User->user_point} 金币 {$User->user_money}</p>
+            </div>
+            <div class="uconrow">
+                <div>
+                    <p><span class="grayiro">用户组</span><fuline></fuline>{$User->user_lv}</p>
+                    <p><span class="grayiro">注册时间</span><fuline></fuline>{$User->user_regtime}</p>
+                </div>
+                <div>
+                    <p><span class="grayiro">最后登录时间</span><fuline></fuline>{$User->user_lasttime}</p>
+                    {if condition="isset($User->Comment()->where('com_status',0)->find()[0])"}
+                    <p><span class="grayiro">最后回复时间</span><fuline></fuline>{$User->Comment()->where('com_status',0)->order('com_time desc')->find()->com_time}</p>
+                    {else /}<p>该用户从未回复</p>
+                    {/if}
+                </div>
+            </div>
+            {else /}
+            <ul class="aandr">
+                <li><a {if condition="($type == 'art')"}class="displaybtn"{/if} href="{:url('User/index?uid='.$User->user_id.'&fid=1&type=art')}">帖子</a></li><fuline>|</fuline><li><a {if condition="($type == 'com')"}class="displaybtn"{/if} href="{:url('User/index?uid='.$User->user_id.'&fid=1&type=com')}">回复</a></li>
+            </ul>
+            <div>
+                <table class="uarttable" cellspacing="0" cellpadding="0">
+                    <tr class="th">
+                        <td>标题</td>
+                        <td>版块</td>
+                        <td>回复/查看</td>
+                        <td>最后回复</td>
+                    </tr>
+                    {if condition="($type == 'art')"}
+                    {volist name="$arts" id="art"}
+                        {if condition="$art->art_status==0"}
+                    <tr {if condition="($type == 'com') AND ($art->GetComNum($art->art_id)>0)")}class="hascom"{/if} >
+                        <td class="arttitle">
+                        <a href="{:url('Article/index?aid='.$art->art_id)}">{$art->art_title}</a>
+                        </td>
+                        <td><a href="{:url('Board/index?bid='.$art->Board->board_name)}">{$art->Board->board_name}</a></td>
+                        <td>{$art->GetComNum($art->art_id)}/{$art->art_view}</td>
+                        <td>
+                            {if condition="$art->GetLastCom($art->art_id)!=null"}
+                            <a href="{:url('User/index?uid='.$art->User::get($art->GetLastCom($art->art_id)['user_id'])['user_id'])}">{$art->User::get($art->GetLastCom($art->art_id)['user_id'])['nick_name']}</a><br />{$art->Board->TimeHandle($art->GetLastCom($art->art_id)['com_time'])}
+                            {else /}暂无
+                            {/if}
+                        </td>
+                    </tr>
+                        {/if}
+                    {/volist}
+                    {/if}
+                    {if condition="($type == 'com')"}
+                        {volist name="$comarts" id="comart"}
+                            {if condition="$comart->art_status==0"}
+                    <tr {if condition="($type == 'com') AND ($comart->GetComNum($comart->art_id)>0)")}class="hascom"{/if} >
+                        <td class="arttitle">
+                            <a href="{:url('Article/index?aid='.$comart->art_id)}">{$comart['art_title']}</a>
+                        </td>
+                        <td><a href="{:url('Board/index?bid='.$comart->Board->board_name)}">{$comart->Board->board_name}</a></td>
+                        <td>{$comart->GetComNum($comart->art_id)}/{$comart->art_view}</td>
+                        <td>
+                            {if condition="$comart->GetLastCom($comart->art_id)!=null"}
+                            <a href="{:url('User/index?uid='.$comart->User::get($comart->GetLastCom($comart->art_id)['user_id'])['user_id'])}">{$comart->User::get($comart->GetLastCom($comart->art_id)['user_id'])['nick_name']}</a><br />{$comart->Board->TimeHandle($comart->GetLastCom($comart->art_id)['com_time'])}
+                            {else /}暂无
+                            {/if}
+                        </td>
+                    </tr>
+                            {/if}
+                            {volist name="$comart->Comment" id="comment"}
+                                {if condition="($comment->com_status == '0') AND ($comment->user_id == $User->user_id)"}
+                    <tr class="comrow">
+                        <td class="arttitle comcontent">
+                            <img src="__ADMIN__/study/img/icon_quote_m_s.gif" width="15" height="14" />
+                            <a href="{:url('Article/index?aid='.$comart->art_id.'&page='.$comart->getPage($comment->com_count).'#c'.$comment->com_count)}">{$comment->com_content|htmlspecialchars_decode|strip_tags}</a>
+                            <img src="__ADMIN__/study/img/icon_quote_m_e.gif" width="15" height="14" />
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                                {/if}
+                            {/volist}
+                        {/volist}
+                    {/if}
+                </table>
+                <div class="pagecon">{$page}</div>
+            </div>
+            {/if}
+        </div>
+    </div>
+{/block}

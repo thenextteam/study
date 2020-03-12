@@ -1,0 +1,184 @@
+﻿{extend name="template"/}
+{block name="title"}
+学习论坛
+{/block}
+{block name="cssname"}article{/block}
+
+{block name="content"}
+    <div class="crumb"><a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline><a href="{:url('Bhead/index?hid='.$Article->Board->Bhead->bhead_id)}">{$Article->Board->Bhead->bhead_name}</a><fuline>></fuline><a href="{:url('Board/index?bid='.$Article->Board->board_id)}">{$Article->Board->board_name}</a><fuline>></fuline>{$Article->art_title}</div>
+    <div>
+        <!-- 楼主的帖子主文模板 -->
+        <div class="pocon">
+            <div class="postuser">
+                <div class="wanum">查看: <span>{$Article->getData('art_view')}</span>|回复: <span>{$Article->GetComNum($Article->art_id)}</span></div>
+                <div class="usi"><img src="__ADMIN__/study/img/userimg/{$Article->User->user_img}" alt="" width="125" height="125" /></div>
+                <div class="userxin">TA今天的心情<br />此处未完成</div>
+                <div class="userdays">签到天数: {$Article->User->user_days} 天</div>
+                <div class="userlv">{$Article->User->user_lv}</div>
+                <div class="usersnu">
+                    <div class="snu snuti"><span>10</span><br />帖子</div>
+                    <div class="snu snuji"><span>{$Article->User->user_money}</span><br />金币</div>
+                </div>
+                <div>积分 <span>{$Article->User->user_point}</span></div>
+            </div>
+            <div class="posttcon">
+                <div class="posttitle">[<a href="">{$Article->Atype->atype_name}</a>]{$Article->getData('art_title')}</div>
+                <div class="useratime"><div><span><a href="{:url('User/index?uid='.$Article->User->user_id)}">{$Article->User->nick_name}</a></span>　　发表于 <span>{$Article->getData('art_time')}</span></div><div class="lounum"><span>1</span><sup>#</sup></div></div>
+                <p class="edtime">本帖子最后于<span>{$Article->getData('art_lasttime')}</span>编辑</p>
+                <div class="postf">
+                    {$Article->getData('art_content')|htmlspecialchars_decode}
+                </div>
+                <!-- 评分功能还没做 -->
+                <!-- <div class="pmark"> -->
+                    <!-- 评分最多显示5条记录，可以点击查看更多来读取显示 -->
+                    <!-- <div class="pro"><span><span class="fa fa-check"></span> 评分</span><span class="futh"></span></div>
+                    <div class="pmaer">
+                        <table cellspacing="0">
+                            <tr>
+                                <th class="pm1">评分人</th>
+                                <th  class="pm2">金币</th>
+                                <th class="pm3">理由</th>
+                            </tr>
+                            <tr>
+                                <td><img src="__ADMIN__/study/img/1.jpg" alt="" width="13" height="13" /><a href="#">李大刚</a></td>
+                                <td>+5</td>
+                                <td>垃圾！</td>
+                            </tr>
+                            <tr>
+                                <td><img src="__ADMIN__/study/img/1.jpg" alt="" width="13" height="13" /><a href="#">李大刚</a></td>
+                                <td>+500</td>
+                                <td>很棒！</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div> -->
+                <div class="pret">
+                    <a href="#editor" class="pretbtn" id="re">回复</a>
+                    {switch name="$Article->user_id"}
+                    {case value="$Think.session.UserId"}
+                    <a href="{:url('edit?aid=' . $Article->art_id)}">编辑</a>
+                    <a href="{:url('deleteArt?aid=' . $Article->art_id)}">删除</a>
+                    {/case}
+                    {default /}<a href="#">举报</a>
+                    {/switch}
+                </div>
+            </div>
+        </div>
+
+        {volist name="comments" id="comment"}
+        <!-- 回复的楼层模板 -->
+        <div class="pocon">
+            <div class="postuser">
+                <div class="usi"><img src="__ADMIN__/study/img/userimg/{$comment->User->user_img}" alt="" width="125" height="125" /></div>
+                <div class="userxin">TA今天的心情<br />此处未完成</div>
+                <div class="userdays">签到天数: {$comment->User->user_days} 天</div>
+                <div class="userlv">{$comment->User->user_lv}</div>
+                <div class="usersnu">
+                    <div class="snu snuti"><span>10</span><br />帖子</div>
+                    <div class="snu snuji"><span>{$comment->User->user_money}</span><br />金币</div>
+                </div>
+                <div>积分 <span>{$comment->User->user_point}</span></div>
+            </div>
+            
+                
+            <div class="posttcon postretcon">
+                <div class="useratime"><div><span><a href="{:url('User/index?uid='.$comment->User->user_id)}">{$comment->User->nick_name}</a></span>　　发表于 <span>{$comment->com_time}</span></div><div class="lounum"><span id="c{$comment->com_count}" name="c{$comment->com_count}">{$comment->com_count}</span><sup>#</sup></div></div>
+
+                {if condition="$comment->re_com_id!=''"}
+                <div class="whatre">
+                    <div class="lkh"></div>
+                    <blockquote>
+                        <p>{$comment::get($comment->re_com_id)->User->nick_name} 发表于 {$comment::get($comment->re_com_id)->com_time}</p>
+                        <div>
+                        {switch name="$comment::get($comment->re_com_id)->com_status" }
+                            {case value="0"}{$comment::get($comment->re_com_id)->com_content|htmlspecialchars_decode}{/case}
+                            {case value="1"}该回复已被删除{/case}
+                        {/switch}
+                        
+                        </div>
+                        <div class="rkh"></div>
+                    </blockquote>
+                </div>
+                {/if}
+                
+                
+
+                <div class="postf">
+                    {if condition="($comment->com_status==0)"}
+                    {$comment->com_content|htmlspecialchars_decode}
+                    {else /}<p><i>该回复已被删除</i></p>
+                    {/if}
+                </div>
+                <div class="pret">
+                    <a href="#editor" class="pretbtn" id="re{$comment->com_id}">回复</a>
+                    {if condition="$comment->User->user_id==$Think.session.UserId"}
+                    <a href="{:url('delete?cid=' . $comment->com_id)}" class="del">删除</a>
+                    {/if}
+                    <a href="#">举报</a>
+                </div>
+            </div>
+        </div>
+        {/volist}
+    </div>
+    <div class="pagecon">{$page}</div>
+    
+        <!-- 回复框 -->
+        <div class="rebox">
+            <div class="rele"></div>
+            <div class="eab">
+                <form action="reply" method="post">
+                    <div id="editor"></div>
+                    <textarea id="comcontent" name="comcontent" style="display: none;"></textarea>
+                    <input type="hidden" id="par" name="par" value="{$Article->art_id}|{$Think.session.UserId}|" />
+                    <button type="submit">发表回复</button>
+                </form>
+            </div>
+        </div>
+
+    <script type="text/javascript" src="__ADMIN__/study/js/wangEditor.min.js"></script>
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#editor')
+
+        //开启本地图片上传，上传图片到服务器
+        editor.customConfig.uploadImgServer = 'upAction'
+
+        // 将图片大小限制为 5M
+        editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024
+
+        // 限制一次最多上传 5 张图片
+        editor.customConfig.uploadImgMaxLength = 5
+
+        var $text1 = $('#comcontent')
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text1.val(html)
+        }
+        //创建富文本编辑器
+        editor.create()
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('.pretbtn').click(function(){
+                $('div.w-e-text').focus();
+                $i=$('#par').attr('value');
+                //多次点击回复楼层所必须的处理
+                $i=$i.substring($i.lastIndexOf('|')+1, 0);
+
+                $newname=$i+$(this).attr('id').replace('re','');
+                $('#par').attr('value',$newname);
+            })
+            //删除确认
+            $('.del').click(function(){
+                  if(confirm("确定要删除吗？"))
+                  {
+                    return true;
+                  }
+                  else
+                  {
+                    return false;
+                  }
+            })
+        })
+    </script>
+{/block}

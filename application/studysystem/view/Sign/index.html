@@ -1,0 +1,87 @@
+{extend name="template"/}
+{block name="title"}
+签到 - 学习论坛
+{/block}
+{block name="cssname"}sign{/block}
+
+{block name="content"}
+    <div class="content">
+        <div class="signleft">
+            <p>今天签到了吗？请选择您此刻的心情图片并写下今天最想说的话！</p>
+
+            <ul class="moodrow">
+                <a id="m0" class="m"><li><img src="__ADMIN__/study/img/moodimg/0.gif" alt=""><p>开心</p></li></a>
+                <a id="m1" class="m"><li><img src="__ADMIN__/study/img/moodimg/1.gif" alt=""><p>难过</p></li></a>
+                <a id="m2" class="m"><li><img src="__ADMIN__/study/img/moodimg/2.gif" alt=""><p>郁闷</p></li></a>
+                <a id="m3" class="m"><li><img src="__ADMIN__/study/img/moodimg/3.gif" alt=""><p>无聊</p></li></a>
+                <a id="m4" class="m"><li><img src="__ADMIN__/study/img/moodimg/4.gif" alt=""><p>怒</p></li></a>
+                <a id="m5" class="m"><li><img src="__ADMIN__/study/img/moodimg/5.gif" alt=""><p>擦汗</p></li></a>
+                <a id="m6" class="m"><li><img src="__ADMIN__/study/img/moodimg/6.gif" alt=""><p>奋斗</p></li></a>
+                <a id="m7" class="m"><li><img src="__ADMIN__/study/img/moodimg/7.gif" alt=""><p>慵懒</p></li></a>
+                <a id="m8" class="m"><li><img src="__ADMIN__/study/img/moodimg/8.gif" alt=""><p>衰</p></li></a>
+            </ul>
+            <form action="posign" method="post">
+                <input name="mood" class="mood" type="hidden" value="0" />
+                <label for="say">我今天最想说</label>
+                <input type="text" name="say" id="say" placeholder="请输入签到内容" /><br />
+                <button class="btn" type="submit"></button>
+            </form>
+            <h3>签到排行榜</h3>
+
+            <table cellspacing="0" cellpadding="0">
+                <tr>
+                    <td>用户</td>
+                    <td>总天数</td>
+                    <td>签到时间</td>
+                    <td>等级</td>
+                    <td>奖励[积分]</td>
+                </tr>
+                {volist name="Sign" id="sign"}
+                <tr class="userrow">
+                    <td>{$sign['nick_name']}</td>
+                    <td></td>
+                    <td>{$sign['sign_time']}</td>
+                    <td>{$sign['user_lv']}</td>
+                    <td>{$sign['sign_reward']}</td>
+                </tr>
+                <tr class="signrow">
+                    <td colspan="5">
+                        我今天最想说：<img src="__ADMIN__/study/img/moodimg/{$sign['user_mood']}.gif" />{$sign['sign_con']}
+                    </td>
+                </tr>
+                {/volist}
+            </table>
+            
+            <!-- 分页 -->
+            <div class="pagecon">{$page}</div>
+        </div>
+        <div class="signright">
+            <div>
+                <div>今日心情TOP5</div>
+                <div>
+                    <p>开心 <span>100</span></p>
+                    <p>开心 <span>100</span></p>
+                    <p>开心 <span>100</span></p>
+                    <p>开心 <span>100</span></p>
+                    <p>开心 <span>100</span></p>
+                </div>
+            </div>
+            <div>
+                <div>签到统计</div>
+                <div>
+                    <p>今日已签到 <span>490 人</span></p>
+                    <p>昨日共签到 <span>100 人</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            $('.m').click(function(){
+                $newvalue=$(this).attr('id').replace('m','');
+                $('input.mood').attr('value',$newvalue);
+                $(this).addClass('clicked').siblings().removeClass('clicked');
+            })
+        })
+    </script>
+{/block}

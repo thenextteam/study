@@ -1,0 +1,68 @@
+﻿{extend name="template"/}
+{block name="title"}
+学习论坛
+{/block}
+{block name="cssname"}index{/block}
+
+{block name="content"}
+<div class="crumb"><a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline>论坛</div>
+    <div class="content">
+        <div class="cnews">今日：{$Board->GetNewArt('all')}<fuline>|</fuline>昨日：{$Board->GetNewArt('yes')}<fuline>|</fuline>帖子：{$allArt}<fuline>|</fuline>会员：{$allUser}<fuline>|</fuline>欢迎新会员：<a href="{:url('User/index?uid='.$newUser['user_id'])}">{$newUser['nick_name']}</a></div>
+        <div class=" conb conb1">
+            <div class="lcar"></div>
+            <div class="rlist">
+                <div class="listtitle">
+                    <div>排行榜</div>
+                    <div><a href="#">最新</a> <a href="#">热门</a></div>
+                </div>
+                <div>
+                    <ul>
+                        <!-- 最多显示8条 -->
+                        {volist name="newArts" id="newArt" offset="0" length="8"}
+                        <li>
+                            <div class="tnandtt">
+                                <a href="{:url('board/index?bid='.$newArt['board_id'])}" class="tn">[{$newArt['board_name']}]</a> 
+                                <a href="{:url('article/index?aid='.$newArt['art_id'])}">{$newArt['art_title']}</a></div><div class="tu">
+                                    <a href="{:url('User/index?uid='.$newArt['user_id'])}">{$newArt['nick_name']}</a>
+                                </div>
+                            </li>
+                        {/volist}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {volist name="bheads" id="bhead" offset="0" length="5"}
+        <div class=" conb conb2">
+            <div class="conbtitle"><a href="{:url('Bhead/index?hid='.$bhead->bhead_id)}" class="tname">{$bhead->bhead_name}</a>
+                <div>本版版主：
+                    {volist name="$bhead->Board" id="badmin"}
+                        {volist name="$badmin->Boardadmin" id="adminuser"}
+                    <a href="{:url('User/index?uid='.$adminuser->user_id)}">{$Board->GetBAname($adminuser->user_id)['nick_name']}</a>
+                        {/volist}
+                    {/volist}
+                </div>
+            </div>
+            <div class="conblist">
+                <!-- 此处最多显示10个 -->
+                {volist name="$bhead->GetBoardTop($bhead->bhead_id)" id="board"}
+                <div class="conbcon">
+                    <div class="bloimg"><a href="{:url('Board/index?bid='.$board['board_id'])}"><img src="__ADMIN__/study/img/boardimg/b55.png" alt="321" width="220" height="75"></a></div>
+                    <div class="blotitle"><div class="blott"><a href="{:url('Board/index?bid='.$board['board_id'])}">{$board['board_name']}</a><span class="newnum">({$Board->GetNewArt($board['board_id'])})</span></div><div class="blotj">{$board['board_info']}</div></div>
+                    <div class="blocon">
+                        {if condition="($Board->LastComArt($board['board_id'])['art_id'])!=null"}
+                        <div class="bloct">
+                            <a href="{:url('Article/index?aid='.$Board->LastComArt($board['board_id'])['art_id'])}">{$Board->LastComArt($board['board_id'])['art_title']}</a>
+                        </div>
+                        <div class="lastre">最后回复：<a href="{:url('User/index?uid='.$Board->LastComArt($board['board_id'])['user_id'])}">{$Board->LastComArt($board['board_id'])['nick_name']}</a></div>
+                        <div class="tietime">{$Board->TimeHandle($Board->LastComArt($board['board_id'])['last_com_time'])}</div>
+                        {else /}暂无
+                        {/if}
+                    </div>
+                    <div class="blonum"><span class="renum">{$Board->GetComnum($board['board_id'])}</span> <br />/<br /> <span class="wanum">{$Board->GetView($board['board_id'])}</span></div><!-- 回复数/浏览数 -->
+                </div>
+                {/volist}
+            </div>
+        </div>
+        {/volist}
+    </div>
+{/block}

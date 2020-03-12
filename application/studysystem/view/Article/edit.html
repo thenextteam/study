@@ -1,0 +1,57 @@
+﻿{extend name="template"/}
+{block name="title"}
+学习论坛
+{/block}
+{block name="cssname"}article{/block}
+
+{block name="content"}
+    
+    <div class="rebox">
+        <form action="update" method="post">
+            <input type="hidden" name="aid" value="{$Article->art_id}" />
+            <div class="newinput">
+                <select name="arttype">
+                    {volist name="$Article->Board->Atype" id="atype"}
+                    <option value="{$atype->atype_id}" {if condition="($atype->atype_id == $Article->Atype->atype_id)"}selected{/if} >{$atype->atype_name}</option>
+                    {/volist}
+                </select>
+                <input name="arttitle" type="text" class="loinput" placeholder="请输入帖子标题" value="{$Article->art_title}" />
+                <span>还可以输入70个字符</span>
+            </div>
+            <div class="eab">
+                <div id="editor"></div>
+                <textarea id="artcontent" name="artcontent" style="display: none;"></textarea>
+                <button type="submit">修改帖子</button>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript" src="__ADMIN__/study/js/wangEditor.min.js"></script>
+    <script type="text/javascript">
+        var E = window.wangEditor
+        var editor = new E('#editor')
+
+        //开启本地图片上传，上传图片到服务器
+        editor.customConfig.uploadImgServer = 'upAction'
+
+        // 将图片大小限制为 5M
+        editor.customConfig.uploadImgMaxSize = 5 * 1024 * 1024
+
+        // 限制一次最多上传 5 张图片
+        editor.customConfig.uploadImgMaxLength = 5
+
+        var $text1 = $('#artcontent')
+        editor.customConfig.onchange = function (html) {
+            // 监控变化，同步更新到 textarea
+            $text1.val(html)
+        }
+        //创建富文本编辑器
+        editor.create()
+        editor.txt.html('{$Article->art_content|htmlspecialchars_decode}')
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('#artcontent').val($('.w-e-text').html());
+        })
+    </script>
+{/block}
