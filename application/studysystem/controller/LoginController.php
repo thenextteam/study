@@ -6,6 +6,7 @@ use app\common\model\User;   // 用户模型
 
 class LoginController extends Controller
 {
+
     // 用户登录表单
     public function index()
     {

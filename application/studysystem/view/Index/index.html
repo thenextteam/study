@@ -13,10 +13,11 @@
             <div class="rlist">
                 <div class="listtitle">
                     <div>排行榜</div>
-                    <div><a href="#">最新</a> <a href="#">热门</a></div>
+                    <div class="howto"><a href="#" class="eraned newbtn">最新</a> <a href="#" class="hotbtn">热门</a></div>
                 </div>
                 <div>
-                    <ul>
+                    <ul class="newart">
+                        <!-- 最新 -->
                         <!-- 最多显示8条 -->
                         {volist name="newArts" id="newArt" offset="0" length="8"}
                         <li>
@@ -24,6 +25,18 @@
                                 <a href="{:url('board/index?bid='.$newArt['board_id'])}" class="tn">[{$newArt['board_name']}]</a> 
                                 <a href="{:url('article/index?aid='.$newArt['art_id'])}">{$newArt['art_title']}</a></div><div class="tu">
                                     <a href="{:url('User/index?uid='.$newArt['user_id'])}">{$newArt['nick_name']}</a>
+                                </div>
+                            </li>
+                        {/volist}
+                    </ul>
+                    <ul class="hotart hidden">
+                        <!-- 热门 -->
+                        {volist name="hotArts" id="hotArt" offset="0" length="8"}
+                        <li>
+                            <div class="tnandtt">
+                                <a href="{:url('board/index?bid='.$hotArt['board_id'])}" class="tn">[{$hotArt['board_name']}]</a> 
+                                <a href="{:url('article/index?aid='.$hotArt['art_id'])}">{$hotArt['art_title']}</a></div><div class="tu">
+                                    <a href="{:url('User/index?uid='.$hotArt['user_id'])}">{$hotArt['nick_name']}</a>
                                 </div>
                             </li>
                         {/volist}
@@ -65,4 +78,16 @@
         </div>
         {/volist}
     </div>
+    <script>
+        $(document).ready(function(){
+            $('a.newbtn').mouseenter(function(){
+                $('a.newbtn').addClass('eraned').siblings().removeClass('eraned');
+                $('ul.newart').removeClass('hidden').siblings().addClass('hidden');
+            })
+            $('a.hotbtn').mouseenter(function(){
+                $('a.hotbtn').addClass('eraned').siblings().removeClass('eraned');
+                $('ul.hotart').removeClass('hidden').siblings().addClass('hidden');
+            })
+        })
+    </script>
 {/block}

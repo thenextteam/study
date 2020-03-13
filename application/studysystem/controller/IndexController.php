@@ -32,7 +32,8 @@ class IndexController extends Controller
             ['user b','a.user_id=b.user_id'],
             ['board c','a.art_board_id=c.board_id'],
         ];
-        $newArts = Db::name('article')->alias('a')->join($join)->select();
+        $newArts = Db::name('article')->alias('a')->join($join)->order('art_time desc')->limit(8)->select();
+        $hotArts = Db::name('article')->alias('a')->join($join)->order('art_view desc')->limit(8)->select();
         //新会员
         $newUser = Db::name('user')->order('user_id desc')->find();
         //所有帖子
@@ -43,12 +44,13 @@ class IndexController extends Controller
         $Board = new Board;
         $bheads = $Bhead->where('bhead_status',0)->order('bhead_top desc')->select();
 
+        $this->assign('hotArts',$hotArts);
         $this->assign('newArts',$newArts);
         $this->assign('newUser',$newUser);
         $this->assign('allArt',$allArt);
         $this->assign('allUser',$allUser);
         $this->assign('bheads',$bheads);
         $this->assign('Board',$Board);
-        return $this->fetch();        
+        return $this->fetch(); 
     }
 }

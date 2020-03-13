@@ -23,13 +23,13 @@
             <form action="posign" method="post">
                 <input name="mood" class="mood" type="hidden" value="0" />
                 <label for="say">我今天最想说</label>
-                <input type="text" name="say" id="say" placeholder="请输入签到内容" /><br />
+                <input class="say" type="text" name="say" id="say" placeholder="请输入签到内容" />
                 <button class="btn" type="submit"></button>
             </form>
             <h3>签到排行榜</h3>
 
             <table cellspacing="0" cellpadding="0">
-                <tr>
+                <tr class="th">
                     <td>用户</td>
                     <td>总天数</td>
                     <td>签到时间</td>
@@ -39,7 +39,7 @@
                 {volist name="Sign" id="sign"}
                 <tr class="userrow">
                     <td>{$sign['nick_name']}</td>
-                    <td></td>
+                    <td>{$sign['user_days']}</td>
                     <td>{$sign['sign_time']}</td>
                     <td>{$sign['user_lv']}</td>
                     <td>{$sign['sign_reward']}</td>
@@ -57,18 +57,18 @@
         </div>
         <div class="signright">
             <div>
-                <div>今日心情TOP5</div>
-                <div>
-                    <p>开心 <span>100</span></p>
-                    <p>开心 <span>100</span></p>
-                    <p>开心 <span>100</span></p>
-                    <p>开心 <span>100</span></p>
-                    <p>开心 <span>100</span></p>
+                <div class="blotit">今日心情TOP5</div>
+                <div class="blocon">
+                    <p><span>开心</span> <span>100人</span></p>
+                    <p><span>开心</span> <span>100人</span></p>
+                    <p><span>开心</span> <span>100人</span></p>
+                    <p><span>开心</span> <span>100人</span></p>
+                    <p><span>开心</span> <span>100人</span></p>
                 </div>
             </div>
             <div>
-                <div>签到统计</div>
-                <div>
+                <div class="blotit">签到统计</div>
+                <div class="blocon">
                     <p>今日已签到 <span>490 人</span></p>
                     <p>昨日共签到 <span>100 人</span></p>
                 </div>

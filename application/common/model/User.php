@@ -136,4 +136,9 @@ class User extends Model
     {
         return $this->hasMany('Comment');
     }
+
+    // //保存登录前地址
+    // public function savelogin(){
+    //     session('returnUrl',$_SERVER['HTTP_REFERER']);
+    // }
 }
