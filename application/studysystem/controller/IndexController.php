@@ -8,6 +8,7 @@ use app\common\model\Board;      // 引入板块
 // use app\common\model\Comment;      // 引入回复
 use think\Session;
 use think\Db;
+use think\Route;
 
 class IndexController extends Controller
 {
@@ -22,18 +23,30 @@ class IndexController extends Controller
             //return $this->error('您未登录', url('Login/index'));
         }
         else{
-
+            
         }
     }
 
     public function index()
     {
+        //获取当前用户
+        if(Session::get('UserId')){
+            $nowuser = new User;
+            // $nowuser::get(Session::get('UserId'));
+            $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+        }
+        else{
+            $this->assign('nowuser','');
+        }
+        
+        Route::pattern('fucking','123');
         $join = [
             ['user b','a.user_id=b.user_id'],
             ['board c','a.art_board_id=c.board_id'],
         ];
-        $newArts = Db::name('article')->alias('a')->join($join)->order('art_time desc')->limit(8)->select();
-        $hotArts = Db::name('article')->alias('a')->join($join)->order('art_view desc')->limit(8)->select();
+        //最新和热门帖子，列8条
+        $newArts = Db::name('article')->alias('a')->join($join)->where('art_status',0)->order('art_time desc')->limit(8)->select();
+        $hotArts = Db::name('article')->alias('a')->join($join)->where('art_status',0)->order('art_view desc')->limit(8)->select();
         //新会员
         $newUser = Db::name('user')->order('user_id desc')->find();
         //所有帖子

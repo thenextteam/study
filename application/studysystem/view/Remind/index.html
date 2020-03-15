@@ -1,0 +1,62 @@
+{extend name="template"/}
+{block name="title"}
+提醒 - 学习论坛
+{/block}
+{block name="cssname"}remind{/block}
+
+{block name="content"}
+<div class="content">
+    <div class="left">
+        <div class="letitle">通知</div>
+        <ul>
+            <li><a class="eraned" href="#">我的帖子相关</a></li>
+            <li><a href="#">消息</a></li>
+        </ul>
+    </div>
+    <div class="right">
+    {volist name="Rremind" id="rremind"}
+        <div class="rrlist">
+            <div class="redarea">{if condition="$rremind->rremind_status==0"}<span class="red red{$rremind->rremind_id}"></span>{/if}</div>
+            <div class="userimg"><a href="{:url('User/index?uid='.$rremind->reUser->user_id)}"><img src="__ADMIN__/study/img/userimg/{$rremind->reUser['user_img']}" width="55" height="55" /></a></div>
+            <div class="reinfo">
+                <div class="info">
+                    <div class="retime">{$rremind->TimeHandle($rremind->rremind_time)}</div>
+                    <div class="recon">
+                        <a href="{:url('User/index?uid='.$rremind->reUser->user_id)}">{$rremind->reUser->nick_name}</a> 回复了你 
+                        <a href="{:url('Article/index?aid='.$rremind->art_id)}">{$Article[0]::get($rremind->art_id)->art_title}</a>
+                    </div>
+                </div>
+                <div class="reop">
+                    {if condition="$rremind->rremind_status==0"}
+                    <a class="readop" id="sr{$rremind->rremind_id}">标为已读</a>
+                    {else /}<span>已读</span>
+                    {/if}
+                </div>
+            </div>
+        </div>
+    {/volist}
+        <div class="pagecon">{$page}</div>
+    </div>
+
+    <div></div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('.readop').click(function(){
+            $sr = $(this).attr('id');
+            $.ajax({
+                type: "GET",
+                url: 'read',
+                data: {rrid: $sr},
+                dataType: "json",
+                success: function(data){
+                    if(data==true){
+                        $('.red'+ $sr.replace('sr','')).css('display','none');
+                        $('#' + $sr).text('已读').removeClass('readop');
+                    }
+                }
+            });
+        })
+    })
+</script>
+{/block}

@@ -29,6 +29,15 @@ class SignController extends Controller
 
     public function index()
     {
+        //获取当前用户
+        if(Session::get('UserId')){
+            $nowuser = new User;
+            // $nowuser::get(Session::get('UserId'));
+            $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+        }
+        else{
+            $this->assign('nowuser','');
+        }
         $join = [
             ['user b','a.user_id=b.user_id'],
         ];

@@ -7,4 +7,11 @@ use think\Model;
 class Boardadmin extends Model
 {
     
+    /**
+     * 关联用户表
+     */
+	public function User()
+	{
+        return $this->belongsTo('User');
+	}
 }

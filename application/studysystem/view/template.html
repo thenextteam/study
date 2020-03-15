@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{block name="title"}标题{/block}</title>
+    <title>{if condition="$nowuser!=''"}{if condition="$nowuser->remind>0"}[新提醒] {/if}{/if}{block name="title"}标题{/block}</title>
     <link rel="stylesheet" href="__ADMIN__/study/css/default.css">
     <link rel="stylesheet" href="__ADMIN__/study/css/{block name='cssname'}{/block}.css">
     <link rel="stylesheet" href="__ADMIN__/study/font-awesome/css/font-awesome.min.css">
@@ -14,8 +14,13 @@
     <div class="header">
         <div class="topn">
             {if condition="($Think.session.UserId)!=null"}
-            <div class="topn-btn"><a href="{:url('User/index?uid='.$Think.session.UserId)}">{$Think.session.NickName}</a><a href="{:url('Login/logout')}">注销</a>
-            {else /}<div class="topn-btn"><a href="{:url('login/index')}">登录</a><a href="{:url('Register/index')}">注册</a>{/if}</div>
+            <div class="topn-btn">
+                <a href="{:url('Remind/index?uid='.$Think.session.UserId)}">提醒{if condition="$nowuser!=''"}{if condition="$nowuser->remind>0"}<span class="renum">{$nowuser->remind}{/if}{/if}</span></a>
+                <a href="{:url('User/index?uid='.$Think.session.UserId)}">{$Think.session.NickName}</a>
+                <a href="{:url('Login/logout')}">注销</a>
+            {else /}<div class="topn-btn"><a href="{:url('login/index')}">登录</a><a href="{:url('Register/index')}">注册</a>
+            {/if}
+            </div>
             
             
         </div>

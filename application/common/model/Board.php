@@ -45,7 +45,7 @@ class Board extends Model
      */
     public function Boardadmin()
     {
-        return $this->hasMany('boardadmin','board_id');
+        return $this->hasMany('boardadmin','board_id','board_id');
     }
     /**
      * 获取版主名字

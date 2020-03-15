@@ -1,12 +1,15 @@
 ﻿{extend name="template"/}
 {block name="title"}
-论坛板块 - 学习论坛
+{$Board->board_name} - 学习论坛
 {/block}
 {block name="cssname"}board{/block}
 
 {block name="content"}
 <div class="crumb"><a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline><a href="{:url('Bhead/index?hid='.$Board->Bhead->bhead_id)}">{$Board->Bhead->bhead_name}</a><fuline>></fuline><a href="{:url('Board/index?bid='.$Board->board_id)}">{$Board->board_name}</a></div>
     <div class="content">
+        {//volist name="$Board->Boardadmin" id="admins"}
+            {//$admins->User->nick_name}
+        {///volist}
         <div class="blocktop">
             <div class="btleft">
                 <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->article()->where('art_status',0)->count('art_id')}</span><fuline>|</fuline><a class="fav" href="#">收藏本版</a>
@@ -58,9 +61,16 @@
                         <td class="reuser"><a href="{:url('User/index?uid='.$BoardTop->User::get($BoardTop->GetLastCom($BoardTop->art_id)['user_id'])->user_id)}">{$BoardTop->User::get($BoardTop->GetLastCom($BoardTop->art_id)['user_id'])->nick_name}</a><br /><span class="potime">{$Board->TimeHandle($BoardTop->GetLastCom($BoardTop->art_id)['com_time'])}</span></td>
                         {else /}<td class="reuser">暂无</td>
                         {/if}
+                        {if condition="$auth==true"}
+                        <td class="auth">
+                            <a class="aubtn" id="top{$BoardTop->art_id}" href="#">置顶</a> /
+                            <a class="aubtn" id="edit{$BoardTop->art_id}" href="#">编辑</a> /
+                            <a class="aubtn" id="dele{$BoardTop->art_id}" href="#">删除</a>
+                        </td>
+                        {/if}
                     </tr>
                     {/volist}
-                    <tr class="nok"><td colspan="6"></td></tr>
+                    <tr class="nok"><td colspan="7"></td></tr>
                     <!-- 置顶帖↑ -->
                     {volist name="arts" id="art"}
                     <tr>
@@ -72,6 +82,13 @@
                         {if condition="$art->GetLastCom($art->art_id)!=null"}
                         <td class="reuser"><a href="{:url('User/index?uid='.$art->User::get($art->GetLastCom($art->art_id)['user_id'])->user_id)}">{$art->User::get($art->GetLastCom($art->art_id)['user_id'])->nick_name}</a><br /><span class="potime">{$Board->TimeHandle($art->GetLastCom($art->art_id)['com_time'])}</span></td>
                         {else /}<td class="reuser">暂无</td>
+                        {/if}
+                        {if condition="$auth==true"}
+                        <td class="auth">
+                            <a class="aubtn" id="top{$art->art_id}" href="#">置顶</a> /
+                            <a class="aubtn" id="edit{$art->art_id}" href="#">编辑</a> /
+                            <a class="aubtn" id="dele{$art->art_id}" href="#">删除</a>
+                        </td>
                         {/if}
                     </tr>
                     {/volist}
@@ -105,6 +122,30 @@
             </form>
         </div>
     </div>
+
+    {if condition="$auth==true"}
+    <div class="topop">
+        <div class="totitle">设置优先级</div>
+        <div class="tocon">
+            <p class="con">请设置置顶优先级（优先级：0-5）</p>
+            <div class="toselect">
+                <label for="lv">优先级：</label>
+                <select name="lv" id="lv">
+                    <option value="1">0</option>
+                    <option value="1">1</option>
+                    <option value="1">2</option>
+                    <option value="1">3</option>
+                    <option value="1">4</option>
+                    <option value="1">5</option>
+                </select>
+            </div>
+        </div>
+        <div class="tobtn">
+            <button type="submit">确定</button><button class="cancel">取消</button>
+        </div>
+    </div>
+    {/if}
+
     <script type="text/javascript" src="__ADMIN__/study/js/wangEditor.min.js"></script>
     <script type="text/javascript">
         var E = window.wangEditor
@@ -138,6 +179,28 @@
             var oid = getUrlParam('oid');
             $strop = "#op"+oid;
             $($strop).attr('selected',true);
+
+            $('.cancel').click(function(){
+                $('.topop').css('display','none');
+            })
+
+            $('.aubtn').click(function(){
+                if($(this).attr('id').indexOf('top')>=0){
+                    $('.toselect').css('display','block');
+                    $('.totitle').text('设置优先级');
+                    $('.con').text('请设置置顶优先级（优先级：0-5）');
+                    $('.topop').css('display','block');
+                }
+                else if($(this).attr('id').indexOf('edit')>=0){
+                    //跳转到编辑页
+                }
+                else if($(this).attr('id').indexOf('dele')>=0){
+                    $('.toselect').css('display','none');
+                    $('.totitle').text('删除该帖子');
+                    $('.con').text('确认删除该帖子吗？');
+                    $('.topop').css('display','block');
+                }
+            })
         })
     </script>
 {/block}

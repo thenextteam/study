@@ -1,6 +1,6 @@
 ﻿{extend name="template"/}
 {block name="title"}
-学习论坛
+{$Article->art_title} - 学习论坛
 {/block}
 {block name="cssname"}article{/block}
 
@@ -121,7 +121,6 @@
         {/volist}
     </div>
     <div class="pagecon">{$page}</div>
-    
         <!-- 回复框 -->
         <div class="rebox">
             <div class="rele"></div>
@@ -129,8 +128,9 @@
                 <form action="reply" method="post">
                     <div id="editor"></div>
                     <textarea id="comcontent" name="comcontent" style="display: none;"></textarea>
-                    <input type="hidden" id="par" name="par" value="{$Article->art_id}|{$Think.session.UserId}|" />
-                    <button type="submit">发表回复</button>
+                    <input type="hidden" id="par" name="par" value="{$Article->art_id}|" />
+                    
+                    <button class="sub" id="gra{$Article->User::get($Think.session.UserId)['user_grant']}" type="submit">发表回复</button>
                 </form>
             </div>
         </div>
@@ -178,6 +178,10 @@
                   {
                     return false;
                   }
+            })
+            $('#gra1').click(function(){
+                alert('你没有权限！请联系管理员');
+                event.preventDefault();
             })
         })
     </script>

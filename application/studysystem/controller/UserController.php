@@ -13,6 +13,15 @@ class UserController extends Controller
 
     public function index()
     {
+        //获取当前用户
+        if(Session::get('UserId')){
+            $nowuser = new User;
+            // $nowuser::get(Session::get('UserId'));
+            $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+        }
+        else{
+            $this->assign('nowuser','');
+        }
         $uid = Request::instance()->param('uid/d');
         $fid = Request::instance()->param('fid/d');
         $type = Request::instance()->param('type');
