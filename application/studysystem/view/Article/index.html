@@ -54,13 +54,11 @@
                 </div> -->
                 <div class="pret">
                     <a href="#editor" class="pretbtn" id="re">回复</a>
-                    {switch name="$Article->user_id"}
-                    {case value="$Think.session.UserId"}
+                    {if condition="($Article->user_id == $Think.session.UserId)||($auth==true)"}
                     <a href="{:url('edit?aid=' . $Article->art_id)}">编辑</a>
                     <a href="{:url('deleteArt?aid=' . $Article->art_id)}">删除</a>
-                    {/case}
-                    {default /}<a href="#">举报</a>
-                    {/switch}
+                    {else /}<a href="#">举报</a>
+                    {/if}
                 </div>
             </div>
         </div>
@@ -111,7 +109,7 @@
                 </div>
                 <div class="pret">
                     <a href="#editor" class="pretbtn" id="re{$comment->com_id}">回复</a>
-                    {if condition="$comment->User->user_id==$Think.session.UserId"}
+                    {if condition="($comment->User->user_id==$Think.session.UserId)||($auth==true)"}
                     <a href="{:url('delete?cid=' . $comment->com_id)}" class="del">删除</a>
                     {/if}
                     <a href="#">举报</a>

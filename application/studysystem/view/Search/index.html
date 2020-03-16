@@ -1,0 +1,106 @@
+﻿{extend name="template"/}
+{block name="title"}
+学习论坛
+{/block}
+{block name="cssname"}search{/block}
+
+{block name="content"}
+<div class="content">
+    <div class="cobtn">
+        <a {if condition="($type=='art')"}class="display"{/if} href="{:url('Search/index?seakey='.$seakey.'&type=art')}">帖子</a>
+        <a {if condition="($type=='user')"}class="display"{/if} href="{:url('Search/index?seakey='.$seakey.'&type=user')}">用户</a>
+    </div>
+    {if condition="($type=='art')"}
+    <div class="arton">
+        结果: 找到 “{$seakey}” 相关内容
+        <ul class="searchul">
+        {volist name="Articles" id="article"}
+            <li>
+                <div class="stitle"><a class="sta" href="{:url('Article/index?aid='.$article->art_id)}">{$article->art_title}</a></div>
+                <div class="sview">{$article->GetComNum($article->art_id)} 个回复<fuline></fuline>{$article->art_view} 次查看</div>
+                <div class="scon">{$article->art_content|htmlspecialchars_decode|strip_tags}</div>
+                <div class="stimes"><span>{$article->last_com_time}</span><fuline></fuline><a href="{:url('Board/index?bid='.$article->art_board_id)}">{$article->Board->board_name}</a></div>
+            </li>
+        {/volist}
+        </ul>
+    </div>
+    {elseif condition="($type=='user')"}
+    结果: 找到 “{$seakey}” 的用户
+    <div class="useron">
+    {volist name="Users" id="user"}
+        <div class="userspan">
+            <div class="userimg">
+                <a href="{:url('User/index?uid='.$user->user_id)}">
+                    <img src="__ADMIN__/study/img/userimg/{$user->user_img}" />
+                </a>
+            </div>
+            <div class="userinfo">
+                <a href="{:url('User/index?uid='.$user->user_id)}">{$user->nick_name}</a>
+                <div>
+                    <span>{$user->user_lv}</span>
+                    <span>积分：{$user->user_point}</span>
+                </div>
+                <div class="infobtn">
+                    <a href="{:url('User/index?uid='.$user->user_id)}">查看资料</a>
+                    <a href="">加为好友</a>
+                </div>
+            </div>
+        </div>
+    {/volist}
+    </div>
+    {/if}
+    <div class="pagecon">{$page}</div>
+</div>
+{if condition="($type=='art')"}
+<script>
+    $(document).ready(function(){
+        $('.seakey').val('{$seakey}');
+        $seakey = '{$seakey}';
+        if($seakey.indexOf(' ')>0){
+            $seakey = $seakey.split(' ');
+            for($x in $seakey){
+                var regExp = new RegExp($seakey[$x], "g");//创建正则表达式，g表示全局的，如果不用g，则查找到第一个就不会继续向下查找了；
+                $(".sta").each(function()//遍历文字；
+                {
+                    var html = $(this).html();
+                    var newHtml = html.replace(regExp, "<span style='color:#c90a16' >"+$seakey[$x]+"</span>");//将找到的关键字替换，加上highlight属性；
+            
+                    $(this).html(newHtml);//更新文章；
+                });
+                $(".scon").each(function()
+                {
+                    var html = $(this).html();
+                    var newHtml = html.replace(regExp, "<span style='color:#c90a16' >"+$seakey[$x]+"</span>");
+            
+                    $(this).html(newHtml);
+                });
+            }
+            
+        }
+        else{
+            var regExp = new RegExp($seakey, "g");
+            $(".sta").each(function()
+            {
+                var html = $(this).html();
+                var newHtml = html.replace(regExp, "<span style='color:#c90a16' >"+$seakey+"</span>");
+        
+                $(this).html(newHtml);
+            });
+            $(".scon").each(function()
+            {
+                var html = $(this).html();
+                var newHtml = html.replace(regExp, "<span style='color:#c90a16' >"+$seakey+"</span>");
+        
+                $(this).html(newHtml);
+            });
+        }
+    })
+</script>
+{else /}
+<script>
+    $(document).ready(function(){
+        $('.seakey').val('{$seakey}');
+    })
+</script>
+{/if}
+{/block}

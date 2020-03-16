@@ -9,11 +9,12 @@
     <div class="left">
         <div class="letitle">通知</div>
         <ul>
-            <li><a class="eraned" href="#">我的帖子相关</a></li>
-            <li><a href="#">消息</a></li>
+            <li><a {if condition="($type == 'rre')"}class="eraned"{/if} href="{:url('Remind/index?uid='.$nowuser->user_id.'&type=rre')}">我的帖子相关</a></li>
+            <li><a {if condition="($type == 'are')"}class="eraned"{/if} href="{:url('Remind/index?uid='.$nowuser->user_id.'&type=are')}">消息</a></li>
         </ul>
     </div>
     <div class="right">
+    {if condition="($type == 'rre')"}
     {volist name="Rremind" id="rremind"}
         <div class="rrlist">
             <div class="redarea">{if condition="$rremind->rremind_status==0"}<span class="red red{$rremind->rremind_id}"></span>{/if}</div>
@@ -35,6 +36,41 @@
             </div>
         </div>
     {/volist}
+    {else /}
+    {volist name="Aremind" id="aremind"}
+        <div class="rrlist">
+            <div class="redarea">{if condition="$aremind->aremind_status==0"}<span class="red red{$aremind->aremind_id}"></span>{/if}</div>
+            <div class="userimg"><a href="{:url('User/index?uid='.$aremind->aoUser->user_id)}"><img src="__ADMIN__/study/img/userimg/{$aremind->aoUser['user_img']}" width="55" height="55" /></a></div>
+            <div class="reinfo">
+                <div class="info">
+                    <div class="retime">{$aremind->TimeHandle($aremind->aremind_time)}</div>
+                    <div class="recon">
+                        <a href="{:url('User/index?uid='.$aremind->aoUser->user_id)}">{$aremind->aoUser->nick_name}</a> 
+                        {switch name="$aremind->aremind_op"}
+                        {case value="0"}删除了你的帖子： <a href="{:url('Article/index?aid='.$aremind->art_id)}">{$Article[0]::get($aremind->art_id)->art_title}</a>{/case}
+                        {case value="1"}置顶了你的帖子： <a href="{:url('Article/index?aid='.$aremind->art_id)}">{$Article[0]::get($aremind->art_id)->art_title}</a>{/case}
+                        {case value="2"}修改了你的帖子： <a href="{:url('Article/index?aid='.$aremind->art_id)}">{$Article[0]::get($aremind->art_id)->art_title}</a>{/case}
+                        {case value="3"}在帖子 <a href="{:url('Article/index?aid='.$aremind->art_id)}">{$Article[0]::get($aremind->art_id)->art_title}</a> 中删除了你的回复： 
+                        {volist name="$Comment" id="comment"}
+                        {if condition="($comment->com_id==$aremind->com_id)"}
+                        {$comment->com_content|htmlspecialchars_decode|strip_tags}
+                        {/if}
+                        {/volist}
+                        {/case}
+                        {/switch}
+                        
+                    </div>
+                </div>
+                <div class="reop">
+                    {if condition="$aremind->aremind_status==0"}
+                    <a class="readop" id="sr{$aremind->aremind_id}" name="ar{$aremind->aremind_id}">标为已读</a>
+                    {else /}<span>已读</span>
+                    {/if}
+                </div>
+            </div>
+        </div>
+    {/volist}
+    {/if}
         <div class="pagecon">{$page}</div>
     </div>
 
@@ -43,7 +79,16 @@
 <script>
     $(document).ready(function(){
         $('.readop').click(function(){
-            $sr = $(this).attr('id');
+            if($('.readop').attr('name')==null){
+                $sr = $(this).attr('id');
+                $red ='.red'+ $sr.replace('sr','');
+                $str = '#' + $sr;
+            }
+            else{
+                $sr = $(this).attr('name');
+                $red ='.red'+ $sr.replace('ar','');
+                $str = '#sr' + $sr.replace('ar','');
+            }
             $.ajax({
                 type: "GET",
                 url: 'read',
@@ -51,11 +96,12 @@
                 dataType: "json",
                 success: function(data){
                     if(data==true){
-                        $('.red'+ $sr.replace('sr','')).css('display','none');
-                        $('#' + $sr).text('已读').removeClass('readop');
+                        $($red).css('display','none');
+                        $($str).text('已读').removeClass('readop');
                     }
                 }
             });
+
         })
     })
 </script>

@@ -39,7 +39,6 @@ class IndexController extends Controller
             $this->assign('nowuser','');
         }
         
-        Route::pattern('fucking','123');
         $join = [
             ['user b','a.user_id=b.user_id'],
             ['board c','a.art_board_id=c.board_id'],
@@ -50,7 +49,7 @@ class IndexController extends Controller
         //新会员
         $newUser = Db::name('user')->order('user_id desc')->find();
         //所有帖子
-        $allArt = Db::name('Article')->where('art_status',0)->count('art_id');
+        $allArt = Db::name('Article')->where('art_status',0)->field(['art_content','text'],true)->count('art_id');
         //所有会员
         $allUser = Db::name('User')->count('user_id');
         $Bhead = new Bhead;

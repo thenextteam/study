@@ -49,7 +49,7 @@ class BoardController extends Controller
 
         $this->assign('auth',$auth);
         //获取置顶贴
-        $BoardTops = Board::get($bid)->Article()->where('art_top','>',0)->order('art_top desc')->select();
+        $BoardTops = Board::get($bid)->Article()->where('art_top','>',0)->where('art_status',0)->order('art_top desc')->select();
 
         //正常状态
         if(isset($Board)&&$Board->board_status=="0"){
@@ -79,7 +79,6 @@ class BoardController extends Controller
     {
         // 实例化请求信息
         $Request = Request::instance();
-
         //得到板块ID|当前登录的用户ID
         $pars = $Request->post('par');
         $pararr = explode('|', $pars);
@@ -92,10 +91,16 @@ class BoardController extends Controller
 
         // 帖子类型arttype、标题arttitle、内容artcontent
         // 实例化回复并赋值
+        
+        // $x = htmlspecialchars_decode($x);
+        // return strip_tags($x);
+        $text = $Request->post('artcontent');
+
         $Article = new Article();
         $Article->user_id = Session::get('UserId');
         $Article->art_title = $Request->post('arttitle');
         $Article->art_content = $Request->post('artcontent');
+        $Article->text = str_replace('&nbsp;','',strip_tags(htmlspecialchars_decode($text)));
         $Article->art_board_id = $pararr[0];
         $Article->atype_id = $Request->post('arttype');
 

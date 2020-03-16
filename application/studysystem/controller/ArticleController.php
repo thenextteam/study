@@ -3,8 +3,10 @@ namespace app\studysystem\controller;     //命名空间，也说明了文件所
 use think\Controller;
 use app\common\model\User;      // 引入用户
 use app\common\model\Article;      // 引入帖子
+use app\common\model\Board;      // 引入版块
 use app\common\model\Comment;      // 引入回复
 use app\common\model\Rremind;      // 引入回复提醒
+use app\common\model\Aremind;
 use think\Session;
 use think\Request;
 use think\Db;
@@ -30,7 +32,7 @@ class ArticleController extends Controller
             $Article->art_view = $Article->art_view+1;
             $Article->save();
             
-            $comments = $Article->Comment()->order('com_id')->paginate(10,false, [
+            $comments = $Article->Comment()->order('com_id')->field('text',true)->paginate(10,false, [
                 'query' => [
                     'aid' => $id,
                     ]
@@ -41,6 +43,17 @@ class ArticleController extends Controller
             // 获取最高楼层数
             $renum = Db::name('comment')->where('art_id',$id)->where('com_status',0)->value('max(com_count)');
             if($renum==null){$renum=2;}
+
+            $Board = Board::get($Article->art_board_id);
+            //权限
+            $auth = false;
+            //获取判断是否版主
+            foreach($Board->Boardadmin as $ss){
+                if($ss->user_id==Session::get('UserId')){
+                    $auth = true;
+                }
+            }
+            $this->assign('auth',$auth);
             
             $this->assign('Article',$Article);
             $this->assign('comments',$comments);
@@ -99,12 +112,15 @@ class ArticleController extends Controller
             $countwho = Db::name('Comment')->where('com_id',$pararr[1])->field('user_id')->find()['user_id'];
         }
 
+        $text = $Request->post('comcontent');
+
         // 实例化回复并赋值
         $Comment = new Comment();
         $Comment->art_id = $pararr[0];
         $Comment->user_id = Session::get('UserId');
         $Comment->re_com_id = $pararr[1];
         $Comment->com_content = $Request->post('comcontent');
+        $Comment->text = str_replace('&nbsp;','',strip_tags(htmlspecialchars_decode($text)));
         $Comment->com_count = $maxcount+1;
         Db::table('article')->where('art_id', $pararr[0])->update(['last_com_time' => date("Y-m-d H:i:s")]);
 
@@ -162,8 +178,8 @@ class ArticleController extends Controller
     public function update()
     {
         $Request = Request::instance();
-    	$id = $Request->post('aid/d');
-
+        $id = $Request->post('aid/d');
+        
     	//传入帖子信息
     	$Article = Article::get($id);
     	if(is_null($Article)){
@@ -174,7 +190,6 @@ class ArticleController extends Controller
         $Article->art_content = $Request->post('artcontent');
         $Article->atype_id = $Request->post('arttype');
         $Article->art_lasttime = date('Y-m-d H:i:s', time());
-        // return $Article->atype_id;
     	//数据更新
     	if(!$Article->validate()->save()){
     		return $this->error('修改失败'.$Article->getError());
@@ -183,11 +198,39 @@ class ArticleController extends Controller
         }
     }
 
+    //版主置顶帖子
+    public function topArt()
+    {
+        $Request = Request::instance();
+        $id = str_replace('top','',$Request->post('aid'));
+
+        $Article = Article::get($id);
+        $Article->art_top = $Request->post('lv');
+        if($Article->save()){
+            if($Request->post('lv')>0){
+                $User = User::get($Article->user_id);
+                $User->remind = $User->remind+1;
+                $User->save();
+
+                $Aremind = new Aremind;
+                $Aremind->user_id = $Article->user_id;
+                $Aremind->ao_user_id = Session::get('UserId');
+                $Aremind->art_id = $id;
+                $Aremind->aremind_op = 1;
+                $Aremind->save();
+            }
+            return $this->success('设置成功', $Request->header('referer'));
+        }
+        else{
+            return $this->error('设置失败:' . $Article->getError());
+        }
+    }
+
     //删除帖子功能
     public function deleteArt()
     {
         $Request = Request::instance();
-        $delArtId = $Request->param('aid/d');
+        $delArtId = str_replace('dele','',$Request->param('aid'));
 
         $Article = Article::get($delArtId);
         if($Article->art_status=="0"){
@@ -197,6 +240,20 @@ class ArticleController extends Controller
             // 删除
             if(!$Article->validate(true)->save()){
                 return $this->error('删除失败:' . $Article->getError());
+            }
+
+            if($Article->user_id!=Session::get('UserId')){
+                //版主删除，则通知帖子楼主
+                $User = User::get($Article->user_id);
+                $User->remind = $User->remind+1;
+                $User->save();
+
+                $Aremind = new Aremind;
+                $Aremind->user_id = $Article->user_id;
+                $Aremind->ao_user_id = Session::get('UserId');
+                $Aremind->art_id = $delArtId;
+                $Aremind->aremind_op = 0;
+                $Aremind->save();
             }
             return $this->success('删除成功', $Request->header('referer'));
         }
@@ -217,6 +274,21 @@ class ArticleController extends Controller
             if(!$Comment->validate(true)->save()){
                 return $this->error('删除失败:' . $Comment->getError());
             }
+
+            if($Comment->user_id!=Session::get('UserId')){
+                //版主删除，则通知帖子楼主
+                $User = User::get($Comment->user_id);
+                $User->remind = $User->remind+1;
+                $User->save();
+
+                $Aremind = new Aremind;
+                $Aremind->user_id = $Comment->user_id;
+                $Aremind->ao_user_id = Session::get('UserId');
+                $Aremind->art_id = $Comment->art_id;
+                $Aremind->com_id = $delComId;
+                $Aremind->aremind_op = 3;
+                $Aremind->save();
+            }
             return $this->success('删除成功', $Request->header('referer'));;
         }
     }
@@ -224,8 +296,19 @@ class ArticleController extends Controller
     //编辑帖子
     public function edit()
     {
+        //获取当前用户
+        if(Session::get('UserId')){
+            $nowuser = new User;
+            // $nowuser::get(Session::get('UserId'));
+            $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+        }
+        else{
+            $this->assign('nowuser','');
+        }
+
         $Request = Request::instance();
         $id = $Request->param('aid/d');
+ 
         
         $Article = Article::get($id);
         $this->assign('Article',$Article);
