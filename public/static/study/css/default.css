@@ -1,0 +1,215 @@
+/* 整体通用样式 */
+
+/* 默认样式处理 */
+body{
+    background: #fff;
+    margin :0px;
+    font-size: 13px;
+    min-width: 1000px;
+    word-break: break-all;
+}
+a{
+    text-decoration: none;
+    color: #333;
+    font-size: 13px;
+}
+input,button{
+    outline: none;
+}
+ul{
+    list-style: none;
+    padding-left: 0px;
+}
+fuline{
+    /* 自定义标签，一条不可选中的竖线 */
+    margin: 0 8px;
+    color: #666;
+    user-select:none;
+}
+
+/* 头部 */
+.header{
+    width: 100%;
+    height: 170px;
+}
+
+/* 顶端登录注册条 */
+.header .topn{
+    height: 30px;
+    line-height: 30px;
+    background: #333;
+}
+.header .topn .topn-btn{
+    margin: 0px auto;
+    width: 1000px;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+.header .topn .topn-btn a{
+    margin-left: 10px;
+    color: #FFF;
+}
+
+/* LOGO */
+.header .hlogo{
+    border-top: 1px solid #666;
+    height: 100px;
+    background: rgb(80, 80, 85);
+}
+
+/* 导航条 */
+.header .nav{
+    height: 40px;
+    background: #3b3b3c;
+    border-bottom: 1px solid #3b3b3c;;
+}
+.header .nav .navblock{
+    margin: 0px auto;
+    width: 1000px;
+    display: flex;
+    justify-content: space-between;
+}
+.header .nav .navblock .navbtn{
+    height: 40px;
+    display: flex;
+}
+.header .nav .navblock .navbtn a{
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 15px;
+    color: #fff;
+    width: 80px;
+    background: #3b3b3c;
+    transition: 0.2s all ease;
+}
+.header .nav .navblock .navbtn a:hover{
+    background: #4f4f4f;
+}
+.header .nav .navblock .search form{
+    display: flex;
+}
+.header .nav .navblock .search input,button{
+    height: 40px;
+    box-sizing: border-box;
+    margin: 0px;
+    border: 0px;
+}
+.header .nav .navblock .search input{
+    padding-left: 20px;
+}
+.header .nav .navblock .search button{
+    cursor: pointer;
+    width: 50px;
+    background: #fff;
+}
+
+/* 面包屑 */
+.crumb{
+    width: 1000px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+.crumb a:hover{
+    text-decoration: underline;
+}
+.crumb .fa{
+    color: #cdd4e7;
+}
+.crumb fuline{
+    color: #a5a5a5;
+}
+
+
+/* 底部 */
+.footer{
+    height: 120px;
+    background: #222;
+}
+
+
+/* 分页 */
+.pagecon{
+    width: 1000px;
+    margin: 0px auto;
+}
+.pagecon .pagination{
+    display: flex;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+.pagecon .pagination .disabled>span{
+    color: #333;
+    background: #efefef;
+}
+.pagecon .pagination ul{
+    display: flex;
+}
+.pagecon .pagination li{
+    margin-left: 5px;
+}
+.pagecon .pagination li a,.pagecon .pagination li span{
+    display: block;
+    height: 20px;
+    border: 1px solid #ccc;
+    padding: 2px 7px;
+    background: #fff;
+}
+.pagecon .pagination li:hover a{
+    background: #fff;
+    color: #125999;
+    border: 1px solid #125999;
+}
+
+/* 消息提醒数字 */
+.topn-btn .renum{
+    display: inline-block;
+    text-align: center;
+    height: 18px;
+    line-height: 18px;
+    width: 18px;
+    background: #c54141;
+    margin-left: 5px;
+    font-weight: bold;
+    border-radius: 3px;
+}
+
+/* 弹出框 */
+.topop{ 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background: #fff;
+    box-shadow: #a9a9a9 0px 0px 10px;
+    border-radius: 10px;
+    display: none;
+}
+.topop .totitle{
+    color: #fff;
+    line-height: 40px;
+    padding: 0px 15px 0px 15px;
+    background: #333;
+    border-radius: 10px;
+    border-radius: 10px 10px 0px 0px;
+}
+.topop .tocon{
+    padding: 30px;
+    text-align: center;
+}
+.topop .tobtn{
+    display: flex;
+    justify-content: space-between;
+}
+.topop .tobtn button{
+    width: 50%;
+    border-radius: 0px 0px 0px 10px;
+    cursor: pointer;
+    background: #575758;
+    color: #fff;
+}
+.topop .tobtn button:nth-last-child(1){
+    border-radius: 0px 0px 10px 0px;
+    background: #dddde2;
+    color: #000;
+}

@@ -1,0 +1,258 @@
+/* 板块帖子列表CSS */
+
+/* 内容 */
+.content{
+    width: 1000px;
+    margin: 0px auto;
+    box-sizing: border-box;
+}
+.content .blocktop{
+    width: 1000px;
+    height: 68px;
+    line-height: 68px;
+    box-sizing: border-box;
+    margin: 20px 0;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+.content .blocktop a:hover{
+    text-decoration: underline;
+}
+.content .blocktop .btleft .blockna{
+    font-size: 18px;
+    color: #125999;
+}
+.content .blocktop .btleft .bloponum{
+    color: #df3636;
+    font-weight: bold;
+}
+.content .blocktop .btleft .fav{
+    padding-left: 18px;
+    background: url(../img/fav.gif) no-repeat;
+    color: #125999;
+}
+.fabtn{
+    width: 90px;
+    height: 40px;
+    cursor: pointer;
+    background: #222;
+    color: #fff;
+}
+.fabtn:hover{
+    background: #535353;
+}
+.content .blocktar ul{
+    display: flex;
+}
+.content .blocktar ul li{
+    text-align: center;
+    margin-right: 10px;
+    border-bottom: #fff 3px solid;
+    transition: ease all 0.5s;
+}
+.content .blocktar ul li:hover{
+    border-bottom: #125999 3px solid;
+}
+.content .blocktar ul li:hover a{
+    color: #125999;
+}
+.content .blocktar ul li a{
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    font-size: 15px;
+    transition: ease color 0.5s;
+    padding: 0px 20px
+}
+.content .blocktar ul li.clied{
+    border-bottom: #125999 3px solid;
+}
+.content .blocktar ul li.clied a{
+    color: #125999;
+}
+.content .blocktar ul li a .tynum{
+    font-size: 12px;
+}
+.content .blocon{
+    width: 1000px;
+    min-height: 200px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+/* 筛选 */
+.content .blocon .shai{
+    height: 50px;
+    width: 100%;
+    background: #e9e9e9;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    line-height: 50px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+.content .blocon .shai select{
+    background: #f1f1f1;
+    height: 27px;
+    font-size: 12px;
+    border-radius: 3px;
+    margin-top: -3px;
+}
+.content .blocon .shai select option:hover{
+    background: #ccc;
+}
+.content .blocon .polist{
+    width: 960px;
+    margin: 10px auto;
+    font-size: 11px;
+}
+.content .blocon .polist .nok{
+    height: 25px;
+    background: #f9f9f9;
+}
+.content .blocon .polist table{
+    width: 100%;
+    border-collapse: collapse; 
+}
+.content .blocon .polist tr{
+    height: 53px;
+    border-bottom: 1px solid #eee;
+}
+.content .blocon .polist tr:nth-last-child(1){
+    border-bottom: none;
+}
+.content .blocon .polist a:hover{
+    text-decoration: underline;
+}
+.content .blocon .polist .icon,.zhua{
+    padding: 3px 5px 0px 5px;
+}
+.content .blocon .polist .icon img{
+    border-radius: 6px;
+}
+.content .blocon .polist .potit{
+    width: 570px;
+}
+.content .blocon .polist .potit img{
+    vertical-align: middle;
+    margin: -4px 0px 0px 5px;
+}
+.content .blocon .polist .potit .tyname a{
+    font-size: 12px;
+}
+.content .blocon .polist .potit .tyname,.tyname>a{
+    color: #125999;
+}
+.content .blocon .polist .potit div{
+    max-height: 38px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.content .blocon .polist .potit a{
+    font-size: 14px;
+}
+.content .blocon .polist .pouser,.reuser{
+    width: 100px;
+}
+.content .blocon .polist .ponum{
+    width: 90px;
+}
+.content .blocon .polist .pouser>a,.reuser>a{
+    font-size: 11px;
+}
+.content .blocon .polist .potime{
+    color: #666;
+}
+/* 分页 */
+.page{
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+.pagination{
+    display: flex;
+    margin: 20px 0;
+    padding: 0 20px;
+}
+.pagination .disabled>span{
+    color: #333;
+    background: #efefef;
+}
+.pagination ul{
+    display: flex;
+}
+.pagination li{
+    margin-left: 5px;
+}
+.pagination li a,.pagination li span{
+    display: block;
+    height: 20px;
+    border: 1px solid #ccc;
+    padding: 2px 7px;
+    background: #fff;
+}
+.pagination li:hover a{
+    background: #fff;
+    color: #125999;
+    border: 1px solid #125999;
+}
+
+.content .blocon .polist .auth{
+    width: 120px;
+}
+
+.rebox{
+    width: 1000px;
+    margin: 50px auto;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    padding: 20px;
+}
+.rebox input,select{
+    vertical-align: middle; 
+}
+.rebox select{
+    height: 27px;
+    font-size: 12px;
+}
+.rebox .loinput{
+    height: 25px;
+    width: 400px;
+    box-shadow: inset 2px 2px 3px #e9e9e9;
+    border: 1px solid #ddd;
+    padding: 0 2px;
+}
+.rebox .eab{
+    width: 700px;
+    margin-top: 10px;
+}
+.rebox .eab #editor{
+    margin-bottom: 20px;
+}
+.rebox .eab #editor .w-e-text-container{
+    height: 150px!important;
+}
+.rebox .eab button{
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+    background: #222;
+    color: #fff;
+}
+
+.topop{
+    width: 330px!important;
+    height: 203px;
+    margin-top: -165px;
+    margin-left: -101px;
+}
+.topop .tocon{
+    height: 63px;
+}
+.topop .tocon select{
+    width: 40px;
+}

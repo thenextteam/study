@@ -1,0 +1,164 @@
+/* 用户主页CSS */
+
+body{
+    background: #ebebeb;
+}
+
+.content{
+    /* border: 1px solid #ddd; */
+    box-sizing: border-box;
+    /* background: #f6f6f6; */
+    width: 1000px;
+    margin: 30px auto;
+}
+
+.content a:hover{
+    text-decoration: underline;
+}
+
+.content .userde{
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.content .userde .uimgana{
+    display: flex;
+    justify-content: space-between;
+}
+
+.content .userde .uimgana img{
+    border: 5px solid #fff;
+    border-radius: 3px;
+    box-shadow: 3px 3px 3px #bbb;
+}
+
+.content .userde .uimgana .una{
+    margin-left: 15px;
+}
+
+.content .userde .uimgana .una p{
+    font-size: 16px;
+}
+
+.content .userde .opbtn a{
+    display: block;
+    margin: 10px;
+}
+
+.content .ulbtn{
+    display: flex;
+    margin-bottom: 0px;
+}
+.content .ulbtn li{
+    margin-right: 5px;
+}
+
+.content .ulbtn li a{
+    display: block;
+    border: 1px solid #CCC;
+    /* border-bottom-color: #FFF; */
+    background: #E5EDF2;
+    padding: 7px 10px;
+    font-size: 12px;
+}
+
+.content .ulbtn li a.display{
+    background: #fff;
+    border-bottom: 1px solid #fff;
+}
+
+.content .ulbtn li a:hover{
+    text-decoration: none;
+}
+
+.content .ucon{
+    background: #fff;
+    border: 1px solid #ddd;
+    border-top: none;
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+.content .ucon span.grayiro{
+    color: #5d5d5d;
+}
+
+.content .ucon .uconrow{
+    border-bottom: 1px dashed #CDCDCD;
+}
+
+.content .ucon .aandr{
+    display: flex;
+}
+
+.displaybtn{
+    font-weight: bold;
+}
+
+.uarttable{
+    width: 100%;
+    border-top: 1px dashed #CDCDCD;
+}
+
+.uarttable .th td:nth-child(1){
+    padding-left: 20px;
+}
+
+.uarttable .arttitle{
+    box-sizing: border-box;
+    padding: 0px 20px;
+    width: 600px;
+}
+
+.uarttable .comrow{
+    height: 35px!important;
+    line-height: 35px;
+}
+
+.uarttable .comcontent{
+    font-size: 12px;
+    max-height: 35px!important;
+    display: flex;
+    overflow: hidden;
+}
+
+.uarttable .comcontent a{
+    color: #aaa;
+}
+
+.uarttable .comcontent p{
+    margin: 0px;
+}
+
+.uarttable .comcontent>img{
+    margin-top: 10px;
+}
+
+.uarttable .comcontent>img:nth-child(1){
+    margin-right: 5px;
+}
+
+.uarttable .comcontent>img:nth-last-child(1){
+    margin-left: 5px;
+}
+
+.uarttable tr{
+    height: 44px;
+}
+
+.uarttable td{
+    padding: 5px 0;
+    border-bottom: 1px solid #DDD;
+}
+
+.uarttable .th{
+    margin-top: 1px;
+    padding: 0 10px;
+    border-bottom: 1px solid #CDCDCD;
+    background: #F5F5F5;
+}
+
+.hascom>td{
+    border-bottom: none;
+}

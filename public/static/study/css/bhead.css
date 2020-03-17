@@ -1,0 +1,95 @@
+/* 板块大类列表CSS */
+
+/* 内容 */
+.content{
+    margin: auto;
+    width: 1000px;
+    background: #fff;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+.content .cnews{
+    font-size: 13px;
+    height: 30px;
+    line-height: 30px;
+}
+/* 板块通用样式 */
+.content .conb{
+    margin-bottom: 20px;
+    border: 1px solid #afafaf;
+}
+.content .conb .conbtitle{
+    height: 50px;
+    line-height: 50px;
+    background: #f6f6f6;
+    border-bottom: 1px solid #afafaf;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.content .conb .conbtitle .tname{
+    font-size: 16px;
+}
+/* 板块-头像、标题、帖子标题、数量 */
+.content .conb .conblist .conbcon{
+    height: 120px;
+    background: #fff;
+    border-bottom: 1px dashed #888;
+    margin: 0px 20px 0px 20px;
+    display: flex;
+    box-sizing: border-box;
+}
+.content .conb .conblist .conbcon:nth-last-child(1){
+    border-bottom: none;
+}
+.content .conb .conblist .conbcon .bloimg{
+    width: 240px;
+    /* background: #555; */
+    box-sizing: border-box;
+    padding: 20px 0px 20px 0px;
+}
+.content .conb .conblist .conbcon .blotitle{
+    width: 240px;
+    box-sizing: border-box;
+    padding: 35px 0px 20px 10px;
+}
+.content .conb .conblist .conbcon .blotitle .blott a{
+    font-size: 17px;
+}
+.content .conb .conblist .conbcon .blotitle .blotj{
+    color: #666;
+}
+.content .conb .conblist .conbcon .blotitle .newnum{
+    color: lightcoral;
+}
+.content .conb .conblist .conbcon .blocon{
+    width: 340px;
+    box-sizing: border-box;
+    padding: 30px 0px 20px 0px;
+}
+.content .conb .conblist .conbcon .blocon a:hover{
+    text-decoration: underline
+}
+.content .conb .conblist .conbcon .blocon>div{
+    margin-bottom: 3px;
+}
+.content .conb .conblist .conbcon .blocon .bloct{
+    max-width: 250px;
+    max-height: 18px;
+    overflow: hidden;
+}
+.content .conb .conblist .conbcon .blocon .tietime{
+    color: #a5a5a5;
+}
+.lastre a{
+    color: #125999;
+}
+.content .conb .conblist .conbcon .blonum{
+    width: 140px;
+    box-sizing: border-box;
+    padding: 33px 0px 20px 60px;
+    text-align: center;
+}
+.content .conb .conblist .conbcon .blonum .renum,.wanum{
+    color: #666;
+}

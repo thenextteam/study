@@ -49,6 +49,7 @@ class SearchController extends Controller
                     $query->where('text','like','%'.$pararr[0].'%')->where('text','like','%'.$pararr[1].'%')->where('text','like','%'.$pararr[2].'%');})->order('art_lasttime desc')->paginate(10,false,[
                     'query' => [
                         'seakey' => $seakey,
+                        'type' =>'art',
                         ]
                     ]);
                 $this->assign('Articles',$Articles);
@@ -57,9 +58,10 @@ class SearchController extends Controller
             }
             else{
                 $User = new User;
-                $Users = $User->where('nick_name','like','%'.$pararr[0].'%')->where('nick_name','like','%'.$pararr[1].'%')->where('nick_name','like','%'.$pararr[2].'%')->paginate(10,false,[
+                $Users = $User->where('nick_name','like','%'.$pararr[0].'%')->where('nick_name','like','%'.$pararr[1].'%')->where('nick_name','like','%'.$pararr[2].'%')->paginate(20,false,[
                     'query' => [
                         'seakey' => $seakey,
+                        'type' =>'user',
                         ]
                     ]);
                 $this->assign('Users',$Users);
@@ -71,9 +73,10 @@ class SearchController extends Controller
         else{
             if($type=='art'){
                 $Article = new Article;
-                $Articles = $Article->where('art_title','like','%'.$seakey.'%')->whereOr('text','like','%'.$seakey.'%')->order('art_lasttime desc')->paginate(20,false,[
+                $Articles = $Article->where('art_title','like','%'.$seakey.'%')->whereOr('text','like','%'.$seakey.'%')->order('art_lasttime desc')->paginate(10,false,[
                     'query' => [
                         'seakey' => $seakey,
+                        'type' =>'art',
                         ]
                     ]);
                 $this->assign('Articles',$Articles);
@@ -82,9 +85,10 @@ class SearchController extends Controller
             }
             else{
                 $User = new User;
-                $Users = $User->where('nick_name','like','%'.$seakey.'%')->paginate(10,false,[
+                $Users = $User->where('nick_name','like','%'.$seakey.'%')->paginate(20,false,[
                     'query' => [
                         'seakey' => $seakey,
+                        'type' =>'user',
                         ]
                     ]);
                 $this->assign('Users',$Users);

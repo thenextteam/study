@@ -1,0 +1,102 @@
+/* 提醒CSS */
+body{
+    background: #e8e8e8;
+}
+/* 内容 */
+.content{
+    margin: auto;
+    width: 1000px;
+    background: #fff;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    display: flex;
+}
+.content .left{
+    width: 150px;
+}
+.content .left .letitle{
+    line-height: 50px;
+    border-bottom: 1px dashed #CDCDCD;
+    font-size: 16px;
+    padding-left: 20px;
+}
+.content .left ul{
+    margin: 0;
+}
+.content .left li{
+    border-bottom: 1px solid #E5E5E5;
+}
+.content .left li a{
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+}
+.content .left li a.eraned{
+    font-weight: bold;
+}
+.content .right{
+    width: 850px;
+    box-shadow: #e9e9e9 -5px 0px 5px ;
+    box-sizing: border-box;
+    padding: 20px;
+}
+
+.content .right .rrlist{
+    display: flex;
+    border-bottom: 1px dashed #CDCDCD;
+}
+.content .right .rrlist a:hover{
+    text-decoration: underline;
+}
+.content .right .rrlist .redarea{
+    width: 20px;
+    text-align: center;
+    line-height: 55px;
+}
+.content .right .rrlist .userimg{
+    width: 60px;
+}
+.content .right .rrlist .userimg img{
+    border-radius: 8px;
+    padding: 2px;
+    width: 48px;
+    height: 48px;
+    background: #FFF;
+    border: 1px solid;
+    border-color: #F5F5F5 #CDCDCD #CDCDCD #F5F5F5;
+}
+.content .right .rrlist .reinfo{
+    width: 750px;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 10px;
+}
+.content .right .rrlist .info{
+    margin-top: 8px;
+}
+.content .right .rrlist .info .retime{
+    color: #a5a5a5;
+    margin-bottom: 5px;
+
+}
+.content .right .rrlist .info .recon{
+    max-width: 520px;
+    height: 17px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.content .right .rrlist .reop{
+    line-height: 55px;
+}
+.red{
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    background: #bf3333;
+    border-radius: 4px;
+}
+.readop{
+    cursor: pointer;
+}

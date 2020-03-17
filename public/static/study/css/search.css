@@ -1,0 +1,95 @@
+/* 搜索页CSS */
+
+/* 内容 */
+body{
+    background: #e8e8e8;
+}
+.content{
+    background: #fff;
+    width: 1000px;
+    margin: 10px auto;
+    box-sizing: border-box;
+    padding: 20px 10px 30px 10px;
+}
+.cobtn{
+    display: flex;
+    margin-bottom: 10px;
+}
+.cobtn a{
+    display: block;
+    margin-right: 10px;
+    width: 45px;
+    line-height: 30px;
+    text-align: center;
+}
+.cobtn a.display{
+    font-weight: bold;
+}
+.arton{
+    padding: 0px 30px;
+}
+.content .searchul{
+    max-width: 800px;
+}
+.content .searchul li{
+    margin-bottom: 20px;
+}
+.content .searchul li .stitle>a{
+    font-size: 16px;
+    text-decoration: underline;
+}
+.content .searchul li .sview{
+    color: #aaa;
+}
+.content .searchul li .scon{
+    font-size: 12px;
+    max-height: 32px;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+}
+.content .searchul li .stimes{
+    font-size: 12px;
+}
+.content .searchul li .stimes>span{
+    color: #3A8000;
+}
+
+.useron{
+    display: flex;
+    flex-wrap: wrap;
+}
+.content .userspan{
+    margin: 10px 4px 0;
+    padding: 10px;
+    width: 215px;
+    height: 58px;
+    border: 1px solid #F3F3F3;
+    background: #F9F9F9;
+    white-space: nowrap;
+}
+.content .userspan,.content .userspan a{
+    font-size: 12px;
+}
+.content .userspan .userimg img{
+    border-radius: 8px;
+    padding: 2px;
+    width: 48px;
+    height: 48px;
+    background: #FFF;
+    border: 1px solid;
+    border-color: #F5F5F5 #CDCDCD #CDCDCD #F5F5F5;
+}
+
+.content .userspan .userimg{
+    margin-right: 5px;
+}
+.content .userspan .userimg,.content .userspan .userinfo{
+    display: inline-block;
+}
+
+.content .userspan .userinfo .infobtn a{
+    color: #8d8d8d;
+}
+.content .userspan .userinfo .infobtn a:hover{
+    text-decoration: underline;
+}

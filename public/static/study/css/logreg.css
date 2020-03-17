@@ -1,0 +1,80 @@
+/* 注册登录CSS */
+
+body{
+    background: #ebebeb;
+}
+
+.logincon{
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    background: #f6f6f6;
+    width: 1000px;
+    margin: 30px auto;
+}
+.logincon .lotitle{
+    height: 50px;
+    border-bottom: 1px solid #ddd;
+    padding: 0 20px 0 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.logincon .lotitle h3{
+    margin: 0;
+    line-height: 50px;
+    font-weight: normal;
+}
+.logincon .lotitle a{
+    margin-top: 16px;
+}
+.logincon .lotitle a:hover{
+    text-decoration: underline
+}
+.logincon .loginin{
+    padding: 50px 0px;
+    width: 600px;
+    margin: 0 auto;
+    padding-left: 300px;
+}
+.logincon .loginin .inrow{
+    height: 45px;
+    line-height: 45px;
+}
+.logincon .loginin .inrow2{
+    padding-left: 100px;
+}
+.logincon .loginin .inrow3{
+    margin-top: 20px;
+}
+.logincon .loginin .inrow .inlabel{
+    display: inline-block;
+    width: 60px;
+    text-align: right;
+}
+.logincon .loginin .inrow .loinput{
+    height: 25px;
+    box-shadow: inset 2px 2px 3px #e9e9e9;
+    border: 1px solid #ddd;
+    padding: 0 2px;
+}
+.logincon .loginin .inrow .loinput:focus{
+    border: 1px solid #aaa;
+    transition: 0.5s border ease;
+}
+.logincon .loginin .logbtn{
+    width: 60px;
+    height: 30px;
+    cursor: pointer;
+    background: #222;
+    color: #fff;
+}
+.aulo{
+    vertical-align: middle;
+    margin-top: 0;
+}
+.cap{
+    padding-left: 60px;
+}
+
+.verifyimg{
+    cursor: pointer;
+}

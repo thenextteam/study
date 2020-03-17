@@ -1,0 +1,261 @@
+/* 帖子详情页样式 */
+
+.pocon:nth-child(1){
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+}
+.pocon:nth-last-child(1){
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+.pocon{
+    width: 1000px;
+    margin: 0px auto;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-top: none;
+    border-bottom: none;
+    display: flex;
+    justify-content: space-between;
+    min-height: 470px;
+}
+.pocon .postuser,.rebox .rele{
+    width: 160px;
+    border-right: 1px solid #e5e5e5;
+    box-sizing: border-box;
+    background: #fbfbfb;
+    padding: 30px 0px;
+    text-align: center;
+}
+.pocon .postuser .wanum{
+    text-align: center;
+    font-size: 12px;
+    margin-bottom: 40px;
+}
+.pocon .postuser .wanum span{
+    color: #125999;
+}
+.pocon .postuser .usi{
+    margin: 0 auto 20px auto;
+    width: 137px;
+    height: 137px;
+    border: 1px solid #ddd;
+}
+.pocon .postuser .usi img{
+    border: 6px solid #fff;
+}
+.pocon .postuser .userxin{
+    width: 120px;
+    padding: 5px 5px;
+    background: #F7FAFF;
+    border: 2px dashed #D1D8D8;
+    margin: 0 auto 20px auto;
+}
+.pocon .postuser .userdays,.userlv{
+    margin: 5px 0;
+}
+.pocon .postuser .userlv{
+    color: #125999;
+    font-weight: bold;
+}
+.pocon .postuser .usersnu{
+    width: 120px;
+    height: 40px;
+    display: flex;
+    margin: 10px auto;
+}
+.pocon .postuser .usersnu .snu{
+    width: 60px;
+}
+.pocon .postuser .usersnu .snuti{
+    border-right: 1px solid #ccc;
+}
+
+.pocon .posttcon{
+    width: 840px;
+    box-sizing: border-box;
+    padding: 30px 20px 80px 20px;
+    position: relative;
+}
+.pocon .posttcon a:hover{
+    text-decoration: underline;
+}
+.pocon .posttcon .posttitle{
+    font-size: 18px;
+    font-weight: bold;
+    width: 600px;
+    height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    
+}
+.pocon .posttcon .posttitle a{
+    font-size: 18px;
+    font-weight: bold;
+    color: #125999;
+}
+.pocon .posttcon .useratime{
+    border-bottom: 1px dashed #888;
+    padding: 30px 0px 10px 0px;
+    display: flex;
+    justify-content: space-between;
+}
+.pocon .posttcon .useratime .lounum{
+    color: #125999;
+}
+.pocon .posttcon .edtime{
+    text-align: center;
+    color: #888;
+}
+.pocon .posttcon .postf{
+    font-size: 15px;
+    word-break: break-all;
+}
+.pocon .posttcon .pmark{
+    margin: 120px 0 60px 0;
+}
+.pocon .posttcon .pmark .pro{
+    margin: 20px 0px;
+    color: #125999;
+    font-weight: bold;
+    background: #d2deff;
+    width: 300px;
+    height: 30px;
+    line-height: 30px;
+    box-sizing: border-box;
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.pocon .posttcon .pmark .pro .futh{
+    width: 0; 
+    height: 0;
+    border-color: #fff transparent;
+    border-width: 0 0 30px 30px;
+    border-style: solid;
+}
+.pocon .posttcon .pmark .pmaer table{
+    border-collapse: collapse;
+}
+.pocon .posttcon .pmark .pmaer table,a{
+    font-size: 12px;
+}
+.pocon .posttcon .pmark .pmaer table th{
+    text-align: left;
+}
+.pocon .posttcon .pmark .pmaer table .pm1{
+    width: 120px;
+}
+.pocon .posttcon .pmark .pmaer table .pm2{
+    width: 90px;
+}
+.pocon .posttcon .pmark .pmaer table .pm3{
+    width: 200px;
+}
+.pocon .posttcon .pmark .pmaer table th,td{
+    height: 25px;
+    line-height: 25px;
+    padding: 0;
+}
+.pocon .posttcon .pmark .pmaer table tr{
+    border-bottom: 1px dashed #125999;
+}
+.pocon .posttcon .pret{
+    border-top: 1px dashed #888;
+    padding-top: 10px;
+    position: absolute;
+    bottom: 20px;
+    width: 800px;
+}
+.pocon .posttcon .pret .pretbtn{
+    display: inline-block;
+    width: 48px;
+    text-align: right;
+    background: url(../img/reimg.gif) no-repeat;
+}
+.pocon .posttcon .pret>a{
+    display: inline-block;
+    width: 28px;
+    margin-right: 10px;
+}
+.pocon .posttcon .pret .pretbtn,a{
+    font-size: 13px;
+}
+.pocon .postretcon{
+    padding-top: 0;
+}
+.pocon .postretcon .whatre{
+    width: 100%;
+    min-height: 100px;
+    background: #f2f5ff;
+    margin: 30px 0;
+    position: relative;
+    padding-bottom: 1px;
+}
+.pocon .postretcon .whatre .lkh,.rkh{
+    width: 28px;
+    height: 28px;
+    position: absolute;
+}
+.pocon .postretcon .whatre .lkh{
+    background: url(../img/icon_quote_s.gif);
+    top: 10px;
+    left: 30px;
+}
+.pocon .postretcon .whatre .rkh{
+    background: url(../img/icon_quote_e.gif);
+    bottom: 0px;
+    right: 10px;
+}
+.pocon .postretcon .whatre blockquote{
+    margin: 20px 20px 20px 80px;
+    padding: 1px;
+    padding-right: 60px;
+    word-break: break-all;
+    position: relative;
+}
+.pocon .postretcon .whatre blockquote>p{
+    color: #888;
+
+}
+.rebox{
+    width: 1000px;
+    margin: 50px auto;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    display: flex;
+}
+.rebox .newinput{
+    margin: 20px 0px 0px 20px;
+}
+.rebox .eab{
+    margin: 20px 0;
+    margin-left: 20px;
+}
+.rebox .eab #editor{
+    margin-bottom: 20px;
+}
+.rebox .eab #editor .w-e-text-container{
+    height: 150px!important;
+}
+.rebox .eab button{
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+    background: #222;
+    color: #fff;
+}
+
+
+.rebox select{
+    height: 27px;
+    font-size: 12px;
+}
+.rebox .loinput{
+    height: 25px;
+    width: 400px;
+    box-shadow: inset 2px 2px 3px #e9e9e9;
+    border: 1px solid #ddd;
+    padding: 0 2px;
+}
