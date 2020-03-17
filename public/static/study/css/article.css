@@ -259,3 +259,10 @@
     border: 1px solid #ddd;
     padding: 0 2px;
 }
+
+.topop .poli{
+    margin-bottom: 10px;
+}
+.topop .poli input{
+    width: 30px;
+}

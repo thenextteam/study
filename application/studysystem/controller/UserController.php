@@ -69,4 +69,48 @@ class UserController extends Controller
         $this->assign('fid',$fid);
         return $this->fetch();
     }
+
+    public function edit()
+    {
+        //获取当前用户
+        if(Session::get('UserId')){
+            $nowuser = new User;
+            // $nowuser::get(Session::get('UserId'));
+            $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+        }
+        else{
+            $this->assign('nowuser','');
+            return $this->error('请先登录！'); 
+        }
+        $type = Request::instance()->param('type');
+        if($type==null||$type=='resume'){
+            $type = 'resume';
+        }
+        else if($type=='userimg'){
+
+        }
+        $this->assign('type', $type);
+        return $this->fetch();
+    }
+
+    public function upload(){
+        // 获取表单上传文件
+        $Request = Request::instance();
+        $file = request()->file('image');
+        
+        // 移动到用户头像目录下
+        if($file){
+            $saveName = Session::get('UserId');
+            $info = $file->move(ROOT_PATH . 'public' . DS . 'static\study\img\userimg',$saveName,true);
+            if($info){
+                $User = User::get(Session::get('UserId'));
+                $User->user_img = Session::get('UserId').'.jpg';
+                $User->save();
+                return $this->success('上传成功', $Request->header('referer'));
+            }else{
+                // 上传失败获取错误信息
+                return $this->error('上传失败',$file->getError());
+            }
+        }
+    }
 }

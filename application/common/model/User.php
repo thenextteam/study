@@ -108,20 +108,6 @@ class User extends Model
     }
 
     /**
-     * 获取签到心情名称
-     */
-    public function getUserMoodAttr($value){
-        // $status = array('0'=>'开心','1'=>'难过','2'=>'郁闷','3'=>'无聊','4'=>'怒','5'=>'擦汗','6'=>'奋斗','7'=>'慵懒','8'=>'衰','9'=>'该用户从未签到');
-        // $lvname = $status[$value];
-        // if(isset($lvname)){
-        //     return $lvname;
-        // }
-        // else{
-        //     return $status[0];
-        // }
-    }
-
-    /**
      * 关联用户帖子
      */
     public function Article()
@@ -137,8 +123,21 @@ class User extends Model
         return $this->hasMany('Comment');
     }
 
-    // //保存登录前地址
-    // public function savelogin(){
-    //     session('returnUrl',$_SERVER['HTTP_REFERER']);
-    // }
+    /**
+     * 获取用户心情
+     */
+    public function getSign($value)
+    {
+        $signid = $this->where('user_id',$value)->field('sign_id')->find()['sign_id'];
+        $usermood = db('Sign')->where('sign_id',$signid)->field('user_mood')->find()['user_mood'];
+
+        $status = array('0'=>'开心','1'=>'难过','2'=>'郁闷','3'=>'无聊','4'=>'怒','5'=>'擦汗','6'=>'奋斗','7'=>'慵懒','8'=>'衰','9'=>'该用户从未签到');
+        $umname = $status[$usermood];
+        if(isset($umname)){
+            return $umname;
+        }
+        else{
+            return $status[9];
+        }
+    }
 }

@@ -12,7 +12,7 @@
             <div class="postuser">
                 <div class="wanum">查看: <span>{$Article->getData('art_view')}</span>|回复: <span>{$Article->GetComNum($Article->art_id)}</span></div>
                 <div class="usi"><img src="__ADMIN__/study/img/userimg/{$Article->User->user_img}" alt="" width="125" height="125" /></div>
-                <div class="userxin">TA今天的心情<br />此处未完成</div>
+                <div class="userxin">TA今天的心情<br />{$Article->User->getSign($Article->User->user_id)}</div>
                 <div class="userdays">签到天数: {$Article->User->user_days} 天</div>
                 <div class="userlv">{$Article->User->user_lv}</div>
                 <div class="usersnu">
@@ -28,35 +28,38 @@
                 <div class="postf">
                     {$Article->getData('art_content')|htmlspecialchars_decode}
                 </div>
-                <!-- 评分功能还没做 -->
-                <!-- <div class="pmark"> -->
+                {if condition="($Article->com_grade==1)"}
+                <div class="pmark">
                     <!-- 评分最多显示5条记录，可以点击查看更多来读取显示 -->
-                    <!-- <div class="pro"><span><span class="fa fa-check"></span> 评分</span><span class="futh"></span></div>
+                    <div class="pro"><span><span class="fa fa-check"></span> 评分</span><span class="futh"></span></div>
                     <div class="pmaer">
                         <table cellspacing="0">
                             <tr>
                                 <th class="pm1">评分人</th>
+                                <th  class="pm2">积分</th>
                                 <th  class="pm2">金币</th>
                                 <th class="pm3">理由</th>
                             </tr>
+                            {volist name="$Article->Grade" id="grade"}
                             <tr>
-                                <td><img src="__ADMIN__/study/img/1.jpg" alt="" width="13" height="13" /><a href="#">李大刚</a></td>
-                                <td>+5</td>
-                                <td>垃圾！</td>
+                                <td><img src="__ADMIN__/study/img/userimg/{$grade->User->user_img}" alt="" width="13" height="13" /><a href="{:url('User/index?uid='.$grade->User->user_id)}">{$grade->User->nick_name}</a></td>
+                                <td>+{$grade->grade_point}</td>
+                                <td>+{$grade->grade_money}</td>
+                                <td>{$grade->grade_content}</td>
                             </tr>
-                            <tr>
-                                <td><img src="__ADMIN__/study/img/1.jpg" alt="" width="13" height="13" /><a href="#">李大刚</a></td>
-                                <td>+500</td>
-                                <td>很棒！</td>
-                            </tr>
+                            {/volist}
                         </table>
                     </div>
-                </div> -->
+                </div>
+                {/if}
                 <div class="pret">
                     <a href="#editor" class="pretbtn" id="re">回复</a>
                     {if condition="($Article->user_id == $Think.session.UserId)||($auth==true)"}
                     <a href="{:url('edit?aid=' . $Article->art_id)}">编辑</a>
                     <a href="{:url('deleteArt?aid=' . $Article->art_id)}">删除</a>
+                        {if condition="($auth==true)"}
+                            <a class="gop" id="ag{$Article->art_id}">评分</a>
+                        {/if}
                     {else /}<a href="#">举报</a>
                     {/if}
                 </div>
@@ -68,7 +71,7 @@
         <div class="pocon">
             <div class="postuser">
                 <div class="usi"><img src="__ADMIN__/study/img/userimg/{$comment->User->user_img}" alt="" width="125" height="125" /></div>
-                <div class="userxin">TA今天的心情<br />此处未完成</div>
+                <div class="userxin">TA今天的心情<br />{$comment->User->getSign($comment->User->user_id)}</div>
                 <div class="userdays">签到天数: {$comment->User->user_days} 天</div>
                 <div class="userlv">{$comment->User->user_lv}</div>
                 <div class="usersnu">
@@ -107,10 +110,37 @@
                     {else /}<p><i>该回复已被删除</i></p>
                     {/if}
                 </div>
+                {if condition="($comment->com_grade==1)"}
+                <div class="pmark">
+                    <!-- 评分最多显示5条记录，可以点击查看更多来读取显示 -->
+                    <div class="pro"><span><span class="fa fa-check"></span> 评分</span><span class="futh"></span></div>
+                    <div class="pmaer">
+                        <table cellspacing="0">
+                            <tr>
+                                <th class="pm1">评分人</th>
+                                <th  class="pm2">积分</th>
+                                <th  class="pm2">金币</th>
+                                <th class="pm3">理由</th>
+                            </tr>
+                            {volist name="$comment->Grade" id="grade"}
+                            <tr>
+                                <td><img src="__ADMIN__/study/img/userimg/{$grade->User->user_img}" alt="" width="13" height="13" /><a href="{:url('User/index?uid='.$grade->User->user_id)}">{$grade->User->nick_name}</a></td>
+                                <td>+{$grade->grade_point}</td>
+                                <td>+{$grade->grade_money}</td>
+                                <td>{$grade->grade_content}</td>
+                            </tr>
+                            {/volist}
+                        </table>
+                    </div>
+                </div>
+                {/if}
                 <div class="pret">
                     <a href="#editor" class="pretbtn" id="re{$comment->com_id}">回复</a>
                     {if condition="($comment->User->user_id==$Think.session.UserId)||($auth==true)"}
                     <a href="{:url('delete?cid=' . $comment->com_id)}" class="del">删除</a>
+                    {/if}
+                    {if condition="($auth==true)"}
+                    <a class="gop" id="cg{$comment->com_id}">评分</a>
                     {/if}
                     <a href="#">举报</a>
                 </div>
@@ -133,6 +163,24 @@
             </div>
         </div>
 
+        {if condition="$auth==true"}
+        <div class="topop">
+            <form action="point" method="post" class="toform">
+                <input type="hidden" id="aid" name="aid" value="" />
+                <div class="totitle">评分</div>
+                <div class="tocon">
+                    <div class="poli">
+                        <label for="poinput">请填写评分分数</label><fuline></fuline><input type="text" name="poinput" id="poinput" />
+                        <label for="moinput">请填写评分金币</label><fuline></fuline><input type="text" name="moinput" id="moinput" />
+                    </div>
+                    <div class="pore"><label for="reinput">请填写评分理由</label><fuline></fuline><input type="text" name="reinput" id="reinput" /></div>
+                </div>
+                <div class="tobtn">
+                    <button type="submit">确定</button><button class="cancel">取消</button>
+                </div>
+            </form>
+        </div>
+        {/if}
     <script type="text/javascript" src="__ADMIN__/study/js/wangEditor.min.js"></script>
     <script type="text/javascript">
         var E = window.wangEditor
@@ -180,6 +228,16 @@
             $('#gra1').click(function(){
                 alert('你没有权限！请联系管理员');
                 event.preventDefault();
+            })
+
+            $('.cancel').click(function(){
+                event.preventDefault();
+                $('.topop').css('display','none');
+            })
+            
+            $('.gop').click(function(){
+                $('#aid').val($(this).attr('id'));
+                $('.topop').css('display','block');
             })
         })
     </script>

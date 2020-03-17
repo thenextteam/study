@@ -5,6 +5,9 @@
 {block name="cssname"}search{/block}
 
 {block name="content"}
+<div class="crumb">
+    <a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline>搜索</a>
+</div>
 <div class="content">
     <div class="cobtn">
         <a {if condition="($type=='art')"}class="display"{/if} href="{:url('Search/index?seakey='.$seakey.'&type=art')}">帖子</a>

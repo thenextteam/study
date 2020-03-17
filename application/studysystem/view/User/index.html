@@ -5,12 +5,19 @@
 {block name="cssname"}user{/block}
 
 {block name="content"}
+    <div class="crumb">
+        <a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline>{$User->nick_name}的个人资料</a>
+    </div>
     <div class="content">
         <div class="userde">
             <div class="uimgana">
                 <img src="__ADMIN__/study/img/userimg/{$User->user_img}" alt="" width="70" height="70" />
                 <div class="una">
-                    <p>{$User->nick_name}</p>
+                    <p>{$User->nick_name}
+                        {if condition="($Think.session.UserId)==$User->user_id"}
+                        <fuline></fuline><a href="edit">修改资料</a>
+                        {/if}
+                    </p>
                     <a href="{:url('User/index?uid='.$User->user_id)}">个人主页</a>
                 </div>
             </div>

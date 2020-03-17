@@ -5,6 +5,9 @@
 {block name="cssname"}remind{/block}
 
 {block name="content"}
+<div class="crumb">
+    <a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline>我的提醒</a>
+</div>
 <div class="content">
     <div class="left">
         <div class="letitle">通知</div>
@@ -79,7 +82,7 @@
 <script>
     $(document).ready(function(){
         $('.readop').click(function(){
-            if($('.readop').attr('name')==null){
+            if($(this).attr('name')==null){//此处修改过，如报错修改回$('.readop')
                 $sr = $(this).attr('id');
                 $red ='.red'+ $sr.replace('sr','');
                 $str = '#' + $sr;

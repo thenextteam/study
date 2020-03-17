@@ -40,6 +40,15 @@ class Article extends Model
     }
 
     /**
+     * 关联评分表
+     */
+    public function Grade()
+    {
+        //hasMany(表格名，外键名)
+        return $this->hasMany('Grade','art_id','art_id');
+    }
+
+    /**
      * 获取最新回复
      */
     public function GetLastCom($value)

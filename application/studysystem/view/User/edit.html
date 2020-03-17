@@ -1,0 +1,39 @@
+{extend name="template"/}
+{block name="title"}
+个人资料修改 - 学习论坛
+{/block}
+{block name="cssname"}user{/block}
+
+{block name="content"}
+    <div class="content con2">
+        <div class="left">
+            <div class="letitle">资料修改</div>
+            <ul>
+                <li><a {if condition="($type == 'resume')"}class="eraned"{/if} href="{:url('User/edit?uid='.$nowuser->user_id.'&type=resume')}">修改基本资料</a></li>
+                <li><a {if condition="($type == 'userimg')"}class="eraned"{/if} href="{:url('User/edit?uid='.$nowuser->user_id.'&type=userimg')}">修改头像</a></li>
+            </ul>
+        </div>
+        <div class="right">
+            {if condition="($type == 'resume')"}
+            <form action="save" method="POST">
+                <div class="row"><div class="rowleft">用户名</div>{$nowuser->user_name}</div>
+                <div class="row"><div class="rowleft">邮箱</div><input type="text" value="{$nowuser->user_email}" /></div>
+                <div class="row"><div class="rowleft">昵称</div><input type="text" value="{$nowuser->nick_name}" /></div>
+                <div class="row"><div class="rowleft">修改密码</div><input type="password" /></div>
+                <div class="row"><div class="rowleft">确认密码</div><input type="password" /></div>
+                <div class="row"><button type="submit">保存</button></div>
+            </form>
+            {elseif condition="($type == 'userimg')"}
+            <div class="chimtitle">我现在的头像</div>
+            <form action="upload" enctype="multipart/form-data" method="post">
+            <p>如果您还没有设置自己的头像，系统会显示为默认头像，您需要自己上传一张新照片来作为自己的个人头像</p>
+            <img src="__ADMIN__/study/img/userimg/{$nowuser->user_img}" width="153" height="153" />
+            <div class="chimtitle">设置我的新头像</div>
+            <p>请选择一个新照片进行上传编辑。</p>
+            <input type="file" name="image" /> <br> 
+            <button class="btn2" type="submit">上传</button>
+            </form>
+            {/if}
+        </div>
+    </div>
+{/block}

@@ -162,3 +162,74 @@ body{
 .hascom>td{
     border-bottom: none;
 }
+
+.con2{
+    background: #fff;
+    display: flex;
+}
+
+.content .left{
+    width: 150px;
+}
+.content .left .letitle{
+    line-height: 50px;
+    border-bottom: 1px dashed #CDCDCD;
+    font-size: 16px;
+    padding-left: 20px;
+}
+.content .left ul{
+    margin: 0;
+}
+.content .left li{
+    border-bottom: 1px solid #E5E5E5;
+}
+.content .left li a{
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 20px;
+}
+.content .left li a:hover{
+    text-decoration: none;
+}
+.content .left li a.eraned{
+    font-weight: bold;
+}
+.content .right{
+    width: 850px;
+    box-shadow: #e9e9e9 -5px 0px 5px ;
+    box-sizing: border-box;
+    padding: 30px;
+}
+.content .right .row{
+    display: flex;
+    margin-bottom: 20px;
+}
+.content .right .row .rowleft{
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+}
+.content .right .row input{
+    width: 280px;
+    height: 25px;
+    box-shadow: inset 2px 2px 3px #e9e9e9;
+    border: 1px solid #ddd;
+    padding: 0 2px;
+}
+.content .right button{
+    width: 60px;
+    height: 30px;
+    cursor: pointer;
+    background: #222;
+    color: #fff;
+    margin-left: 100px;
+}
+
+.content .right .chimtitle{
+    margin-top: 10px;
+}
+.content .right .btn2{
+    margin-top: 30px;
+    margin-left: 50px;
+}

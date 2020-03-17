@@ -7,6 +7,7 @@ use app\common\model\Board;      // 引入版块
 use app\common\model\Comment;      // 引入回复
 use app\common\model\Rremind;      // 引入回复提醒
 use app\common\model\Aremind;
+use app\common\model\Grade;
 use think\Session;
 use think\Request;
 use think\Db;
@@ -81,6 +82,9 @@ class ArticleController extends Controller
     //回复功能
     public function reply()
     {
+        if(Session::get('UserId')==null){
+            return $this->error('请先登录！');
+        }
         // 实例化请求信息
         $Request = Request::instance();
 
@@ -289,7 +293,7 @@ class ArticleController extends Controller
                 $Aremind->aremind_op = 3;
                 $Aremind->save();
             }
-            return $this->success('删除成功', $Request->header('referer'));;
+            return $this->success('删除成功', $Request->header('referer'));
         }
     }
 
@@ -313,5 +317,57 @@ class ArticleController extends Controller
         $Article = Article::get($id);
         $this->assign('Article',$Article);
         return $this->fetch();
+    }
+
+    //评分功能
+    public function point()
+    {
+        $Request = Request::instance();
+        // $id = str_replace('top','',$Request->post('aid'));
+        $aid = $Request->post('aid');
+        $Grade = new Grade;
+        if(strstr($aid,'ag')!=null){
+            //帖子评分
+            $Grade->art_id = str_replace('ag','',$aid);
+            $uid = Article::get(str_replace('ag','',$aid))->user_id;
+            $User = User::get($uid);
+        }
+        else if(strstr($aid,'cg')!=null){
+            //回复评分
+            $Grade->com_id = str_replace('cg','',$aid);
+            $uid = Comment::get(str_replace('cg','',$aid))->user_id;
+            $User = User::get($uid);
+        }
+        $Grade->user_id = Session::get('UserId');
+        $Grade->grade_point = $Request->post('poinput');
+        $Grade->grade_money = $Request->post('moinput');
+        $Grade->grade_content = $Request->post('reinput');
+
+        // 删除
+        if(!$Grade->validate(true)->save()){
+            return $this->error('评分失败:' . $Grade->getError());
+        }
+        
+        $User->user_point = $User->user_point+$Request->post('poinput');
+        $User->user_money = $User->user_money+$Request->post('moinput');
+        if(!$User->save()){
+            return $this->error('评分失败');
+        }
+
+        if(strstr($aid,'ag')!=null){
+            $Article = Article::get(str_replace('ag','',$aid));
+            if($Article->com_grade==0){
+                $Article->com_grade = 1;
+            }
+            $Article->save();
+        }
+        else{
+            $Comment = Comment::get(str_replace('cg','',$aid));
+            $Comment->com_grade = 1;
+            $Comment->save();
+        }
+        return $this->success('评分成功', $Request->header('referer'));
+        
+        
     }
 }
