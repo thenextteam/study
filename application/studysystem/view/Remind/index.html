@@ -43,12 +43,21 @@
     {volist name="Aremind" id="aremind"}
         <div class="rrlist">
             <div class="redarea">{if condition="$aremind->aremind_status==0"}<span class="red red{$aremind->aremind_id}"></span>{/if}</div>
-            <div class="userimg"><a href="{:url('User/index?uid='.$aremind->aoUser->user_id)}"><img src="__ADMIN__/study/img/userimg/{$aremind->aoUser['user_img']}" width="55" height="55" /></a></div>
+            <div class="userimg">{switch name="$aremind->ao_user_id"}
+                {case value="0"}
+                <a><img src="__ADMIN__/study/img/tipimg.jpg" /></a>
+                {/case}
+                {default /}
+                <a href="{:url('User/index?uid='.$aremind->aoUser->user_id)}">
+                    <img src="__ADMIN__/study/img/userimg/{$aremind->aoUser['user_img']}" width="55" height="55" />
+                </a>
+                {/switch}
+            </div>
             <div class="reinfo">
                 <div class="info">
                     <div class="retime">{$aremind->TimeHandle($aremind->aremind_time)}</div>
                     <div class="recon">
-                        <a href="{:url('User/index?uid='.$aremind->aoUser->user_id)}">{$aremind->aoUser->nick_name}</a> 
+                        {if condition="$aremind->ao_user_id!=0"}<a href="{:url('User/index?uid='.$aremind->aoUser->user_id)}">{$aremind->aoUser->nick_name}</a> {/if}
                         {switch name="$aremind->aremind_op"}
                         {case value="0"}删除了你的帖子： <a href="{:url('Article/index?aid='.$aremind->art_id)}">{$Article[0]::get($aremind->art_id)->art_title}</a>{/case}
                         {case value="1"}置顶了你的帖子： <a href="{:url('Article/index?aid='.$aremind->art_id)}">{$Article[0]::get($aremind->art_id)->art_title}</a>{/case}
@@ -60,6 +69,7 @@
                         {/if}
                         {/volist}
                         {/case}
+                        {case value="4"}您管理的版块 <a href="{:url('Board/index?bid='.$aremind->board_id)}">{$aremind->Board->board_name}</a> 有举报消息{/case}
                         {/switch}
                         
                     </div>
@@ -82,7 +92,7 @@
 <script>
     $(document).ready(function(){
         $('.readop').click(function(){
-            if($(this).attr('name')==null){//此处修改过，如报错修改回$('.readop')
+            if($('.readop').attr('name')==null){
                 $sr = $(this).attr('id');
                 $red ='.red'+ $sr.replace('sr','');
                 $str = '#' + $sr;

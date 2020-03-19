@@ -24,6 +24,15 @@ class Board extends Model
     }
 
     /**
+     * 关联举报表
+     */
+    public function Tip()
+    {
+        //hasMany(表格名，外键名)
+        return $this->hasMany('tip','board_id','board_id');
+    }
+
+    /**
      * 关联版块大类表
      */
     public function Bhead()
@@ -182,4 +191,12 @@ class Board extends Model
     //         return $j;
     //     }
     // }
+
+    /**
+     * 版块下举报数量
+     */
+    public function tipnum($value)
+    {
+        return db('Tip')->where('board_id',$value)->where('tip_op',0)->count('tip_id');
+    }
 }

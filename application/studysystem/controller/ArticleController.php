@@ -8,6 +8,7 @@ use app\common\model\Comment;      // 引入回复
 use app\common\model\Rremind;      // 引入回复提醒
 use app\common\model\Aremind;
 use app\common\model\Grade;
+use app\common\model\Tip;
 use think\Session;
 use think\Request;
 use think\Db;
@@ -28,7 +29,7 @@ class ArticleController extends Controller
         $id = Request::instance()->param('aid/d');
         $Article = Article::get($id);
         //正常状态
-        if(isset($Article)&&$Article->art_status=="0"){
+        if(isset($Article)&&($Article->art_status=="0"||$Article->art_status=="2")){
             //暂用，无条件的，每刷新一次 浏览次数+1
             $Article->art_view = $Article->art_view+1;
             $Article->save();
@@ -91,6 +92,13 @@ class ArticleController extends Controller
         //得到帖子ID|回复的楼层ID（可为空）三个参数
         $pars=$Request->post('par');
         $pararr=explode('|', $pars);
+
+        //如果是锁定帖子则不允许回复
+        $Article = Article::get($pararr[0]);
+        if($Article->art_status=="2"){
+            return $this->error('该帖子已被锁定，无法回复', $Request->header('referer'));
+        }
+        
         
         //判断是否进小黑屋，1则小黑屋，没有权限发帖、回帖
         $grant = Db::name('User')->where('user_id',Session::get('UserId'))->field('user_grant')->find()['user_grant'];
@@ -313,8 +321,11 @@ class ArticleController extends Controller
         $Request = Request::instance();
         $id = $Request->param('aid/d');
  
-        
+        //如果是锁定帖子则不允许编辑
         $Article = Article::get($id);
+        if($Article->art_status=="2"){
+            return $this->error('该帖子已被锁定，无法编辑', $Request->header('referer'));
+        }
         $this->assign('Article',$Article);
         return $this->fetch();
     }
@@ -367,7 +378,62 @@ class ArticleController extends Controller
             $Comment->save();
         }
         return $this->success('评分成功', $Request->header('referer'));
-        
-        
+    }
+
+    //举报
+    public function tip()
+    {
+        if(Session::get('UserId')==null){
+            return 'nop';
+        }
+        //通过AJAX
+        if(request()->isAjax()){
+            $aid = input('aid');
+            $tipcon = input('tipcon');
+            $Tip = new Tip;
+            $Tip->user_id = Session::get('UserId');
+            $Tip->tip_content = $tipcon;
+            if(strstr($aid,'atip')!=null){
+                //举报帖子
+                $newaid = str_replace('atip','',$aid);
+                $Tip->art_id = $newaid;
+                $isTip = $Tip->where('user_id',Session::get('UserId'))->where('art_id',$newaid)->find();
+                if($isTip){
+                    return 'isTip';
+                }
+                //获取所在版块
+                $newboard = Article::get($newaid)->art_board_id;
+                $Tip->board_id = $newboard;
+
+                //通知版主
+                $x = Board::get($newboard)->boardadmin;
+                foreach($x as $i){
+                    $Aremind = new Aremind;
+                    $User = User::get($i->user_id);
+                    $Aremind->user_id = $i->user_id;
+                    $Aremind->board_id = $newboard;
+                    $Aremind->aremind_op = 4;//操作类型：举报通知版主
+                    $Aremind->save();
+                    $User->remind = $User->remind+1;
+                    $User->save();
+                }
+            }
+            else if(strstr($aid,'ctip')!=null){
+                //举报回复
+                $newcid = str_replace('ctip','',$aid);
+                $Tip->com_id = $newcid;
+                $isTip = $Tip->where('user_id',Session::get('UserId'))->where('com_id',$newcid)->find();
+                if($isTip){
+                    return 'isTip';
+                }
+                $Tip->board_id = Article::get(Comment::get($newcid)->art_id)->art_board_id;
+            }
+            if($Tip->validate(true)->save()){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
     }
 }

@@ -10,6 +10,11 @@
         {//volist name="$Board->Boardadmin" id="admins"}
             {//$admins->User->nick_name}
         {///volist}
+        {if condition="$auth==true&&$Board->tipnum($Board->board_id)>0"}
+        <div class="warn">
+            当前版块您有 {$Board->tipnum($Board->board_id)} 条举报信息未处理，<a href="{:url('Tip/index?bid='.$Board->board_id)}">立即前往》</a>
+        </div>
+        {/if}
         <div class="blocktop">
             <div class="btleft">
                 <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->article()->where('art_status',0)->count('art_id')}</span><fuline>|</fuline><a class="fav" href="#">收藏本版</a>

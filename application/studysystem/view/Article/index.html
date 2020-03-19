@@ -60,7 +60,7 @@
                         {if condition="($auth==true)"}
                             <a class="gop" id="ag{$Article->art_id}">评分</a>
                         {/if}
-                    {else /}<a href="#">举报</a>
+                    {else /}<a class="tip" id="atip{$Article->art_id}">举报</a>
                     {/if}
                 </div>
             </div>
@@ -139,10 +139,10 @@
                     {if condition="($comment->User->user_id==$Think.session.UserId)||($auth==true)"}
                     <a href="{:url('delete?cid=' . $comment->com_id)}" class="del">删除</a>
                     {/if}
-                    {if condition="($auth==true)"}
+                    {if condition="($auth==true&&$comment->com_status==0)"}
                     <a class="gop" id="cg{$comment->com_id}">评分</a>
+                    {else /}<a class="tip" id="ctip{$comment->com_id}">举报</a>
                     {/if}
-                    <a href="#">举报</a>
                 </div>
             </div>
         </div>
@@ -177,6 +177,22 @@
                 </div>
                 <div class="tobtn">
                     <button type="submit">确定</button><button class="cancel">取消</button>
+                </div>
+            </form>
+        </div>
+        {elseif condition="($Article->user_id != $Think.session.UserId)"}
+        <div class="topop">
+            <form action="point" method="post" class="toform">
+                <input type="hidden" id="aid" name="aid" value="" />
+                <div class="totitle">举报</div>
+                <div class="tocon">
+                    <div class="poli">
+                        <div class="tiptitle">您将举报：{$Article->art_title}</div>
+                    </div>
+                    <div class="pore"><label for="reinput">请填写举报理由</label><fuline></fuline><input type="text" name="reinput" id="reinput" /></div>
+                </div>
+                <div class="tobtn">
+                    <button class="tipok">确定</button><button class="cancel">取消</button>
                 </div>
             </form>
         </div>
@@ -238,6 +254,44 @@
             $('.gop').click(function(){
                 $('#aid').val($(this).attr('id'));
                 $('.topop').css('display','block');
+            })
+
+            $('.tip').click(function(){
+                $('#aid').val($(this).attr('id'));
+                $('.topop').css('display','block');
+            })
+
+            $('.tipok').click(function(){
+                event.preventDefault();
+                if($('#aid').val()!=''){
+                    $aid = $('#aid').val();
+                    $tipcon = $('#reinput').val();
+                    $.ajax({
+                        type: "GET",
+                        url: 'tip',
+                        data: {
+                            aid: $aid,
+                            tipcon: $tipcon,
+                        },
+                        dataType: "json",
+                        success: function(data){
+                            if(data==true){
+                                alert('举报成功，请等待版主处理');
+                            }
+                            else if(data=='nop')
+                            {
+                                alert('您还未登录，请先登录');
+                            }
+                            else if(data=='isTip')
+                            {
+                                alert('您已举报！请勿重复举报');
+                            }
+                            else{
+                                alert('举报出错');
+                            }
+                        }
+                    });
+                }
             })
         })
     </script>

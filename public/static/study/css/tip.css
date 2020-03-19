@@ -1,0 +1,56 @@
+/* 举报处理页CSS */
+
+/* 内容 */
+.content{
+    margin: auto;
+    width: 1000px;
+    background: #fff;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+.content .tablebo{
+    box-sizing: border-box;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.content .tablebo a:hover{
+    text-decoration: underline;
+}
+.content .tablebo .tiptable th{
+    padding: 10px;
+    border-bottom: 2px solid #d5d5d5;
+    text-align: left;
+}
+.content .tablebo .tiptable th.tiper{
+    width: 50px;
+}
+.content .tablebo .tiptable th.ttype{
+    width: 52px;
+}
+.content .tablebo .tiptable th.tipcon{
+    width: 115px;
+}
+.content .tablebo .tiptable th.tiptime{
+    width: 135px;
+}
+.content .tablebo .tiptable td{
+    padding: 10px;
+    border-bottom: 1px solid #d5d5d5;
+}
+.content .tablebo .tiptable td .box{
+    max-height: 34px;
+    overflow: hidden;
+}
+.content .tablebo .tiptable td .grayspan{
+    color: #a0a0a0;
+}
+.content .tablebo .tiptable tr:nth-child(even){
+    background: #f8f8f8;
+}
+.content .tablebo .tiptable td .line{
+    text-align: center;
+}
+.overtime{
+    color: #a52c2c;
+}

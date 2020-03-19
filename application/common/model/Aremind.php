@@ -6,6 +6,13 @@ use think\Model;
  */
 class Aremind extends Model
 {
+    /**
+     * 关联版块表
+     */
+    public function Board()
+    {
+        return $this->hasOne('Board','board_id','board_id');
+    }
     //获取被回复人
     public function User(){
         return $this->belongsTo('User','user_id');

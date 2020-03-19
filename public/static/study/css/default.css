@@ -184,6 +184,7 @@ fuline{
     box-shadow: #a9a9a9 0px 0px 10px;
     border-radius: 10px;
     display: none;
+    z-index: 10999;
 }
 .topop .totitle{
     color: #fff;
@@ -212,4 +213,11 @@ fuline{
     border-radius: 0px 0px 10px 0px;
     background: #dddde2;
     color: #000;
+}
+
+.topop input{
+    height: 25px;
+    box-shadow: inset 2px 2px 3px #e9e9e9;
+    border: 1px solid #ddd;
+    padding: 0 2px;
 }

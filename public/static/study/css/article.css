@@ -260,9 +260,21 @@
     padding: 0 2px;
 }
 
+.topop{
+    margin-left: -173px;
+    margin-top: -96px;
+}
 .topop .poli{
     margin-bottom: 10px;
 }
 .topop .poli input{
     width: 30px;
+}
+.topop .tocon .tiptitle{
+    max-width: 280px;
+    height: 17px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    text-align: left;
 }

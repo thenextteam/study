@@ -256,3 +256,19 @@
 .topop .tocon select{
     width: 40px;
 }
+
+.warn{
+    width: 100%;
+    line-height: 60px;
+    height: 60px;
+    background: #ffdede;
+    box-sizing: border-box;
+    padding-left: 30px;
+    color: #da1818;
+    border: 1px solid #f18282;
+    margin-top: 20px;
+}
+.warn a{
+    color: #da1818;
+    text-decoration: underline;
+}
