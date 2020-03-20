@@ -17,16 +17,16 @@
         {/if}
         <div class="blocktop">
             <div class="btleft">
-                <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->article()->where('art_status',0)->count('art_id')}</span><fuline>|</fuline><a class="fav" href="#">收藏本版</a>
+                <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->article()->where('art_status',0)->whereOr('art_status',2)->count('art_id')}</span><fuline>|</fuline><a class="fav" href="#">收藏本版</a>
             </div>
             <div><a href="#editor"><button class="fabtn">发 帖 <span class="fa fa-pencil"></span></button></a></div>
         </div>
 
         <div class="blocktar">
             <ul>
-                <li class="clied"><a href="#">全部</a></li>
+                <li{if condition="$Think.get.atype==null"} class="clied"{/if}><a href="{:url('Board/index?bid='.$Board->board_id.'&oid='.$Think.get.oid.'&page=1&atype=')}">全部</a></li>
                 {volist name="$Board->atype" id="atype"}
-                <li><a href="#">{$atype->atype_name}<span class="tynum">(250)</span></a></li>
+                <li{if condition="$Think.get.atype==$atype->atype_id&&$Think.get.atype!=null"} class="clied"{/if}><a href="{:url('Board/index?bid='.$Board->board_id.'&oid='.$Think.get.oid.'&page=1&atype='.$atype->atype_id)}">{$atype->atype_name}<span class="tynum">(250)</span></a></li>
                 {/volist}
             </ul>
         </div>
@@ -45,9 +45,9 @@
                     <fuline></fuline> -->
                     <span>排序：
                         <select onchange="window.location=this.value;">
-                            <option id="op0" value="{:url('Board/index?bid='.$Board->board_id.'&oid=0&page=1')}">最后发表</option>
-                            <option id="op1" value="{:url('Board/index?bid='.$Board->board_id.'&oid=1&page=1')}">发帖时间</option>
-                            <option id="op2" value="{:url('Board/index?bid='.$Board->board_id.'&oid=2&page=1')}">热门</option>
+                            <option id="op0" value="{:url('Board/index?bid='.$Board->board_id.'&oid=0&page=1&atype='.$Think.get.atype)}">最后发表</option>
+                            <option id="op1" value="{:url('Board/index?bid='.$Board->board_id.'&oid=1&page=1&atype='.$Think.get.atype)}">发帖时间</option>
+                            <option id="op2" value="{:url('Board/index?bid='.$Board->board_id.'&oid=2&page=1&atype='.$Think.get.atype)}">热门</option>
                         </select>
                     </span>
                 </div>
@@ -58,8 +58,8 @@
                     {volist name="BoardTops" id="BoardTop"}
                     <tr>
                         <td class="icon"><img src="__ADMIN__/study/img/userimg/{$BoardTop->User->user_img}" alt="" width="43" height="43"></td>
-                        <td class="zhua"><img src="__ADMIN__/study/img/folder.gif" alt="" width="18" height="18"></td>
-                        <td class="potit"><div><span class="tyname">[<a href="#">{$BoardTop->Atype->atype_name}</a>]</span> <a href="{:url('Article/index?aid=' . $BoardTop->art_id)}">{$BoardTop->art_title}</a><!-- <img src="__ADMIN__/study/img/agree.gif" alt="帖子被加分" title="帖子被加分" /> --></div></td>
+                        <td class="zhua"><a href="{:url('Article/index?aid=' . $BoardTop->art_id)}" title="新窗口打开" target="_blank"><img src="__ADMIN__/study/img/pin_{$BoardTop->art_top}.gif" alt="" width="18" height="18" /></a></td>
+                        <td class="potit"><div><span class="tyname">[<a href="{:url('Board/index?bid='.$Board->board_id.'&oid='.$Think.get.oid.'&page=1&atype='.$BoardTop->atype_id)}">{$BoardTop->Atype->atype_name}</a>]</span> <a href="{:url('Article/index?aid=' . $BoardTop->art_id)}">{$BoardTop->art_title}</a>{if condition="$BoardTop->com_grade==1"}<img src="__ADMIN__/study/img/agree.gif" alt="帖子被加分" title="帖子被加分" />{/if}{if condition="$BoardTop->art_status==2"}<img src="__ADMIN__/study/img/lock.gif" alt="帖子被锁定" title="帖子被锁定" />{/if}</div></td>
                         <td class="pouser"><a href="{:url('User/index?uid='.$BoardTop->User->user_id)}">{$BoardTop->User->nick_name}</a><br /><span class="potime">{$Board->TimeHandle($BoardTop->art_time)}</span></td>
                         <td class="ponum">{$BoardTop->GetComNum($BoardTop->art_id)}/{$BoardTop->art_view}</td>
                         {if condition="$BoardTop->GetLastCom($BoardTop->art_id)!=null"}
@@ -80,8 +80,8 @@
                     {volist name="arts" id="art"}
                     <tr>
                         <td class="icon"><img src="__ADMIN__/study/img/userimg/{$art->User->user_img}" alt="" width="43" height="43"></td>
-                        <td class="zhua"><img src="__ADMIN__/study/img/folder.gif" alt="" width="18" height="18"></td>
-                        <td class="potit"><div><span class="tyname">[<a href="#">{$art->Atype->atype_name}</a>]</span> <a href="{:url('Article/index?aid=' . $art->art_id)}">{$art->art_title}</a><!-- <img src="__ADMIN__/study/img/agree.gif" alt="帖子被加分" title="帖子被加分" /> --></div></td>
+                        <td class="zhua"><a href="{:url('Article/index?aid=' . $art->art_id)}" title="新窗口打开" target="_blank"><img src="__ADMIN__/study/img/folder.gif" alt="" width="18" height="18" /></a></td>
+                        <td class="potit"><div><span class="tyname">[<a href="{:url('Board/index?bid='.$Board->board_id.'&oid='.$Think.get.oid.'&page=1&atype='.$art->atype_id)}">{$art->Atype->atype_name}</a>]</span> <a href="{:url('Article/index?aid=' . $art->art_id)}">{$art->art_title}</a>{if condition="$art->com_grade==1"}<img src="__ADMIN__/study/img/agree.gif" alt="帖子被加分" title="帖子被加分" />{/if}{if condition="$art->art_status==2"}<img src="__ADMIN__/study/img/lock.gif" alt="帖子被锁定" title="帖子被锁定" />{/if}</div></td>
                         <td class="pouser"><a href="{:url('User/index?uid='.$art->User->user_id)}">{$art->User->nick_name}</a><br /><span class="potime">{$Board->TimeHandle($art->art_time)}</span></td>
                         <td class="ponum">{$art->GetComNum($art->art_id)}/{$art->art_view}</td>
                         {if condition="$art->GetLastCom($art->art_id)!=null"}
@@ -116,7 +116,7 @@
                         {/volist}
                     </select>
                     <input name="arttitle" type="text" class="loinput" placeholder="请输入帖子标题" />
-                    <span>还可以输入70个字符</span>
+                    <span>还可以输入<span id="word">70</span>个字符</span>
                 </div>
                 <div class="eab">
                     <div id="editor"></div>
@@ -210,8 +210,23 @@
                 }
             })
 
-            
+            // 限制字数
+            $(function(){
+                $(".loinput").keyup(function(){
+                    var len = $(this).val().length;
+                    if(len > 69){
+                        $(this).val($(this).val().substring(0,70));
+                        $("#word").text(0);
+                    }
+                    var num = 70 - len;
 
+                    if(num<0){
+                        $("#word").text(0);
+                    }else{
+                        $("#word").text(num);
+                    }
+                });
+            })
         })
     </script>
 {/block}

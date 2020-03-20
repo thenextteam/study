@@ -168,30 +168,6 @@ class Board extends Model
         return $num;
     }
 
-    // /**
-    //  * 获取版主
-    //  * $whcom 从哪来的
-    //  * $value 参数
-    //  */
-    // public function GetBoardAdmin($whcom,$value)
-    // {
-    //     //首页来的
-    //     if($whcom==0){
-    //         // 数组合并成字符串
-    //         $allBoardAdmin = implode(db('Board')->where('bhead_id',$value)->column('board_user_id'));
-    //         // 重新以逗号为分割组成数组，然后去重array_unique，再重新编排下标
-    //         $allBoardAdminArray = array_merge(array_unique(explode(',',$allBoardAdmin)));
-    //         //获取版主
-    //         $j=[];
-    //         for($i=0;$i<sizeof($allBoardAdminArray);$i++){
-    //             if($allBoardAdminArray[$i]!=null)
-    //             //db('user')->where('user_id',$allBoardAdminArray[$i])->select();
-    //             $j[$i]=db('user')->where('user_id',$allBoardAdminArray[$i])->field('user_id,nick_name')->select();
-    //         }
-    //         return $j;
-    //     }
-    // }
-
     /**
      * 版块下举报数量
      */

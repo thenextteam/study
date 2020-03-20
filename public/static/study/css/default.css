@@ -57,6 +57,10 @@ fuline{
     height: 100px;
     background: rgb(80, 80, 85);
 }
+.header .hlogo div{
+    width: 1000px;
+    margin: 0px auto;
+}
 
 /* 导航条 */
 .header .nav{

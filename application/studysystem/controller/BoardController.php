@@ -25,6 +25,7 @@ class BoardController extends Controller
         $bid = Request::instance()->param('bid/d');
         //排序方式0有最新回复1发帖时间2访问数
         $oid = Request::instance()->param('oid/d');
+        $atype = Request::instance()->param('atype');
         //默认值0
         if($oid==null){
             $oid = 0;
@@ -52,13 +53,20 @@ class BoardController extends Controller
         $BoardTops = Board::get($bid)->Article()->where('art_top','>',0)->where('art_status',0)->order('art_top desc')->select();
 
         //正常状态
-        if(isset($Board)&&$Board->board_status=="0"){
+        if(isset($Board)&&($Board->board_status!="1")){
             //获取当前板块下的所有帖子
             $arts = $Board->article;
-            $arts = $Board->Article()->where('art_status',0)->order($orderrule)->paginate(20,false, [
+            if($atype==null){
+                $map['atype_id'] = ['>=',0];
+            }
+            else{
+                $map['atype_id'] = $atype;
+            }
+            $arts = $Board->Article()->where('art_status',0)->whereOr('art_status',2)->where($map)->order($orderrule)->paginate(20,false, [
                 'query' => [
                     'bid' => $bid,
                     'oid' => $oid,
+                    'atype' => $atype,
                     ]
                 ]);
             // 获取分页显示

@@ -7,6 +7,7 @@
 {block name="content"}
     <div class="crumb"><a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline><a href="{:url('Bhead/index?hid='.$Article->Board->Bhead->bhead_id)}">{$Article->Board->Bhead->bhead_name}</a><fuline>></fuline><a href="{:url('Board/index?bid='.$Article->Board->board_id)}">{$Article->Board->board_name}</a><fuline>></fuline>{$Article->art_title}</div>
     <div>
+        {if condition="($Think.get.page==1||$Think.get.page==null)"}
         <!-- 楼主的帖子主文模板 -->
         <div class="pocon">
             <div class="postuser">
@@ -65,7 +66,7 @@
                 </div>
             </div>
         </div>
-
+        {/if}
         {volist name="comments" id="comment"}
         <!-- 回复的楼层模板 -->
         <div class="pocon">

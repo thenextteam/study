@@ -45,4 +45,18 @@ class RegisterController extends Controller
         }
         return $this->success('注册成功', 'Login/index');
     }
+
+    //对比是否有相同的用户名
+    public function sameuser()
+    {
+        if(request()->isAjax()){
+            $uname = input('uname');
+            $User = new User;
+            $ucount = $User->where('user_name',$uname)->count('user_id');
+            if($ucount>0){
+                return true;
+            }
+            return false;
+        }
+    }
 }

@@ -78,3 +78,13 @@ body{
 .verifyimg{
     cursor: pointer;
 }
+
+
+.sp{
+    font-size: 12px;
+    color: #ff0000;
+    margin-left: 5px;
+}
+.sphidden{
+    display: none;
+}

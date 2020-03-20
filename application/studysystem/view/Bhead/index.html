@@ -8,12 +8,20 @@
 <div class="crumb"><a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline><a href="{:url('Bhead/index?hid='.$Bhead->bhead_id)}">{$Bhead->bhead_name}</a></div>
 <div class="content">
     <div class=" conb conb2">
-        <div class="conbtitle"><a href="#" class="tname">{$Bhead->bhead_name}</a><div>本版版主：<a href="#">admin</a>、<a href="#">admin</a></div></div>
+        <div class="conbtitle"><a href="#" class="tname">{$Bhead->bhead_name}</a>
+            <div>本版版主:
+                {volist name="$Bhead->Board" id="badmin"}
+                    {volist name="$badmin->Boardadmin" id="adminuser"}
+                <a href="{:url('User/index?uid='.$adminuser->user_id)}">{$badmin->GetBAname($adminuser->user_id)['nick_name']}</a>
+                    {/volist}
+                {/volist}
+            </div>
+        </div>
         <div class="conblist">
             {volist name="allBoard" id="boards"}
             <div class="conbcon">
                 <div class="bloimg"><a href="{:url('board/index?bid='.$boards->board_id)}"><img src="__ADMIN__/study/img/boardimg/b55.png" alt="321" width="220" height="75"></a></div>
-                <div class="blotitle"><div class="blott"><a href="{:url('board/index?bid='.$boards->board_id)}">{$boards->board_name}</a><span class="newnum">(9)</span></div><div class="blotj">{$boards->board_info}</div></div>
+                <div class="blotitle"><div class="blott"><a href="{:url('board/index?bid='.$boards->board_id)}">{$boards->board_name}</a><span class="newnum">({$boards->GetNewArt($boards->board_id)})</span></div><div class="blotj">{$boards->board_info}</div></div>
                 {if condition="$boards->LastComArt($boards->board_id)!=null"}
                 <div class="blocon"><div class="bloct"><a href="{:url('article/index?aid='.$boards->LastComArt($boards->board_id)['art_id'])}">{$boards->LastComArt($boards->board_id)['art_title']}</a></div><div class="lastre">最后回复：<a href="#">{$boards->LastComArt($boards->board_id)['nick_name']}</a></div><div class="tietime">{$boards->TimeHandle($boards->LastComArt($boards->board_id)['last_com_time'])}</div></div>
                 {else /}<div class="blocon">暂无</div>

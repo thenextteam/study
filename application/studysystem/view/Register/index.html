@@ -12,9 +12,9 @@
         </div>
         <div class="loginin">
             <form action="register" method="post">
-                <div class="inrow"><label for="user" class="inlabel">用户名：</label><input type="text" name="user" id="user" class="loinput" placeholder="请输入用户名" /></div>
-                <div class="inrow"><label for="email" class="inlabel">邮箱：</label><input type="text" name="email" id="email" class="loinput" placeholder="请输入邮箱" /></div>
-                <div class="inrow"><label for="pwd" class="inlabel">密码：</label><input type="text" name="pwd" id="pwd" class="loinput" placeholder="请输入密码" /></div>
+                <div class="inrow"><label for="user" class="inlabel">用户名：</label><input type="text" name="user" id="user" class="loinput" placeholder="请输入用户名" /><span class="sp sp1 sphidden">请输入用户名</span></div>
+                <div class="inrow"><label for="email" class="inlabel">邮箱：</label><input type="text" name="email" id="email" class="loinput" placeholder="请输入邮箱" /><span class="sp sp2 sphidden">请输入邮箱</span></div>
+                <div class="inrow"><label for="pwd" class="inlabel">密码：</label><input type="password" name="pwd" id="pwd" class="loinput" placeholder="请输入密码" /><span class="sp sp3 sphidden">请输入密码</span></div>
                 <div class="inrow"><label for="veri" class="inlabel">验证码：</label><input type="text" name="veri" id="veri" class="loinput" placeholder="请输入验证码" /></div>
                 <div class="cap"><img id="captcha_img" class="verifyimg" src="{:captcha_src()}" alt="captcha" onclick="refreshVerify()" width="200" height="50" /></div>
                 <div class="inrow2 inrow3"><button class="logbtn" type="submit">提交</button></div>
@@ -32,6 +32,71 @@
                     $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
                 }
             });
+            
+            $('#user').blur(function(){
+                //验证用户名
+                $uname = $(this).val();
+                if($(this).val()==null||$(this).val()==""){
+                    $('.sp1').text('请输入用户名').removeClass('sphidden');
+                }
+                else if($(this).val().length<=4){
+                    $('.sp1').text('用户名不能少于5个字符').removeClass('sphidden');
+                }
+                else{
+                    $.ajax({
+                        type: "GET",
+                        url: 'sameuser',
+                        data: {uname: $uname},
+                        dataType: "json",
+                        success: function(data){
+                            if(data==true){
+                                // alert($uname);
+                                $('.sp1').text('用户名已存在！').removeClass('sphidden');
+                            }
+                            else{
+                                $('.sp1').addClass('sphidden');
+                            }
+                        }
+                    })
+                }
+            })
+            
+            $('#email').blur(function(){
+                //验证邮箱
+                var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+                if($(this).val()==null||$(this).val()==""){
+                    $('.sp2').text('请输入邮箱').removeClass('sphidden');
+                }
+                else if(!reg.test($(this).val())){
+                    $('.sp2').text('邮箱格式不正确！').removeClass('sphidden');
+                }
+                else{
+                    $('.sp2').addClass('sphidden');
+                }
+            })
+            
+            $('#pwd').blur(function(){
+                //验证密码
+                if($(this).val()==null||$(this).val()==""){
+                    $('.sp3').text('请输入密码').removeClass('sphidden');
+                }
+                else if($(this).val().length<=5){
+                    $('.sp3').text('密码不能少于6个字符').removeClass('sphidden');
+                }
+                else{
+                    $('.sp3').addClass('sphidden');
+                }
+
+            })
+            
+            $('.logbtn').click(function(){
+                $('#user').blur();
+                $('#email').blur();
+                $('#pwd').blur();
+                if($('.sphidden').length!=3||$('veri').val()==null||$('veri').val()==""){
+                    event.preventDefault();
+                }
+            })
         })
     </script>
 {/block}
