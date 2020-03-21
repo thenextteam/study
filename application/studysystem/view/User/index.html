@@ -21,14 +21,17 @@
                     <a href="{:url('User/index?uid='.$User->user_id)}">个人主页</a>
                 </div>
             </div>
+            {if condition="($Think.session.UserId)!=$User->user_id"}
             <div class="opbtn">
-                <a href="#">加为好友</a>
+                <a href="newfriend?uid={$User->user_id}">加为好友</a>
                 <a href="#">发送消息</a>
             </div>
+            {/if}
         </div>
         <ul class="ulbtn">
             <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=0')}" {if condition="($fid==0)"} class="display" {/if}>个人资料</a></li>
             <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=1')}" {if condition="($fid==1)"} class="display" {/if}>所有帖子</a></li>
+            <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=2')}" {if condition="($fid==2)"} class="display" {/if}>我的好友</a></li>
         </ul>
         <div class="ucon">
             {if condition="($fid==0)"}
@@ -50,7 +53,7 @@
                     {/if}
                 </div>
             </div>
-            {else /}
+            {elseif condition="($fid==1)"}
             <ul class="aandr">
                 <li><a {if condition="($type == 'art')"}class="displaybtn"{/if} href="{:url('User/index?uid='.$User->user_id.'&fid=1&type=art')}">帖子</a></li><fuline>|</fuline><li><a {if condition="($type == 'com')"}class="displaybtn"{/if} href="{:url('User/index?uid='.$User->user_id.'&fid=1&type=com')}">回复</a></li>
             </ul>
@@ -116,6 +119,32 @@
                     {/if}
                 </table>
                 <div class="pagecon">{$page}</div>
+            </div>
+            {elseif condition="($fid==2)"}
+            <div class="useron">
+            {volist name="$User->Friend" id="friend"}
+                    {switch name="$friend->ismut"}
+                {case value="1"}
+                <div class="userspan">
+                    <div class="userimg">
+                        <a href="{:url('User/index?uid='.$friend->friend_user_id)}">
+                            <img src="__ADMIN__/study/img/userimg/{$friend->FriendUser($friend->friend_user_id)->user_img}" />
+                        </a>
+                    </div>
+                    <div class="userinfo">
+                        <a href="{:url('User/index?uid='.$friend->friend_user_id)}">{$friend->FriendUser($friend->friend_user_id)->nick_name}</a>
+                        <div>
+                            <span>{$friend->FriendUser($friend->friend_user_id)->user_lv}</span>
+                            <span>积分：{$friend->FriendUser($friend->friend_user_id)->user_point}</span>
+                        </div>
+                        <div class="infobtn">
+                            <a href="{:url('User/index?uid='.$friend->friend_user_id)}">查看资料</a>
+                        </div>
+                    </div>
+                </div>
+                    {/case}
+                {/switch}
+            {/volist}
             </div>
             {/if}
         </div>

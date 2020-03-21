@@ -233,3 +233,43 @@ body{
     margin-top: 30px;
     margin-left: 50px;
 }
+
+.useron{
+    display: flex;
+    flex-wrap: wrap;
+}
+.content .userspan{
+    margin: 10px 4px 0;
+    padding: 10px;
+    width: 215px;
+    height: 58px;
+    border: 1px solid #F3F3F3;
+    background: #F9F9F9;
+    white-space: nowrap;
+}
+.content .userspan,.content .userspan a{
+    font-size: 12px;
+}
+.content .userspan .userimg img{
+    border-radius: 8px;
+    padding: 2px;
+    width: 48px;
+    height: 48px;
+    background: #FFF;
+    border: 1px solid;
+    border-color: #F5F5F5 #CDCDCD #CDCDCD #F5F5F5;
+}
+
+.content .userspan .userimg{
+    margin-right: 5px;
+}
+.content .userspan .userimg,.content .userspan .userinfo{
+    display: inline-block;
+}
+
+.content .userspan .userinfo .infobtn a{
+    color: #8d8d8d;
+}
+.content .userspan .userinfo .infobtn a:hover{
+    text-decoration: underline;
+}

@@ -71,7 +71,7 @@
                         {else /}暂无
                         {/if}
                     </div>
-                    <div class="blonum"><span class="renum">{$Board->GetComnum($board['board_id'])}</span> <br />/<br /> <span class="wanum">{$Board->GetView($board['board_id'])}</span></div><!-- 回复数/浏览数 -->
+                    <div class="blonum"><span>{$Board->GetComnum($board['board_id'])}</span> <br />/<br /> <span class="wanum">{$Board->GetView($board['board_id'])}</span></div><!-- 回复数/浏览数 -->
                 </div>
                 {/volist}
             </div>

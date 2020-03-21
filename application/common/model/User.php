@@ -124,6 +124,14 @@ class User extends Model
     }
 
     /**
+     * 关联好友表
+     */
+    public function Friend()
+    {
+        return $this->hasMany('Friend','user_id','user_id');
+    }
+
+    /**
      * 获取用户心情
      */
     public function getSign($value)
@@ -139,5 +147,34 @@ class User extends Model
         else{
             return $status[9];
         }
+    }
+
+    /**
+     * 添加好友
+     * @param  string $user 被申请的用户ID
+     * @param  string $friuser 申请添加好友的用户ID
+     * @return bool   返回true。
+     */
+    static public function newfriend($user, $friuser)
+    {
+        //如果记录已存在，不允许重复申请
+        if(db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',1)->count('friend_id')>0){
+            return 'ismut';
+        }
+        
+        $Friend = new Friend;
+        $Friend->user_id = $user;
+        $Friend->friend_user_id = $friuser;
+
+        //还要验证是否已经有对方向自己的申请记录是的话ismut变为1
+        $isfripo_num = db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->count('friend_id');
+        if($isfripo_num>0){
+            //对方已经向自己提出申请，将那条记录改为1，即自己是对方的好友了
+            db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->update(['ismut' => '1']);
+            //自己这条记录也设置1，即对方是自己的好友了
+            $Friend->ismut = 1;
+        }
+        $Friend->save();
+        return true;
     }
 }

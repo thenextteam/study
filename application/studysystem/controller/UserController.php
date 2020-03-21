@@ -4,6 +4,7 @@ use think\Controller;
 use app\common\model\User;      // 引入用户
 use app\common\model\Article;      // 引入帖子
 use app\common\model\Comment;      // 引入回复
+use app\common\model\Friend;      // 引入好友
 use think\Session;
 use think\Db;
 use think\Request;              // 请求
@@ -66,6 +67,9 @@ class UserController extends Controller
             $this->assign('type', $type);
             $this->assign('arts',$arts);
         }
+        else if($fid==2){
+            //所有好友（不分页）
+        }
         $this->assign('fid',$fid);
         return $this->fetch();
     }
@@ -100,7 +104,7 @@ class UserController extends Controller
         
         // 移动到用户头像目录下
         if($file){
-            $saveName = Session::get('UserId');
+            $saveName = Session::get('UserId'); 
             $info = $file->move(ROOT_PATH . 'public' . DS . 'static\study\img\userimg',$saveName,true);
             if($info){
                 $User = User::get(Session::get('UserId'));
@@ -112,5 +116,31 @@ class UserController extends Controller
                 return $this->error('上传失败',$file->getError());
             }
         }
+    }
+
+    public function newfriend()
+    {
+        $Request = Request::instance();
+        $user = $Request->param('uid');
+        $friuser = Session::get('UserId');
+        if(User::newfriend($user,$friuser)=='true'){
+            $User = User::get($user);
+            //只有当单方面添加好友才发出提醒
+            if(db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',1)->count('friend_id')==0){
+                $User->remind = $User->remind+1;
+            }
+            //查询是否双方好友
+            if(db('friend')->where('friend_user_id',$user)->where('user_id',$friuser)->where('ismut',1)->count('friend_id')>0){
+                //减掉自己的一条提醒
+                db('user')->where('user_id',$friuser)->setDec('remind');
+                return $this->success('添加好友成功！', $Request->header('referer'));
+            }
+            $User->save();
+            return $this->success('好友申请已发出，等待对方处理', $Request->header('referer'));
+        }
+        else if((User::newfriend($user,$friuser))=='ismut'){
+            return $this->error('你们已经是好友了！');
+        }
+        return $this->error('申请失败');
     }
 }

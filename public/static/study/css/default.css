@@ -165,9 +165,11 @@ fuline{
     color: #125999;
     border: 1px solid #125999;
 }
-
+.pagecon .pagination .active span{
+    border: 1px solid #125999;
+}
 /* 消息提醒数字 */
-.topn-btn .renum{
+.renum{
     display: inline-block;
     text-align: center;
     height: 18px;
@@ -177,6 +179,7 @@ fuline{
     margin-left: 5px;
     font-weight: bold;
     border-radius: 3px;
+    color: #fff;
 }
 
 /* 弹出框 */

@@ -2,21 +2,15 @@
 namespace app\common\model;
 use think\Model;
 /**
- * 回复提醒表
+ * 好友
  */
-class Rremind extends Model
+class Friend extends Model
 {
-    //获取被回复人
-    public function User()
+    public function FriendUser($value)
     {
-        return $this->belongsTo('User','user_id');
-    } 
-    //获取回复人
-    public function reUser()
-    {
-        return $this->belongsTo('User','re_user_id');
-    } 
-
+        $User = User::get($value);
+        return $User;
+    }
     // 时间处理
     public function TimeHandle($targetTime)
     {

@@ -26,7 +26,7 @@
             <ul>
                 <li{if condition="$Think.get.atype==null"} class="clied"{/if}><a href="{:url('Board/index?bid='.$Board->board_id.'&oid='.$Think.get.oid.'&page=1&atype=')}">全部</a></li>
                 {volist name="$Board->atype" id="atype"}
-                <li{if condition="$Think.get.atype==$atype->atype_id&&$Think.get.atype!=null"} class="clied"{/if}><a href="{:url('Board/index?bid='.$Board->board_id.'&oid='.$Think.get.oid.'&page=1&atype='.$atype->atype_id)}">{$atype->atype_name}<span class="tynum">(250)</span></a></li>
+                <li{if condition="$Think.get.atype==$atype->atype_id&&$Think.get.atype!=null"} class="clied"{/if}><a href="{:url('Board/index?bid='.$Board->board_id.'&oid='.$Think.get.oid.'&page=1&atype='.$atype->atype_id)}">{$atype->atype_name}<span class="tynum"></span></a></li>
                 {/volist}
             </ul>
         </div>
@@ -34,15 +34,6 @@
         <div class="blocon">
             <div class="shai">
                 <div>
-                    <!-- <span>筛选：
-                        <select>
-                            <option value="全部时间">全部时间</option>
-                            <option value="一天内">一天内</option>
-                            <option value="一周内">一周内</option>
-                            <option value="一月内">一月内</option>
-                        </select>
-                    </span>
-                    <fuline></fuline> -->
                     <span>排序：
                         <select onchange="window.location=this.value;">
                             <option id="op0" value="{:url('Board/index?bid='.$Board->board_id.'&oid=0&page=1&atype='.$Think.get.atype)}">最后发表</option>
