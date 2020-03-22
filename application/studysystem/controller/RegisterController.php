@@ -1,6 +1,7 @@
 <?php
 namespace app\studysystem\controller;
 use think\Controller;
+use think\Db;
 use think\Request;              // 请求
 use app\common\model\User;   // 用户模型
 use think\Session;
@@ -33,6 +34,8 @@ class RegisterController extends Controller
         $User->user_name = $Request->post('user');
         $User->user_email = $Request->post('email');
         $User->user_pwd = md5($Request->post('pwd'));
+        //默认用户在im上的状态为hide
+        $User->status = 0;
         $captcha = $Request->post('veri');
         if(!captcha_check($captcha)){
             //验证失败
@@ -43,6 +46,11 @@ class RegisterController extends Controller
         if(!$User->validate(true)->save()){
             return $this->error('注册失败：'.$User->getError());
         }
+        //获取新注册用户id
+        $u_id = Db::table('user')->where('user_name',$User->user_name)->find();
+        $data = ['groupname' => '好友','user_id'=>$u_id['user_id']];
+        //插入默认im好友分组及用户id
+        Db::table('fgroupname')->insert($data);
         return $this->success('注册成功', 'Login/index');
     }
 

@@ -220,4 +220,11 @@
             })
         })
     </script>
+    <script type="text/javascript">
+        var uid = "{$Think.session.UserId}";
+        var getuser = "{:url('Chat/getUserdata')}";
+        var getmember = "{:url('Chat/getMembers')}";
+    </script>
+
+    <script type="text/javascript" src="__CHAT__/chat.js"></script>
 {/block}
