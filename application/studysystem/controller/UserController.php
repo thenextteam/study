@@ -121,26 +121,58 @@ class UserController extends Controller
     public function newfriend()
     {
         $Request = Request::instance();
-        $user = $Request->param('uid');
-        $friuser = Session::get('UserId');
-        if(User::newfriend($user,$friuser)=='true'){
-            $User = User::get($user);
+        //获取自己的ID
+        $user = Session::get('UserId');
+        //获取欲加好友的用户的ID
+        $friuser = $Request->param('uid');
+
+        //调用user模型的添加好友
+        if(User::newfriend($friuser,$user)=='true'){
+            $User = User::get($friuser);
             //只有当单方面添加好友才发出提醒
-            if(db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',1)->count('friend_id')==0){
+            if(db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',1)->count('friend_id')==0){
                 $User->remind = $User->remind+1;
             }
             //查询是否双方好友
-            if(db('friend')->where('friend_user_id',$user)->where('user_id',$friuser)->where('ismut',1)->count('friend_id')>0){
+            if(db('friend')->where('friend_user_id',$friuser)->where('user_id',$user)->where('ismut',1)->count('friend_id')>0){
                 //减掉自己的一条提醒
-                db('user')->where('user_id',$friuser)->setDec('remind');
+                db('user')->where('user_id',$user)->setDec('remind');
                 return $this->success('添加好友成功！', $Request->header('referer'));
             }
             $User->save();
             return $this->success('好友申请已发出，等待对方处理', $Request->header('referer'));
         }
-        else if((User::newfriend($user,$friuser))=='ismut'){
+        //返回ismut，双方已是好友
+        else if((User::newfriend($friuser,$user))=='ismut'){
             return $this->error('你们已经是好友了！');
         }
         return $this->error('申请失败');
     }
+
+    //备用暂留
+    // public function newfriend()
+    // {
+    //     $Request = Request::instance();
+    //     $user = $Request->param('uid');
+    //     $friuser = Session::get('UserId');
+    //     if(User::newfriend($user,$friuser)=='true'){
+    //         $User = User::get($user);
+    //         //只有当单方面添加好友才发出提醒
+    //         if(db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',1)->count('friend_id')==0){
+    //             $User->remind = $User->remind+1;
+    //         }
+    //         //查询是否双方好友
+    //         if(db('friend')->where('friend_user_id',$user)->where('user_id',$friuser)->where('ismut',1)->count('friend_id')>0){
+    //             //减掉自己的一条提醒
+    //             db('user')->where('user_id',$friuser)->setDec('remind');
+    //             return $this->success('添加好友成功！', $Request->header('referer'));
+    //         }
+    //         $User->save();
+    //         return $this->success('好友申请已发出，等待对方处理', $Request->header('referer'));
+    //     }
+    //     else if((User::newfriend($user,$friuser))=='ismut'){
+    //         return $this->error('你们已经是好友了！');
+    //     }
+    //     return $this->error('申请失败');
+    // }
 }
