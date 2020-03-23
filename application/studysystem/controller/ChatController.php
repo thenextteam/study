@@ -53,7 +53,7 @@ class ChatController extends Controller
                         $fid = $fg_id[$i]['friend_user_id'];
                         $fri = Db::table('user')->where('user_id', $fid)->find();
                         $flist['id'] = $fri['user_id'];
-                        $flist['username'] = $fri['user_name'];
+                        $flist['username'] = $fri['nick_name'];
                         $flist['sign'] = $fri['sign'];
                         //这个路径需要根据具体情况修改，绝对路径
                         $flist['avatar'] = "../../../static/study/img/userimg/" . $fri['user_img'];
@@ -91,7 +91,7 @@ class ChatController extends Controller
         //自身信息
         $alldata = array();
         $my['id'] = $user['user_id'];
-        $my['username'] = $user['user_name'];
+        $my['username'] = $user['nick_name'];
         $my['sign'] = $user['sign'];
         $my['avatar'] = "../../../static/study/img/userimg/" . $user['user_img'];
         if ($user['status'] == 1) {
@@ -127,7 +127,7 @@ class ChatController extends Controller
             //群友id对应信息
             $member = Db::table('user')->where('user_id', $uid)->find();
             $m['id'] = $member['user_id'];
-            $m['username'] = $member['user_name'];
+            $m['username'] = $member['nick_name'];
             $m['sign'] = $member['sign'];
             $m['avatar'] = "../../../static/study/img/userimg/" . $member['user_img'];
             //1为在线
