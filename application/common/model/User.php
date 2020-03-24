@@ -154,23 +154,23 @@ class User extends Model
 
     /**
      * 添加好友
-     * @param  string $user 被申请的用户ID
-     * @param  string $friuser 申请添加好友的用户ID
-     * @return bool   返回true。
+     * @param  string $friuser 被申请的用户ID
+     * @param  string $user 申请添加好友的用户ID
+     * @return bool/string   正确执行则返回true，否则返回"ismut"表示已存在。
      */
-    static public function newfriend($user, $friuser)
+    static public function newfriend($friuser, $user)
     {
         //如果记录已存在，不允许重复申请
-        if(db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',1)->count('friend_id')>0){
+        if(db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',1)->count('friend_id')>0){
             return 'ismut';
         }
         
         $Friend = new Friend;
-        $Friend->user_id = $user;
-        $Friend->friend_user_id = $friuser;
+        $Friend->user_id = $friuser;
+        $Friend->friend_user_id = $user;
 
         //还要验证是否已经有对方向自己的申请记录是的话ismut变为1
-        $isfripo_num = db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->count('friend_id');
+        $isfripo_num = db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',0)->count('friend_id');
         if($isfripo_num>0){
             //对方已经向自己提出申请，将那条记录改为1，即自己是对方的好友了
 
@@ -179,7 +179,7 @@ class User extends Model
             $fri_gid = Db::table('fgroupname')->where('user_id',$friuser)->find();//对方的
 
 
-            db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->update(['ismut' => '1','gid'=>$fri_gid['id']]);
+            db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',0)->update(['ismut' => '1','gid'=>$fri_gid['id']]);
             //自己这条记录也设置1，即对方是自己的好友了
             $Friend->ismut = 1;
             if ($gid['groupname'] = "好友"){
@@ -189,4 +189,34 @@ class User extends Model
         $Friend->save();
         return true;
     }
+
+    //备用暂留
+    // /**
+    //  * 添加好友
+    //  * @param  string $user 被申请的用户ID
+    //  * @param  string $friuser 申请添加好友的用户ID
+    //  * @return bool   返回true。
+    //  */
+    // static public function newfriend($user, $friuser)
+    // {
+    //     //如果记录已存在，不允许重复申请
+    //     if(db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',1)->count('friend_id')>0){
+    //         return 'ismut';
+    //     }
+
+    //     $Friend = new Friend;
+    //     $Friend->user_id = $user;
+    //     $Friend->friend_user_id = $friuser;
+
+    //     //还要验证是否已经有对方向自己的申请记录是的话ismut变为1
+    //     $isfripo_num = db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->count('friend_id');
+    //     if($isfripo_num>0){
+    //         //对方已经向自己提出申请，将那条记录改为1，即自己是对方的好友了
+    //         db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->update(['ismut' => '1']);
+    //         //自己这条记录也设置1，即对方是自己的好友了
+    //         $Friend->ismut = 1;
+    //     }
+    //     $Friend->save();
+    //     return true;
+    // }
 }
