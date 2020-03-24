@@ -145,4 +145,15 @@ class ChatController extends Controller
 
         return $allarray;
     }
+
+    //切换在线状态
+    public function changeStatus(){
+        $status = $_POST['mystatus'];
+        echo $status;
+        if ($status == "online"){
+            Db::table('user')->where('user_id',Session::get('UserId'))->update(['status' => 1]);
+        }else{
+            Db::table('user')->where('user_id',Session::get('UserId'))->update(['status' => 0]);
+        }
+    }
 }

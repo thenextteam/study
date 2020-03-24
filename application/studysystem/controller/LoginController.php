@@ -1,6 +1,7 @@
 <?php
 namespace app\studysystem\controller;
 use think\Controller;
+use think\Db;
 use think\Request;              // 请求
 use app\common\model\User;   // 用户模型
 use think\Session;
@@ -39,6 +40,8 @@ class LoginController extends Controller
 
         // 直接调用M层方法，进行登录。
         if (User::login($postData['username'], $postData['password'])) {
+            //登录后状态变成1
+            Db::table('user')->where('user_id', Session::get('UserId'))->update(['status' => 1]);
             return $this->success('登录成功', url('Index/index'));
         } else {
             return $this->error('用户名或密码错误', url('index'));

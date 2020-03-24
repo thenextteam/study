@@ -37,6 +37,10 @@ class ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd
         array (
             'Phinx\\' => 6,
         ),
+        'G' => 
+        array (
+            'GatewayWorker\\' => 14,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -81,10 +85,15 @@ class ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd
         'Workerman\\' => 
         array (
             0 => __DIR__ . '/..' . '/workerman/workerman',
+            1 => __DIR__ . '/..' . '/workerman/workerman-for-win',
         ),
         'Phinx\\' => 
         array (
             0 => __DIR__ . '/..' . '/topthink/think-migration/phinx/src/Phinx',
+        ),
+        'GatewayWorker\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/workerman/gateway-worker-for-win/src',
         ),
     );
 

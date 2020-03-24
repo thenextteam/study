@@ -1,6 +1,8 @@
 <?php
 namespace app\common\model;
-use think\Model;    //  导入think\Model类
+use think\Db;
+use think\Model;
+use think\Session;    //  导入think\Model类
 /**
  * User 用户表
  */
@@ -73,6 +75,7 @@ class User extends Model
     static public function logOut()
     {
         // 销毁session中数据
+        Db::table('user')->where('user_id', Session::get('UserId'))->update(['status' => 0]);
         session(null);
         return true;
     }
@@ -170,9 +173,18 @@ class User extends Model
         $isfripo_num = db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->count('friend_id');
         if($isfripo_num>0){
             //对方已经向自己提出申请，将那条记录改为1，即自己是对方的好友了
-            db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->update(['ismut' => '1']);
+
+            //申请通过就更新用户自己的分组和对方的分组
+            $user_gid = Db::table('fgroupname')->where('user_id',$user)->find();//自己的
+            $fri_gid = Db::table('fgroupname')->where('user_id',$friuser)->find();//对方的
+
+
+            db('friend')->where('user_id',$friuser)->where('friend_user_id',$user)->where('ismut',0)->update(['ismut' => '1','gid'=>$fri_gid['id']]);
             //自己这条记录也设置1，即对方是自己的好友了
             $Friend->ismut = 1;
+            if ($gid['groupname'] = "好友"){
+                $Friend->gid = $user_gid['id'];
+            }
         }
         $Friend->save();
         return true;
