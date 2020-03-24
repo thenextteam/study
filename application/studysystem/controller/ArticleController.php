@@ -436,4 +436,35 @@ class ArticleController extends Controller
             }
         }
     }
+
+    //上传图片
+    public function upload()
+    {
+        $files = request()->file();
+        $imags = [];
+        $errors = [];
+        foreach($files as $file){
+            // 移动图片到/public/uploads/ 目录下
+            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . 'artimgs');
+            if($info){
+               // 成功上传 图片地址加入到数组
+                $path = '/thinkphp/public/uploads/artimgs/'.$info->getSaveName();
+                array_push($imags,$path);
+            }else{
+                array_push($errors,$file->getError());
+            }
+        }
+
+        //输出wangEditor规定的返回数据
+        if(!$errors){
+            $msg['errno'] = 0;
+            $msg['data'] = $imags;
+            return json($msg);
+        }else{
+            $msg['errno'] = 1;
+            $msg['data'] = $imags;
+            $msg['msg'] = "上传出错";
+            return json($msg);
+        }
+    }
 }

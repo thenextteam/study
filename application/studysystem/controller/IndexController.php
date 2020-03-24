@@ -65,4 +65,6 @@ class IndexController extends Controller
         $this->assign('Board',$Board);
         return $this->fetch(); 
     }
+
+
 }

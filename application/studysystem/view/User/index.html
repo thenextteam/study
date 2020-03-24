@@ -31,13 +31,13 @@
         <ul class="ulbtn">
             <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=0')}" {if condition="($fid==0)"} class="display" {/if}>个人资料</a></li>
             <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=1')}" {if condition="($fid==1)"} class="display" {/if}>所有帖子</a></li>
-            <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=2')}" {if condition="($fid==2)"} class="display" {/if}>我的好友</a></li>
+            <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=2')}" {if condition="($fid==2)"} class="display" {/if}>{if condition="($User->user_id==$Think.session.UserId)"}我{else /}他{/if}的好友</a></li>
         </ul>
         <div class="ucon">
             {if condition="($fid==0)"}
             <div class="uconrow">
                 {$User->nick_name}(UID:{$User->user_id})
-                <p><span class="grayiro">统计信息</span><fuline></fuline>好友数 0<fuline>|</fuline>发帖数 <a href="{:url('User/index?uid='.$User->user_id.'&fid=1')}">{$User->Comment()->where('com_status',0)->count('com_id')}</a><fuline>|</fuline>回帖数 <a href="{:url('User/index?uid='.$User->user_id.'&fid=1&type=com')}">{$User->Article()->where('art_status',0)->count('art_id')}</a></p>
+                <p><span class="grayiro">统计信息</span><fuline></fuline>好友数 <a href="{:url('User/index?uid='.$User->user_id.'&fid=2')}">{$User->Friend()->where('ismut',1)->count('friend_id')}</a><fuline>|</fuline>发帖数 <a href="{:url('User/index?uid='.$User->user_id.'&fid=1')}">{$User->Article()->where('art_status',0)->count('art_id')}</a><fuline>|</fuline>回帖数 <a href="{:url('User/index?uid='.$User->user_id.'&fid=1&type=com')}">{$User->Comment()->where('com_status',0)->count('com_id')}</a></p>
                 <p>积分 {$User->user_point} 金币 {$User->user_money}</p>
             </div>
             <div class="uconrow">
