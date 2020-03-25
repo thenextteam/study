@@ -41,7 +41,7 @@
                 </tr>
                 {volist name="Sign" id="sign"}
                 <tr class="userrow">
-                    <td>{$sign['nick_name']}</td>
+                    <td><a href="{:url('User/index?uid='.$sign['user_id'])}">{$sign['nick_name']}</a></td>
                     <td>{$sign['user_days']}</td>
                     <td>{$sign['sign_time']}</td>
                     <td>{$sign['user_lv']}</td>

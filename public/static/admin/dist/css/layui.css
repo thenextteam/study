@@ -3,7 +3,7 @@
 .layui-box h1,.layui-box h2,.layui-box h3,.layui-box h4,.layui-box h5,.layui-box h6{font-weight:400}
 .layui-edge,.layui-header,.layui-inline,.layui-main{position:relative}
 .layui-body,.layui-edge,.layui-elip{overflow:hidden}
-.layui-btn,.layui-edge,.layui-inline,img{vertical-align:middle}
+.layui-btn,.layui-edge,.layui-inline{vertical-align:middle}
 .layui-btn,.layui-disabled,.layui-icon,.layui-unselect{-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none}
 .layui-elip,.layui-form-checkbox span,.layui-form-pane .layui-form-label{text-overflow:ellipsis;white-space:nowrap}
 .layui-breadcrumb,.layui-tree-btnGroup{visibility:hidden}
