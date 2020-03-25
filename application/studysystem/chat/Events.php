@@ -75,9 +75,10 @@ class Events
 
                 //最近一周时间
                 $time = time() - 7 * 3600 * 24;
-                $resMsg = $db->select('id,fromid,fromname,fromavatar,timeline,content')->from('chatmsg')
-                    ->where("toid= {$message_data['uid']} and timeline > {$time} and type = 'friend' and needsend = 1")
-                    ->query();
+                $resMsg =$db->select('chatmsg.*, user.nick_name, user.user_img')->from('chatmsg')
+                    ->innerJoin('user','chatmsg.fromid = user.user_id')
+                    ->where("toid= {$message_data['uid']} and timeline > {$time} and type = 'friend' and needsend = 1")->query();
+//                print_r($resMsg);
                 if (!empty($resMsg)) {
 
                     foreach ($resMsg as $key => $vo) {
@@ -85,8 +86,8 @@ class Events
                         $log_message = [
                             'type' => 'logMessage',
                             'data' => [
-                                'username' => $vo['fromname'],
-                                'avatar' => $vo['fromavatar'],
+                                'username' => $vo['nick_name'],
+                                'avatar' => "/thinkphp/public/static/study/img/userimg/".$vo['user_img'],
                                 'id' => $vo['fromid'],
                                 'type' => 'friend',
                                 'content' => htmlspecialchars($vo['content']),
@@ -106,7 +107,6 @@ class Events
                 break;
             case 'chatMessage':
                 $db = Db::instance('db1');
-
                 $to_id = $message_data['data']['to']['id'];
                 $uid = $message_data['data']['mine']['id'];
                 $type = $message_data['data']['to']['type'];
@@ -126,8 +126,6 @@ class Events
                 $param = [
                     'fromid' => $uid,
                     'toid' => $to_id,
-                    'fromname' => $message_data['data']['mine']['username'],
-                    'fromavatar' => $message_data['data']['mine']['avatar'],
                     'timeline' => time(),
                     'content' => htmlspecialchars($message_data['data']['mine']['content']),
                     'needsend' => 0
