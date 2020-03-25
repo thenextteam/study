@@ -66,11 +66,7 @@
         <div class="layui-input-inline">
           <select name="bhead_id">
             {volist name="bhead" id="bhead"}
-            {if condition="$board.bhead_id == $bhead.bhead_id"}
             <option value="{$bhead.bhead_id}" selected>{$bhead.bhead_name}</option>
-            {else /}
-            <option value="{$bhead.bhead_id}">{$bhead.bhead_name}</option>
-            {/if}
             {/volist}
           </select>
         </div>
