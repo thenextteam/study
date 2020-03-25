@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+    <meta name="renderer" content="webkit">
+    
+</head>
+
+<body class="layui-layout-body">
+
+    <table class="layui-hide" id="atype_table" lay-filter="atype"></table>
+
+    </script>
+    <script src="__ADMINL__/layui.js"></script>
+    <script>
+        //JavaScript代码区域
+        layui.use('table', function () {
+            var table = layui.table;
+
+            table.render({
+                elem: '#atype_table'
+                ,id: 'atype'
+                ,height: 420
+                ,url:'{:url("Boards/getAtypes")}?board_id='+'{$board_id}'//数据接口
+                ,title: '版块分类'
+                ,page: true //开启分页
+                ,toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+                ,totalRow: true //开启合计行
+                ,cols: [[ //表头
+                  {field: 'atype_id', title: 'ID',width:'30%', fixed: 'left', totalRowText: '合计：'}
+                  ,{field: 'atype_name', title: '分类名称',width:'70%'}
+                ]]
+            });   
+        });
+    </script>
+</body>
+
+</html>

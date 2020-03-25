@@ -29,7 +29,7 @@ if (uid == null || uid == undefined || uid == '') {
         //监听收到的消息
         ws.onmessage = function (res) {
             var data = eval("(" + res.data + ")");
-            console.log(data);
+            // console.log(data);
             var type = data.type || '';
             switch (type) {
                 // Events.php中返回的init类型的消息，将client_id发给后台进行uid绑定
@@ -37,15 +37,15 @@ if (uid == null || uid == undefined || uid == '') {
                     // 利用jquery发起ajax请求，将client_id发给后端进行uid绑定
                     var msg = {"type": "bind", "uid": uid};
                     msg_json = JSON.stringify(msg);
-                    console.log(msg_json);
+                    // console.log(msg_json);
                     ws.send(msg_json);
                     break;
                 case 'bind':
-                    console.log(data.data);
+                    // console.log(data.data);
                     break;
                 case 'chatMessage':
                     console.log('收到消息');
-                    console.log(data.data);
+                    // console.log(data.data);
                     layim.getMessage(data.data);
                     break;
                 case 'logMessage':
@@ -79,7 +79,7 @@ if (uid == null || uid == undefined || uid == '') {
         });
 
         layim.on('online', function (status) {
-            console.log(status); //获得online或者hide
+            // console.log(status); //获得online或者hide
             $.ajax({
                 type: 'post',
                 url: changestatus,
@@ -88,7 +88,7 @@ if (uid == null || uid == undefined || uid == '') {
             })
         });
         layim.on('sign', function(value){
-            console.log(value); //获得新的签名
+            // console.log(value); //获得新的签名
 
             $.ajax({
                 type: 'post',
