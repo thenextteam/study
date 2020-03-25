@@ -42,6 +42,8 @@ class Events
      */
     public static function onConnect($client_id)
     {
+//        $db = Db::instance('db1');
+//        $db->query("update user set status = 0 where user_id = ".$_SESSION['UID'] );
         // 向当前client_id发送数据 
         Gateway::sendToClient($client_id, json_encode(array(
             'type' => 'init',
@@ -61,7 +63,7 @@ class Events
     {
 //        echo $message;
         $message_data = json_decode($message, true);
-        var_dump($message_data['uid']);
+//        var_dump($message_data['uid']);
         switch ($message_data['type']) {
             case 'bind':
                 $db = Db::instance('db1');
@@ -139,7 +141,7 @@ class Events
                         if (empty($i)) {
                             $param['needsend'] = 1;  //用户不在线,标记此消息推送
                         }
-                        var_dump($param);
+//                        var_dump($param);
                         $db->insert('chatmsg')->cols($param)->query();
                         return Gateway::sendToUid($to_id, json_encode($chat_message));
                 }
@@ -159,8 +161,9 @@ class Events
      */
     public static function onClose($client_id)
     {
-        // 向所有人发送
-        GateWay::sendToAll("$client_id logout\r\n");
+//        $db = Db::instance('db1');
+//        $db->query("update user set status = 0 where user_id = ".$_SESSION['UID'] );
+//        GateWay::sendToAll("$client_id logout\r\n");
     }
 
 }

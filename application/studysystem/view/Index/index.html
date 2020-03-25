@@ -22,7 +22,7 @@
                         {volist name="newArts" id="newArt" offset="0" length="8"}
                         <li>
                             <div class="tnandtt">
-                                <a href="{:url('board/index?bid='.$newArt['board_id'])}" class="tn">[{$newArt['board_name']}]</a> 
+                                <a href="{:url('board/index?bid='.$newArt['board_id'])}" class="tn">[{$newArt['board_name']}]</a>
                                 <a href="{:url('article/index?aid='.$newArt['art_id'])}">{$newArt['art_title']}</a></div><div class="tu">
                                     <a href="{:url('User/index?uid='.$newArt['user_id'])}">{$newArt['nick_name']}</a>
                                 </div>
@@ -34,7 +34,7 @@
                         {volist name="hotArts" id="hotArt" offset="0" length="8"}
                         <li>
                             <div class="tnandtt">
-                                <a href="{:url('board/index?bid='.$hotArt['board_id'])}" class="tn">[{$hotArt['board_name']}]</a> 
+                                <a href="{:url('board/index?bid='.$hotArt['board_id'])}" class="tn">[{$hotArt['board_name']}]</a>
                                 <a href="{:url('article/index?aid='.$hotArt['art_id'])}">{$hotArt['art_title']}</a></div><div class="tu">
                                     <a href="{:url('User/index?uid='.$hotArt['user_id'])}">{$hotArt['nick_name']}</a>
                                 </div>
@@ -96,6 +96,9 @@
         var getuser = "{:url('Chat/getUserdata')}";
         var getmember = "{:url('Chat/getMembers')}";
         var changestatus = "{:url('Chat/changeStatus')}";
+        var getchatlog = "{:url('Chat/getChatLog')}"
+        var changesign = "{:url('Chat/changeSign')}"
+
     </script>
 
     <script type="text/javascript" src="__CHAT__/chat.js"></script>

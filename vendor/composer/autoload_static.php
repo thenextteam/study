@@ -93,7 +93,8 @@ class ComposerStaticInit2bc4f313dba415539e266f7ac2c87dcd
         ),
         'GatewayWorker\\' => 
         array (
-            0 => __DIR__ . '/..' . '/workerman/gateway-worker-for-win/src',
+            0 => __DIR__ . '/..' . '/workerman/gateway-worker/src',
+            1 => __DIR__ . '/..' . '/workerman/gateway-worker-for-win/src',
         ),
     );
 

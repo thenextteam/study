@@ -416,6 +416,42 @@
         "description": "workerman extend for thinkphp5"
     },
     {
+        "name": "workerman/gateway-worker",
+        "version": "v3.0.15",
+        "version_normalized": "3.0.15.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/walkor/GatewayWorker.git",
+            "reference": "d633fe52c792839a80ed2cfea7697bf705350d62"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/walkor/GatewayWorker/zipball/d633fe52c792839a80ed2cfea7697bf705350d62",
+            "reference": "d633fe52c792839a80ed2cfea7697bf705350d62",
+            "shasum": ""
+        },
+        "require": {
+            "workerman/workerman": ">=3.5.0"
+        },
+        "time": "2020-03-09T12:03:30+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GatewayWorker\\": "./src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "homepage": "http://www.workerman.net",
+        "keywords": [
+            "communication",
+            "distributed"
+        ]
+    },
+    {
         "name": "workerman/gateway-worker-for-win",
         "version": "v3.0.7",
         "version_normalized": "3.0.7.0",

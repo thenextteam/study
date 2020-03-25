@@ -179,11 +179,11 @@ class User extends Model
             $fri_gid = Db::table('fgroupname')->where('user_id',$friuser)->find();//对方的
 
 
-            db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',0)->update(['ismut' => '1','gid'=>$fri_gid['id']]);
+            db('friend')->where('user_id',$user)->where('friend_user_id',$friuser)->where('ismut',0)->update(['ismut' => '1','gid'=>$user_gid['id']]);
             //自己这条记录也设置1，即对方是自己的好友了
             $Friend->ismut = 1;
             if ($gid['groupname'] = "好友"){
-                $Friend->gid = $user_gid['id'];
+                $Friend->gid = $fri_gid['id'];
             }
         }
         $Friend->save();

@@ -10,8 +10,8 @@ if (uid == null || uid == undefined || uid == '') {
             title: "我的IM",
             min: true,
             copyright: true,
-            chatLog: '/thinkphp/public/static/admin/dist/css/modules/layim/html/chatlog.html',
-            find: '/thinkphp/public/static/admin/dist/css/modules/layim/html/find.html',
+            chatLog: '/thinkphp/public/chat/chatlog.html?'+getchatlog,
+            // find: '/thinkphp/public/static/admin/dist/css/modules/layim/html/find.html',
             init: {
                 url: getuser,
                 type: "get",
@@ -87,6 +87,17 @@ if (uid == null || uid == undefined || uid == '') {
                 dataType: "text",
             })
         });
+        layim.on('sign', function(value){
+            console.log(value); //获得新的签名
+
+            $.ajax({
+                type: 'post',
+                url: changesign,
+                data: {sign: value},
+                dataType: "text",
+            })
+        });
+
     });
 
 
@@ -100,24 +111,4 @@ if (uid == null || uid == undefined || uid == '') {
         ws.send(JSON.stringify(sendmsg));
     }
 
-
-    function Loging() {
-        // $.post(
-        //     "{:url('Home/setSion')}",
-        //     {name: uname.value},
-        //     function (data) {
-        //     },
-        //     'json'
-        // );
-
-        $.ajax({
-            type: 'post',
-            url: "{:url('Home/setSion')}",
-            data: {name: uname.value},
-            dataType: "text",
-            success: function (da) {
-
-            }
-        })
-    }
 }

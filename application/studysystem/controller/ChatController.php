@@ -47,7 +47,7 @@ class ChatController extends Controller
             for ($g = 0; sizeof($friendgroup) - 1 >= $g; $g++) {
                 $gid = $friendgroup[$g]['id'];
                 //遍历第二层为获取到的gid去获取fid
-                for ($i = 0; sizeof($fg_id) - 1 >= $i; $i++) {
+                for ($i = 0; count($fg_id) -1 >= $i; $i++) {
                     //查询每一条数据是否有符合分组id下面的好友
                     if ($gid == $fg_id[$i]['gid']) {
                         $fid = $fg_id[$i]['friend_user_id'];
@@ -56,7 +56,7 @@ class ChatController extends Controller
                         $flist['username'] = $fri['nick_name'];
                         $flist['sign'] = $fri['sign'];
                         //这个路径需要根据具体情况修改，绝对路径
-                        $flist['avatar'] = "../../../static/study/img/userimg/" . $fri['user_img'];
+                        $flist['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $fri['user_img'];
                         if ($fri['status'] == 1) {
                             $flist['status'] = "online";
                         } else {
@@ -93,7 +93,7 @@ class ChatController extends Controller
         $my['id'] = $user['user_id'];
         $my['username'] = $user['nick_name'];
         $my['sign'] = $user['sign'];
-        $my['avatar'] = "../../../static/study/img/userimg/" . $user['user_img'];
+        $my['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $user['user_img'];
         if ($user['status'] == 1) {
             $my['status'] = "online";
         } else {
@@ -129,7 +129,7 @@ class ChatController extends Controller
             $m['id'] = $member['user_id'];
             $m['username'] = $member['nick_name'];
             $m['sign'] = $member['sign'];
-            $m['avatar'] = "../../../static/study/img/userimg/" . $member['user_img'];
+            $m['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $member['user_img'];
             //1为在线
             if ($member['status'] == 1) {
                 $m['status'] = "online";
@@ -147,13 +147,63 @@ class ChatController extends Controller
     }
 
     //切换在线状态
-    public function changeStatus(){
+    public function changeStatus()
+    {
         $status = $_POST['mystatus'];
         echo $status;
-        if ($status == "online"){
-            Db::table('user')->where('user_id',Session::get('UserId'))->update(['status' => 1]);
-        }else{
-            Db::table('user')->where('user_id',Session::get('UserId'))->update(['status' => 0]);
+        if ($status == "online") {
+            Db::table('user')->where('user_id', Session::get('UserId'))->update(['status' => 1]);
+        } else {
+            Db::table('user')->where('user_id', Session::get('UserId'))->update(['status' => 0]);
         }
+    }
+
+    public function getChatLog()
+    {
+        //查询指定的id和类型
+        $allmsg = array();
+        $data = array();
+        $itemdata = array();
+        $uid = Session::get('UserId');
+        $id = $_POST['id'];
+        $type = $_POST['type'];
+        if ($type == "friend") {
+            //查出双方的聊天
+            $msg = Db::query("select * from chatmsg where fromid in(" . $uid . "," . $id . ") and toid in(" . $uid . "," . $id . ") order by timeline");
+            $my = Db::table('user')->where('user_id', $uid)->find();
+            $friend = Db::table('user')->where('user_id', $id)->find();
+
+            $mydata['username'] = $my['nick_name'];
+            $mydata['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $my['user_img'];
+            $mydata['id'] = $my['user_id'];
+
+            $fridata['username'] = $friend['nick_name'];
+            $fridata['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $friend['user_img'];
+            $fridata['id'] = $friend['user_id'];
+            for ($i = 0; count($msg) > $i; $i++) {
+                if ($msg[$i]['fromid'] == $uid) {
+                    //自己说的
+                    $mydata['timestamp'] = $msg[$i]['timeline'] * 1000;
+                    $mydata['content'] = $msg[$i]['content'];
+                    $data[$i] = $mydata;
+                } else {
+                    //别人说的
+                    $fridata['timestamp'] = $msg[$i]['timeline'] * 1000;
+                    $fridata['content'] = $msg[$i]['content'];
+                    $data[$i] = $fridata;
+                }
+            }
+            $allmsg['code'] = 0;
+            $allmsg['msg'] = "";
+            $allmsg['data'] = $data;
+            return $allmsg;
+        }else{
+
+        }
+    }
+    public  function changeSign(){
+        $sign = $_POST['sign'];
+
+        Db::table('user')->where('user_id',Session::get('UserId'))->update(['sign' => $sign]);
     }
 }
