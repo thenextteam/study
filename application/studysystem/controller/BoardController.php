@@ -38,6 +38,9 @@ class BoardController extends Controller
             $orderrule = "art_view desc";
         }
         $Board = Board::get($bid);
+        if(!$Board){
+            return $this->error('版块不存在！');
+        }
 
         //权限
         $auth = false;

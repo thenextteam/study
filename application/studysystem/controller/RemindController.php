@@ -26,6 +26,9 @@ class RemindController extends Controller
         }
 
         $uid = Request::instance()->param('uid/d');
+        if(!(User::get($uid))){
+            return $this->error('用户不存在！');
+        }
         $type = Request::instance()->param('type');
         $page = null;
         if($type==null||$type=='rre'){

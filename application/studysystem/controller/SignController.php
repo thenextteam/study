@@ -41,7 +41,7 @@ class SignController extends Controller
         $join = [
             ['user b','a.user_id=b.user_id'],
         ];
-        $Sign = db('sign')->alias('a')->join($join)->order('sign_time desc')->paginate(5,false);
+        $Sign = db('sign')->alias('a')->join($join)->order('sign_time desc')->paginate(10,false);
         // 获取分页显示
         $page = $Sign->render();
         $this->assign('Sign',$Sign);
