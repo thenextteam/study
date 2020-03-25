@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+  <script type="text/javascript" src="__ADMINL__/jquery/jquery-3.4.1.min.js"></script>
+  <title>Document</title>
+  <style>
+    .layui-layout-body {
+      padding: 1rem;
+    }
+
+    .add_btn {
+      /* margin:0 auto; */
+    }
+
+    .left {
+      float: left;
+      padding-right: 2rem;
+      border-right: 1px solid #d1d1d1;
+    }
+
+    .right {
+      float: left;
+      margin-left: 2rem;
+    }
+
+    .icons {
+      border: 1px solid #d1d1d1;
+      padding: 0.3rem;
+    }
+
+    .upload {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body class="layui-layout-body ">
+  <form class="layui-form layui-form-pane" action="" method="POST">
+    {volist name="user" id="user"}
+    <div class="left">
+      <!-- start -->
+      <div class="layui-form-item" style="display: none;">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-inline">
+          <input type="text" name="user_id" id="user_id" lay-verify="user_id" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$user.user_id}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">用户名</label>
+        <div class="layui-input-inline">
+          <input type="text" name="user_name" lay-verify="user_name" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$user.user_name}" disabled>
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">昵称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="nick_name" lay-verify="nick_name" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$user.nick_name}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-inline">
+          <input type="text" name="user_email" lay-verify="user_email" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$user.user_email}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">等级</label>
+        <div class="layui-input-inline">
+          <input type="text" name="user_lv" lay-verify="user_lv" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$user.user_lv}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">金币</label>
+        <div class="layui-input-inline">
+          <input type="text" name="user_money" lay-verify="user_money" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$user.user_money}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">积分</label>
+        <div class="layui-input-inline">
+          <input type="text" name="user_point" lay-verify="user_point" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$user.user_point}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block" id="member">
+          {if condition="$user.user_grant == 0"}
+          <input type="radio" name="user_grant" value="0" title="正常" checked>
+          <input type="radio" name="user_grant" value="1" title="锁定">
+          {else /}
+          <input type="radio" name="user_grant" value="0" title="正常">
+          <input type="radio" name="user_grant" value="1" title="锁定" checked>
+          {/if}
+        </div>
+      </div>
+      <!-- end -->
+      <div class="layui-form-item add_btn">
+        <button class="layui-btn" lay-submit="" lay-filter="save_user">提交</button>
+        <button class="layui-btn" lay-submit="" type="reset">重置</button>
+      </div>
+      {/volist}
+  </form>
+  </div>
+  <div class="right">
+    <div class="icons">
+      <img src="{$user.user_img}" id="icon" width="150" height="150">
+    </div>
+    <div class="upload">
+      <button type="button" class="layui-btn" id="test1">
+        <i class="layui-icon">&#xe67c;</i>上传头像
+      </button>
+    </div>
+    <div class="upload">
+      <button type="button" class="layui-btn  layui-btn-disabled" lay-filter="save_icon" id="ed_icon" disabled>
+        <i class="layui-icon">&#xe9aa;</i>&emsp;更新&emsp;
+      </button>
+    </div>
+  </div>
+
+
+  <script src="__ADMINL__/layui.js"></script>
+  <script>
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+      var form = layui.form
+        , laydate = layui.laydate
+        , upload = layui.upload;
+
+      laydate.render({
+        elem: '#go_time',
+        type: 'datetime'
+        , trigger: 'click'
+      });
+
+      //执行实例
+      var uploadInst = upload.render({
+        elem: '#test1' //绑定元素
+        , url: "{:url('upload')}" //上传接口
+        , size: 1024
+        , done: function (res) {
+          //上传完毕回调
+          if (res.code > 0) {
+            return layer.msg('上传失败')
+          } else {
+            $('#icon').attr("src", res.path);
+            $('#ed_icon').removeClass("layui-btn-disabled");
+            $('#ed_icon').attr("disabled", false);
+          }
+        }
+        , error: function () {
+          //请求异常回调
+        }
+      });
+
+      //监听提交
+      form.on('submit(save_user)', function (data) {
+        let url = "{:url('edit')}";
+        data.field['user_id'] = '{$user.user_id}';
+        let post = JSON.stringify(data.field);
+        console.log(url, post);
+        $.ajax({
+          type: 'post',
+          url: url,
+          data: 'post=' + post,
+          dataType: 'json',
+          success: function (json) {
+            layer.msg(json.msg, { time: 500 }, function () {
+              var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+              parent.layer.close(index); //再执行关闭
+              parent.layui.table.reload('user', { page: { curr: 1 } });
+            });
+          }
+        });
+        return false;
+      });
+
+      //更新按钮
+      $('#ed_icon').click(function () {
+        let url = "{:url('saveicon')}";
+        $.ajax({
+          type: 'get',
+          url: url,
+          data: {
+            user_id: $('#user_id').val(),
+            path: $('#icon').attr("src")
+          },
+          dataType: 'json',
+          success: function (res) {
+            layer.msg(res.msg);
+          }
+        });
+      })
+
+
+      //自定义验证规则
+      form.verify({
+        user_name: function (value) {
+          if (value.length < 5)
+            return "输入长度5以上用户名";
+        }
+        , nick_name: function (value) {
+          if (value.length < 2)
+            return "输入长度2以上昵称";
+        }
+        , user_pwd: [
+          /^[A-Za-z0-9]{6,}$/
+          , '输入6位以上密码'
+        ]
+        , user_email: [
+          /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/
+          , '输入正确邮箱格式'
+        ]
+        , user_regtime: [
+          /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d$/
+          , '输入注册时间'
+        ]
+        , user_lv: [
+          /^[1-9]\d*|0$/
+          , '输入等级'
+        ]
+        , user_point: [
+          /^[1-9]\d*|0$/
+          , '输入积分'
+        ]
+        , user_money: [
+          /^[1-9]\d*|0$/
+          , '输入金钱'
+        ]
+      });
+    });
+  </script>
+</body>
+
+</html>

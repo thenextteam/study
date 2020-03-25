@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+  <script type="text/javascript" src="__ADMINL__/jquery/jquery-3.4.1.min.js"></script>
+  <title>Document</title>
+  <style>
+    .layui-layout-body {
+      padding: 1rem;
+    }
+
+    .add_btn {
+      text-align: center;
+      /* margin:0 auto; */
+    }
+
+  </style>
+</head>
+
+<body class="layui-layout-body ">
+  <form class="layui-form layui-form-pane" action="" method="POST">
+    {volist name="comment" id="comment"}
+      <!-- start -->
+      <!-- <div class="layui-form-item">
+        <label class="layui-form-label">优先级</label>
+        <div class="layui-input-inline">
+          <input type="text" name="art_top" lay-verify="art_top" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$article.art_top}">
+        </div>
+      </div> -->
+      <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block" id="member">
+          {if condition="$comment.com_status == 0"}
+          <input type="radio" name="com_status" value="0" title="正常" checked>
+          <input type="radio" name="com_status" value="1" title="删除">
+          {else /}
+          <input type="radio" name="com_status" value="0" title="正常">
+          <input type="radio" name="com_status" value="1" title="删除"  checked>
+          {/if}
+        </div>
+      </div>
+      <!-- end -->
+      <div class="layui-form-item add_btn">
+        <button class="layui-btn" lay-submit="" lay-filter="save_user">提交</button>
+        <button class="layui-btn" lay-submit="" type="reset">重置</button>
+      </div>
+      {/volist}
+  </form>
+
+
+  <script src="__ADMINL__/layui.js"></script>
+  <script>
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+      var form = layui.form
+        , laydate = layui.laydate
+        , upload = layui.upload;
+
+      laydate.render({
+        elem: '#go_time',
+        type: 'datetime'
+        , trigger: 'click'
+      });
+
+
+
+      //监听提交
+      form.on('submit(save_user)', function (data) {
+        let url = "{:url('edit')}";
+        data.field['com_id'] = '{$comment.com_id}';
+        let post = JSON.stringify(data.field);
+        console.log(url, post);
+        $.ajax({
+          type: 'post',
+          url: url,
+          data: 'post=' + post,
+          dataType: 'json',
+          success: function (json) {
+            layer.msg(json.msg, { time: 500 }, function () {
+              var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+              parent.layer.close(index); //再执行关闭
+              parent.layui.table.reload('comment', { page: { curr: 1 } });
+            });
+          }
+        });
+        return false;
+      });
+    });
+  </script>
+</body>
+
+</html>

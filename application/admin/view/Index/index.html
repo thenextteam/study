@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STUDY_SNS</title>
+    <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+    <style>
+        .layui-side .layui-side-scroll .layui-nav .layui-nav-item a .layui-icon {
+            font-size: 1.1rem;
+            margin-right: 0.5rem;
+        }
+
+        .my_input {
+            background-color: white;
+            display: block;
+            color: white;
+        }
+    </style>
+</head>
+<body class="layui-layout-body">
+    <!-- 导航栏 -->
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">STUDY_SNS</div>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item"><a href="">前台页面</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                            
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">基本资料</a></dd>
+                        <dd><a href="">修改密码</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="">退出</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-this">
+                        <a href="" target="my_ifr">
+                            <i class="layui-icon layui-icon-home"></i>
+                            <span>主页</span>
+                        </a>
+
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="{:url('Users/users')}" target="my_ifr">
+                            <i class="layui-icon layui-icon-user"></i>
+                            <span>用户列表</span>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="{:url('Articles/articles')}" target="my_ifr">
+                            <i class="layui-icon layui-icon-align-right"></i>
+                            <span>文章列表</span>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="{:url('Comments/comments')}" target="my_ifr">
+                            <i class="layui-icon layui-icon-reply-fill"></i>
+                            <span>回复列表</span>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="{:url('Boards/boards')}" target="my_ifr">
+                            <i class="layui-icon layui-icon-template-1"></i>
+                            <span>版块列表</span>
+                        </a>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="{:url('Atypes/atypes')}" target="my_ifr">
+                            <i class="layui-icon layui-icon-align-right"></i>
+                            <span>类别列表</span>
+                        </a>
+                    </li>
+                    <!-- <li class="layui-nav-item">
+                        <a href="{:url('Atypes/atype')}" target="my_ifr">
+                            <i class="layui-icon layui-icon-file-b"></i>
+                            <span>文件列表</span>
+                        </a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body" style=" background-color: #f2f2f2;overflow:hidden" scrolling="no">
+            <!-- 内容主体区域 -->
+            <!-- <div style="padding: 15px;">内容主体区域</div> -->
+            <iframe src="" frameborder="0" id="my_ifr" name="my_ifr" width="100%" height="100%"
+                scrolling="yes"></iframe>
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            <p style="float:right">©copyright2019</p>
+        </div>
+    </div>
+    <script src="__ADMINL__/layui.js"></script>
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+
+        });
+
+        window.onload = function () {
+            // var rt=document.getElementById("my_ifr");
+
+            // alert(rt);
+        }
+    </script>
+</body>
+
+</html>

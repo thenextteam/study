@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>登录页面</title>
+    <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+    <script type="text/javascript" src="__ADMINL__/jquery/jquery-3.4.1.min.js">
+
+    </script>
+    <style>
+        body {
+            /* background-size: 100%;
+            height: 100%;
+            width: 100%; */
+            background: url("__ADMINL__/images/sky.jpg") no-repeat;
+        }
+
+        .login {
+            /* padding: 70px; */
+            background-color: rgb(255, 255, 255);
+            width: 450px;
+            height: 450px;
+            margin: 0 auto;
+            margin-top: calc((100vh - 500px)/2);
+            /* margin-top: 220px; */
+            border-radius: 15px;
+            box-shadow: 5px 5px 30px #838B8B;
+        }
+
+        .layui-input {
+            margin: 0 auto;
+            border-radius: 5px;
+            margin-top: 10px;
+            width: 80%;
+        }
+
+        .login_top {
+            text-align: center;
+            border-radius: 15px 15px 0px 0px;
+            width: 100%;
+            height: 45%;
+            background-color: #2b2b36;
+        }
+
+        .login_center {
+            width: 100%;
+            height: 35%;
+            padding: 30px;
+            box-sizing: border-box;
+            background-color: #2b2b36;
+        }
+
+        .login_buttom {
+            border-radius: 0px 0px 15px 15px;
+            width: 100%;
+            height: 20%;
+            background-color: #3EA751;
+        }
+
+        .login_btn {
+            width: 100%;
+            text-align: center;
+            border-radius: 0px 0px 15px 15px;
+            height: 100%;
+            outline: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            background-color: #3EA751;
+            transition: all 0.5s;
+        }
+
+        .login_btn:hover {
+            background-color: crimson;
+        }
+
+        span {
+            color: lightslategrey;
+            font-size: 15px;
+        }
+
+        .img {
+            display: block;
+            margin: 0 auto;
+            padding-top: 45px;
+            padding-bottom: 10px
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body ">
+    <form class="layui-form" action="{:url('postLogin')}" method="post">
+        <div class="login layui-form-item">
+            <div class="login_top" style="box-sizing: border-box">
+                <img src="__ADMINL__/images/study.png" alt="" height="150" class="img" >
+                <span>欢迎回来</span>
+            </div>
+            <div class="login_center">
+                <input type="text" name="username" required lay-verify="name" placeholder="用户名" autocomplete="off"
+                    class="layui-input">
+                <input type="password" name="password" required lay-verify="password" placeholder="密码"
+                    autocomplete="off" class="layui-input">
+            </div>
+            <div class="login_buttom layui-form-item">
+                <input lay-submit="" lay-filter="login_user" class="login_btn" value="Login" type="submit"></input>
+            </div>
+        </div>
+    </form>
+
+    <script src="__ADMINL__/layui.js"></script>
+    <script>
+        layui.use('form', function () {
+            var form = layui.form;
+
+            //监听提交
+            form.on('submit(login_user)', function (data) {
+                let url = "{:url('postLogin')}";
+                let post = JSON.stringify(data.field);
+                console.log(url, post);
+                $.ajax({
+                    type: 'post',
+                    url: url,
+                    data: 'post=' + post,
+                    dataType: 'json',
+                    success: function (json) {
+                        console.log(json);
+                        if (json.status == 1) {
+                            layer.msg(json.msg, {
+                                    icon: 1,
+                                    time: 1500 //1.5秒关闭（如果不配置，默认是3秒）
+                                },function () {
+                                    location.href = json.url;
+                                });
+                        } else {
+                            layer.msg(json.msg, {
+                                    icon: 2,
+                                    time: 1500 //1.5秒关闭（如果不配置，默认是3秒）
+                                }, function () {
+                                return false;
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+
+            form.verify({
+                name: [
+                    /^.{1,10}$/,
+                    '请输入管理员名'
+                ],
+                password: [
+                    /^[A-Za-z0-9]{2,20}$/,
+                    '请输入密码'
+                ]       
+            });
+        });
+    </script>
+</body>
+
+</html>
