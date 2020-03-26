@@ -28,6 +28,18 @@ class ArticleController extends Controller
         }
         $id = Request::instance()->param('aid/d');
         $Article = Article::get($id);
+
+        //版块积分要求
+        if($Article->Board->board_th>0){
+            if(!Session::get('UserId')){
+                return $this->error('该版块需要积分大于'.$Article->Board->board_th.'分，请先登录', url('Login/index'));
+            }
+            else if(User::get(Session::get('UserId'))->user_point<$Article->Board->board_th){
+                return $this->error('该版块需要积分大于'.$Article->Board->board_th.'分，您的积分：'.User::get(Session::get('UserId'))->user_point.'分，不足以进入该版块');
+            }
+        }
+        
+
         //正常状态
         if(isset($Article)&&($Article->art_status=="0"||$Article->art_status=="2")){
             //暂用，无条件的，每刷新一次 浏览次数+1
@@ -93,6 +105,14 @@ class ArticleController extends Controller
         $pars=$Request->post('par');
         $pararr=explode('|', $pars);
 
+        //判断回复内容是否为空
+        if(trim(str_replace('&nbsp;','',strip_tags(htmlspecialchars_decode($Request->post('comcontent')))))==""){ 
+            //无文字，且内容不是仅图片
+            if(substr_count($Request->post('comcontent'),'lt;img')==0){
+                return $this->error('回复内容不能为空！', $Request->header('referer'));
+            }
+        }
+        
         //如果是锁定帖子则不允许回复
         $Article = Article::get($pararr[0]);
         if($Article->art_status=="2"){
@@ -138,7 +158,8 @@ class ArticleController extends Controller
 
         // 添加数据
         if(!$Comment->validate(true)->save()){
-            return $this->error('回复失败：'.$Comment->getError());
+            // return $this->error('回复失败：'.$Comment->getError());
+            return $this->error('回复失败');
         }
 
         //只有非本人回复才会提醒
@@ -150,7 +171,8 @@ class ArticleController extends Controller
             $Rremind->art_id = $pararr[0];
 
             if(!$Rremind->validate(true)->save()){
-                return $this->error('回复失败：'.$Rremind->getError());
+                // return $this->error('回复失败：'.$Rremind->getError());
+                return $this->error('回复失败');
             }
 
             //回复楼层的时候，也要通知层主
@@ -162,7 +184,8 @@ class ArticleController extends Controller
                 $Rremind->art_id = $pararr[0];
     
                 if(!$Rremind->validate(true)->save()){
-                    return $this->error('回复失败：'.$Rremind->getError());
+                    // return $this->error('回复失败：'.$Rremind->getError());
+                    return $this->error('回复失败');
                 }
             }
         }
@@ -204,7 +227,7 @@ class ArticleController extends Controller
         $Article->art_lasttime = date('Y-m-d H:i:s', time());
     	//数据更新
     	if(!$Article->validate()->save()){
-    		return $this->error('修改失败'.$Article->getError());
+    		return $this->error('修改失败');
     	}else{
     		return $this->success('修改成功',url('Article/index?aid='.$id));
         }

@@ -12,7 +12,7 @@
         <div class="pocon">
             <div class="postuser">
                 <div class="wanum">查看: <span>{$Article->getData('art_view')}</span>|回复: <span>{$Article->GetComNum($Article->art_id)}</span></div>
-                <div class="usi"><img src="__ADMIN__/study/img/userimg/{$Article->User->user_img}" alt="" width="125" height="125" /></div>
+                <div class="usi"><a href="{:url('User/index?uid='.$Article->User->user_id)}"><img src="__ADMIN__/study/img/userimg/{$Article->User->user_img}" alt="" width="125" height="125" /></a></div>
                 <div class="userxin">TA今天的心情<br />{$Article->User->getSign($Article->User->user_id)}</div>
                 <div class="userdays">签到天数: {$Article->User->user_days} 天</div>
                 <div class="userlv">{$Article->User->user_lv}</div>
@@ -23,9 +23,10 @@
                 <div>积分 <span>{$Article->User->user_point}</span></div>
             </div>
             <div class="posttcon">
-                <div class="posttitle">[<a href="">{$Article->Atype->atype_name}</a>]{$Article->getData('art_title')}</div>
+                <div class="posttitle">[<a href="{:url('Board/index?bid='.$Article->art_board_id.'&oid=0&page=1&atype='.$Article->atype_id)}">{$Article->Atype->atype_name}</a>]{$Article->getData('art_title')}</div>
                 <div class="useratime"><div><span><a href="{:url('User/index?uid='.$Article->User->user_id)}">{$Article->User->nick_name}</a></span>　　发表于 <span>{$Article->getData('art_time')}</span></div><div class="lounum"><span>1</span><sup>#</sup></div></div>
                 <p class="edtime">本帖子最后于<span>{$Article->getData('art_lasttime')}</span>编辑</p>
+                {if condition="$Article->art_status==2"}<div class="lock"><img src="__ADMIN__/study/img/lock.gif" alt="帖子被锁定" title="帖子被锁定" />该帖子已被锁定，仅限查看</div>{/if}
                 <div class="postf">
                     {$Article->getData('art_content')|htmlspecialchars_decode}
                 </div>
@@ -71,7 +72,7 @@
         <!-- 回复的楼层模板 -->
         <div class="pocon">
             <div class="postuser">
-                <div class="usi"><img src="__ADMIN__/study/img/userimg/{$comment->User->user_img}" alt="" width="125" height="125" /></div>
+                <div class="usi"><a href="{:url('User/index?uid='.$comment->User->user_id)}"><img src="__ADMIN__/study/img/userimg/{$comment->User->user_img}" alt="" width="125" height="125" /></a></div>
                 <div class="userxin">TA今天的心情<br />{$comment->User->getSign($comment->User->user_id)}</div>
                 <div class="userdays">签到天数: {$comment->User->user_days} 天</div>
                 <div class="userlv">{$comment->User->user_lv}</div>
@@ -138,7 +139,10 @@
                 <div class="pret">
                     <a href="#editor" class="pretbtn" id="re{$comment->com_id}">回复</a>
                     {if condition="($comment->User->user_id==$Think.session.UserId)||($auth==true)"}
-                    <a href="{:url('delete?cid=' . $comment->com_id)}" class="del">删除</a>
+                        {switch name="$comment->com_status" }
+                            {case value="0"}<a href="{:url('delete?cid=' . $comment->com_id)}" class="del">删除</a>{/case}
+                        {/switch}
+                    
                     {/if}
                     {if condition="($auth==true&&$comment->com_status==0)"}
                     <a class="gop" id="cg{$comment->com_id}">评分</a>
@@ -150,6 +154,9 @@
         {/volist}
     </div>
     <div class="pagecon">{$page}</div>
+    {switch name="$Article->art_status"}
+        {case value="2"}{/case}
+        {default /}
         <!-- 回复框 -->
         <div class="rebox">
             <div class="rele"></div>
@@ -163,7 +170,7 @@
                 </form>
             </div>
         </div>
-
+    {/switch}
         {if condition="$auth==true"}
         <div class="topop">
             <form action="point" method="post" class="toform">

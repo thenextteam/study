@@ -38,6 +38,28 @@ class BoardController extends Controller
             $orderrule = "art_view desc";
         }
         $Board = Board::get($bid);
+        //版块积分要求
+        if($Board->board_th>0){
+            if(!Session::get('UserId')){
+                return $this->error('该版块需要积分大于'.$Board->board_th.'分，请先登录', url('Login/index'));
+            }
+            else if(User::get(Session::get('UserId'))->user_point<$Board->board_th){
+                return $this->error('该版块需要积分大于'.$Board->board_th.'分，您的积分：'.User::get(Session::get('UserId'))->user_point.'分，不足以进入该版块');
+            }
+        }
+
+        //判断atype是否属于该版块下，不是则显示全部
+        $s = [];
+        foreach($Board->atype as $key => $x){
+            $s[$key] = $x->atype_id;
+            
+        }
+        if(!in_array($atype,$s)){
+            $atype = null;
+        }
+        if(!$Board){
+            return $this->error('版块不存在！');
+        }
 
         //权限
         $auth = false;
@@ -55,14 +77,15 @@ class BoardController extends Controller
         //正常状态
         if(isset($Board)&&($Board->board_status!="1")){
             //获取当前板块下的所有帖子
-            $arts = $Board->article;
+            $arts = $Board->Article;
             if($atype==null){
                 $map['atype_id'] = ['>=',0];
             }
             else{
                 $map['atype_id'] = $atype;
             }
-            $arts = $Board->Article()->where('art_status',0)->whereOr('art_status',2)->where($map)->order($orderrule)->paginate(20,false, [
+            $where['art_status'] = [ ['=',0], ['=',2] ,'or'];
+            $arts = $Board->Article()->where($where)->where($map)->order($orderrule)->paginate(20,false, [
                 'query' => [
                     'bid' => $bid,
                     'oid' => $oid,

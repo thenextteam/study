@@ -27,6 +27,12 @@ class UserController extends Controller
         $fid = Request::instance()->param('fid/d');
         $type = Request::instance()->param('type');
         $User = User::get($uid);
+        if(!$User){
+            return $this->error('用户不存在！');
+        }
+        if($fid!=1&&$fid!=2&&$fid!=0){
+            $fid = 0;
+        }
         $this->assign('User',$User);
         //所有帖子
         if($fid==1){
@@ -87,7 +93,7 @@ class UserController extends Controller
             return $this->error('请先登录！'); 
         }
         $type = Request::instance()->param('type');
-        if($type==null||$type=='resume'){
+        if($type!='userimg'&&$type!='resume'){
             $type = 'resume';
         }
         else if($type=='userimg'){

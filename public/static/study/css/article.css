@@ -108,6 +108,19 @@
     text-align: center;
     color: #888;
 }
+.pocon .posttcon .lock{
+    color: #888;
+    font-weight: normal;
+    vertical-align: middle;
+    position: relative;
+    margin-left: 310px;
+    padding-left: 20px;
+}
+.pocon .posttcon .lock img{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
 .pocon .posttcon .postf{
     font-size: 15px;
     word-break: break-all;
