@@ -61,7 +61,7 @@ class FileController extends Controller
        $file_name = $Request->post('file_name');
       // 移动到框架应用根目录/public/uploads/ 目录下
       if($file){
-          $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads' . DS .'files');
+          $info = $file->validate(['ext'=>'rar'])->move(ROOT_PATH . 'public' . DS . 'uploads' . DS .'files');
           if($info){
               // 成功上传后 获取上传信息
               // 输出 jpg

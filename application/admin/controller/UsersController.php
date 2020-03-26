@@ -30,6 +30,7 @@ class UsersController extends BasicController
                     unset($get[$key]);
                 }
             }
+            $arr['msg']=$get;
             $users = $User->limit(($page-1)*$limit,$limit)->where($get)->select();
             $arr['count'] = $User->where($get)->count();
             $arr['data']=$users;
