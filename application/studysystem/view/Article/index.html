@@ -23,7 +23,7 @@
                 <div>积分 <span>{$Article->User->user_point}</span></div>
             </div>
             <div class="posttcon">
-                <div class="posttitle">[<a href="">{$Article->Atype->atype_name}</a>]{$Article->getData('art_title')}</div>
+                <div class="posttitle">[<a href="{:url('Board/index?bid='.$Article->art_board_id.'&oid=0&page=1&atype='.$Article->atype_id)}">{$Article->Atype->atype_name}</a>]{$Article->getData('art_title')}</div>
                 <div class="useratime"><div><span><a href="{:url('User/index?uid='.$Article->User->user_id)}">{$Article->User->nick_name}</a></span>　　发表于 <span>{$Article->getData('art_time')}</span></div><div class="lounum"><span>1</span><sup>#</sup></div></div>
                 <p class="edtime">本帖子最后于<span>{$Article->getData('art_lasttime')}</span>编辑</p>
                 {if condition="$Article->art_status==2"}<div class="lock"><img src="__ADMIN__/study/img/lock.gif" alt="帖子被锁定" title="帖子被锁定" />该帖子已被锁定，仅限查看</div>{/if}

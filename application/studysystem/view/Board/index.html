@@ -17,7 +17,7 @@
         {/if}
         <div class="blocktop">
             <div class="btleft">
-                <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->article()->where('art_status',0)->whereOr('art_status',2)->count('art_id')}</span><fuline>|</fuline><a class="fav" href="#">收藏本版</a>
+                <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->GetAllart($Board->board_id)}</span><fuline>|</fuline><a class="fav" href="#">收藏本版</a>
             </div>
             <div><a href="#editor"><button class="fabtn">发 帖 <span class="fa fa-pencil"></span></button></a></div>
         </div>

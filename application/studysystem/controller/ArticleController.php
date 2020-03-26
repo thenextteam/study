@@ -28,6 +28,18 @@ class ArticleController extends Controller
         }
         $id = Request::instance()->param('aid/d');
         $Article = Article::get($id);
+
+        //版块积分要求
+        if($Article->Board->board_th>0){
+            if(!Session::get('UserId')){
+                return $this->error('该版块需要积分大于'.$Article->Board->board_th.'分，请先登录', url('Login/index'));
+            }
+            else if(User::get(Session::get('UserId'))->user_point<$Article->Board->board_th){
+                return $this->error('该版块需要积分大于'.$Article->Board->board_th.'分，您的积分：'.User::get(Session::get('UserId'))->user_point.'分，不足以进入该版块');
+            }
+        }
+        
+
         //正常状态
         if(isset($Article)&&($Article->art_status=="0"||$Article->art_status=="2")){
             //暂用，无条件的，每刷新一次 浏览次数+1

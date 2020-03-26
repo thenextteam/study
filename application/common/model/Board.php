@@ -148,7 +148,8 @@ class Board extends Model
      */
     public function GetView($value)
     {
-        return db('article')->where('art_board_id',$value)->where('art_status',0)->sum('art_view');
+        $where['art_status'] = [ ['=',0], ['=',2] ,'or'];
+        return db('article')->where('art_board_id',$value)->where($where)->sum('art_view');
     }
 
     /**
@@ -157,7 +158,8 @@ class Board extends Model
     public function GetComnum($value)
     {
         //获取当前版块下的所有帖子
-        $arts = db('article')->where('art_board_id',$value)->where('art_status',0)->select();
+        $where['art_status'] = [ ['=',0], ['=',2] ,'or'];
+        $arts = db('article')->where('art_board_id',$value)->where($where)->select();
         $num = 0;
         //遍历每个帖子下的回复总数并进行相加
         foreach($arts as $art)
@@ -174,5 +176,14 @@ class Board extends Model
     public function tipnum($value)
     {
         return db('Tip')->where('board_id',$value)->where('tip_op',0)->count('tip_id');
+    }
+
+    /**
+     * 获取该版块所有帖子数量
+     */
+    public function GetAllart($value)
+    {
+        $where['art_status'] = [ ['=',0], ['=',2] ,'or'];
+        return $this->Article()->where($where)->count('art_id');
     }
 }
