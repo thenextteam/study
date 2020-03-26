@@ -5,7 +5,7 @@ use app\common\model\Bhead;
 use app\common\model\Atype;
 use think\Request;
 
-class BoardsController extends \think\Controller
+class BoardsController extends BasicController
 {
     public function boards()
     {

@@ -3,7 +3,7 @@ namespace app\admin\controller;
 use app\common\model\User;
 use think\Request;
 
-class UsersController extends \think\Controller
+class UsersController extends BasicController
 {
     public function users()
     {

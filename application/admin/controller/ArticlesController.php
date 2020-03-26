@@ -5,7 +5,7 @@ use app\common\model\Board;
 use app\common\model\Atype;
 use think\Request;
 
-class ArticlesController extends \think\Controller
+class ArticlesController extends BasicController 
 {
     public function articles()
     {

@@ -10,7 +10,7 @@ class BasicController extends \think\Controller
 
 public function CheckLogin(){
     if(!session('admin')){
-        $this->error('暂未登录，请重新登录',url('Login/login'));
+        $this->error('暂未登录，请重新登录',url('Login/index'));
     }
 }
 }

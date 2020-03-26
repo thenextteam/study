@@ -6,7 +6,7 @@ use app\common\model\Atype;
 use app\common\model\Article;
 use think\Request;
 
-class AtypesController extends \think\Controller
+class AtypesController extends BasicController
 {
     public function atypes()
     {

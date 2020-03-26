@@ -3,7 +3,7 @@ namespace app\admin\controller;
 use app\common\model\Comment;
 use think\Request;
 
-class CommentsController extends \think\Controller
+class CommentsController extends BasicController
 {
     public function Comments()
     {

@@ -1,0 +1,68 @@
+{extend name="template"/}
+{block name="title"}
+学习资料 - 学习论坛
+{/block}
+{block name="cssname"}file{/block}
+
+{block name="content"}
+<div class="crumb">
+  <a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a>
+  <fuline>></fuline>学习资料</a>
+</div>
+<div class="content">
+  <div class="upload">
+    <form action="upfile" enctype="multipart/form-data" method="post">
+      <a href="javascript:;" class="a-upload">
+        <input type="file" name="file" id="">选择文件
+      </a>
+      <div class="showFileName"></div>
+      <div class="fileerrorTip">请选择RAR文件上传</div>
+      <!-- <input type="file" name="file" /> <br> -->
+      <input type="text" name="file_name" placeholder="文件名称" required="required" />
+      <!-- <input type="text" name="file_name" placeholder="文件名称" required="required"/> -->
+      <button type="submit" class="up">上传</button>
+      <!-- <input type="submit" value="上传" /> -->
+    </form>
+  </div>
+  <div class="list">
+    <table cellspacing="0" cellpadding="0">
+      <tr class="th">
+        <td>文件名</td>
+        <td>上传者</td>
+        <td>上传时间</td>
+        <td></td>
+      </tr>
+      {volist name="file" id="file"}
+      <tr class="userrow">
+        <td> {$file['file_name']}</td>
+        <td> {$file['user_id']}</td>
+        <td> {$file['file_time']}</td>
+        <td>
+          <form action="downloadFile" enctype="multipart/form-data" method="post">
+            <input type="text" name="file_path" value="{$file['file_path']}" style="display: none;"/>
+            <input type="submit" value="下载" />
+          </form>
+        </td>
+      </tr>
+      {/volist}
+    </table>
+    <!-- 分页 -->
+    <div class="pagecon">{$page}</div>
+  </div>
+</div>
+<script>
+  $(".a-upload").on("change", "input[type='file']", function () {
+    var filePath = $(this).val();
+    if (filePath.indexOf("rar") != -1) {
+      $(".fileerrorTip").html("").hide();
+      var arr = filePath.split('\\');
+      var fileName = arr[arr.length - 1];
+      $(".showFileName").html(fileName);
+    } else {
+      $(".showFileName").html("");
+      $(".fileerrorTip").html("您未上传文件，或者您上传文件类型有误！").show();
+      return false
+    }
+  })
+</script>
+{/block}
