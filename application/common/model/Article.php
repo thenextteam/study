@@ -77,4 +77,51 @@ class Article extends Model
     {
         return ceil($value/10);
     }
+
+    // 时间处理
+    public function TimeHandle($targetTime)
+    {
+        // 今天最大时间
+        $targetTime = strtotime($targetTime);
+        $todayLast = strtotime(date('Y-m-d 23:59:59'));
+        $agoTimeTrue = time() - $targetTime;
+        $agoTime = $todayLast - $targetTime;
+        $agoDay = floor($agoTime / 86400);
+        
+        if ($agoTimeTrue < 60) {
+            $result = '刚刚';
+        } elseif ($agoTimeTrue < 3600) {
+            $result = (ceil($agoTimeTrue / 60)) . '分钟前';
+        } elseif ($agoTimeTrue < 3600 * 12) {
+            $result = (ceil($agoTimeTrue / 3600)) . '小时前';
+        } elseif ($agoDay == 0) {
+            $result = '今天 ' . date('H:i', $targetTime);
+        } elseif ($agoDay == 1) {
+            $result = '昨天 ' . date('H:i', $targetTime);
+        } elseif ($agoDay == 2) {
+            $result = '前天 ' . date('H:i', $targetTime);
+        } elseif ($agoDay > 2 && $agoDay < 5) {
+            $result = $agoDay . '天前 ' . date('H:i', $targetTime);
+        } else {
+            $format = date('Y') != date('Y', $targetTime) ? "Y-m-d H:i" : "m-d H:i";
+            $result = date($format, $targetTime);
+        }
+        return $result;
+    }
+
+    /**
+     * 判断是否已收藏
+     * @param artid 帖子ID
+     * @param userid 用户ID
+     */
+    public function isFav($artid,$userid)
+    {
+        $isfav = db('favorite')->where('user_id',$userid)->where('art_id',$artid)->count('favorite_id');
+        if($isfav>0){
+            //已收藏
+            return 1;
+        }
+        //未收藏
+        return 0;
+    }
 }

@@ -9,6 +9,7 @@ use app\common\model\Rremind;      // 引入回复提醒
 use app\common\model\Aremind;
 use app\common\model\Grade;
 use app\common\model\Tip;
+use app\common\model\Favorite;      // 引入收藏
 use think\Session;
 use think\Request;
 use think\Db;
@@ -489,5 +490,48 @@ class ArticleController extends Controller
             $msg['msg'] = "上传出错";
             return json($msg);
         }
+    }
+
+    //收藏帖子
+    public function fav()
+    {
+        //验证是否登录
+        if(!Session::get('UserId')){
+            return $this->error('请先登录');
+        }
+        $Request = Request::instance();
+        $aid = $Request->param('aid/d');
+        $Article = Article::get($aid);
+        if(!$Article){
+            return $this->error('帖子不存在！');
+        }
+        if((db('favorite')->where('user_id',Session::get('UserId'))->where('art_id',$aid)->count('favorite_id'))>0){
+            return $this->error('您已收藏此帖子！');
+        }
+        $Favorite = new Favorite;
+        $Favorite->user_id = Session::get('UserId');
+        $Favorite->art_id = $aid;
+        // 添加数据
+        if(!$Favorite->validate(true)->save()){
+            return $this->error('收藏失败');
+        }
+        return $this->success('收藏成功', $Request->header('referer'));
+    }
+
+    //取消收藏
+    public function canfav()
+    {
+        $Request = Request::instance();
+        $aid = $Request->param('aid');
+        //防止用户乱写aid
+        if(!Article::get($aid)){
+            return $this->error('帖子不存在！');
+        }
+        //在收藏表中执行删除操作
+        if((db('favorite')->where('user_id',Session::get('UserId'))->where('board_id',0)->where('art_id',$aid)->delete())==0){
+            return $this->error('取消收藏失败！');
+        }
+        return $this->success('取消收藏成功！');
+        
     }
 }

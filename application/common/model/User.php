@@ -135,6 +135,14 @@ class User extends Model
     }
 
     /**
+     * 关联收藏表
+     */
+    public function Favorite()
+    {
+        return $this->hasMany('Favorite','user_id','user_id');
+    }
+
+    /**
      * 获取用户心情
      */
     public function getSign($value)

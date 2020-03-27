@@ -17,7 +17,7 @@
         {/if}
         <div class="blocktop">
             <div class="btleft">
-                <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->GetAllart($Board->board_id)}</span><fuline>|</fuline><a class="fav" href="#">收藏本版</a>
+                <span class="blockna">{$Board->board_name}</span><fuline>|</fuline>帖子数：<span class="bloponum">{$Board->GetAllart()}</span><fuline>|</fuline>{if condition="$Board->isFav($Board->board_id,$Think.session.UserId)==0"}<a class="fav" href="favorite?bid={$Board->board_id}">收藏本版</a>{else /}<a class="fav" href="canfav?bid={$Board->board_id}">取消收藏</a>{/if}
             </div>
             <div><a href="#editor"><button class="fabtn">发 帖 <span class="fa fa-pencil"></span></button></a></div>
         </div>

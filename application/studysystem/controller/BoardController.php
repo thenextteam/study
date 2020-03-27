@@ -4,6 +4,7 @@ use think\Controller;
 use app\common\model\User;      // 引入用户
 use app\common\model\Board;      // 引入板块
 use app\common\model\Article;      // 引入帖子
+use app\common\model\Favorite;      // 引入收藏
 use think\Session;
 use think\Request;
 use think\Db;
@@ -38,6 +39,9 @@ class BoardController extends Controller
             $orderrule = "art_view desc";
         }
         $Board = Board::get($bid);
+        if(!$Board){
+            return $this->error('版块不存在！');
+        }
         //版块积分要求
         if($Board->board_th>0){
             if(!Session::get('UserId')){
@@ -56,9 +60,6 @@ class BoardController extends Controller
         }
         if(!in_array($atype,$s)){
             $atype = null;
-        }
-        if(!$Board){
-            return $this->error('版块不存在！');
         }
 
         //权限
@@ -110,6 +111,9 @@ class BoardController extends Controller
     {
         // 实例化请求信息
         $Request = Request::instance();
+        if(!Session::get('UserId')){
+            return $this->error('请先登录');
+        }
         //得到板块ID|当前登录的用户ID
         $pars = $Request->post('par');
         $pararr = explode('|', $pars);
@@ -137,7 +141,8 @@ class BoardController extends Controller
 
         // 添加数据
         if(!$Article->validate(true)->save()){
-            return $this->error('发布失败：'.$Article->getError());
+            // return $this->error('发布失败：'.$Article->getError());
+            return $this->error('发布失败');
         }
         return $this->success('发布成功', $Request->header('referer'));
     }
@@ -171,5 +176,48 @@ class BoardController extends Controller
             $msg['msg'] = "上传出错";
             return json($msg);
         }
+    }
+
+    //收藏版块
+    public function favorite()
+    {
+        //验证是否登录
+        if(!Session::get('UserId')){
+            return $this->error('请先登录');
+        }
+        $Request = Request::instance();
+        $bid = $Request->param('bid/d');
+        $Board = Board::get($bid);
+        if(!$Board){
+            return $this->error('版块不存在！');
+        }
+        if((db('favorite')->where('user_id',Session::get('UserId'))->where('board_id',$bid)->count('favorite_id'))>0){
+            return $this->error('您已收藏此版块！');
+        }
+        $Favorite = new Favorite;
+        $Favorite->user_id = Session::get('UserId');
+        $Favorite->board_id = $bid;
+        // 添加数据
+        if(!$Favorite->validate(true)->save()){
+            return $this->error('收藏失败');
+        }
+        return $this->success('收藏成功', $Request->header('referer'));
+    }
+
+    //取消收藏
+    public function canfav()
+    {
+        $Request = Request::instance();
+        $bid = $Request->param('bid');
+        //防止用户乱写bid
+        if(!Board::get($bid)){
+            return $this->error('版块不存在！');
+        }
+        //在收藏表中执行删除操作
+        if((db('favorite')->where('user_id',Session::get('UserId'))->where('art_id',0)->where('board_id',$bid)->delete())==0){
+            return $this->error('取消收藏失败！');
+        }
+        return $this->success('取消收藏成功！');
+        
     }
 }

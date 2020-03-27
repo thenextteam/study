@@ -23,9 +23,9 @@
                 <div>积分 <span>{$Article->User->user_point}</span></div>
             </div>
             <div class="posttcon">
-                <div class="posttitle">[<a href="{:url('Board/index?bid='.$Article->art_board_id.'&oid=0&page=1&atype='.$Article->atype_id)}">{$Article->Atype->atype_name}</a>]{$Article->getData('art_title')}</div>
-                <div class="useratime"><div><span><a href="{:url('User/index?uid='.$Article->User->user_id)}">{$Article->User->nick_name}</a></span>　　发表于 <span>{$Article->getData('art_time')}</span></div><div class="lounum"><span>1</span><sup>#</sup></div></div>
-                <p class="edtime">本帖子最后于<span>{$Article->getData('art_lasttime')}</span>编辑</p>
+                <div class="posttitle">[<a href="{:url('Board/index?bid='.$Article->art_board_id.'&oid=0&page=1&atype='.$Article->atype_id)}">{$Article->Atype->atype_name}</a>]{$Article->art_title}</div>
+                <div class="useratime"><div><span><a href="{:url('User/index?uid='.$Article->User->user_id)}">{$Article->User->nick_name}</a></span>　　发表于 <span>{$Article->TimeHandle($Article->art_time)}</span></div><div class="lounum"><span>1</span><sup>#</sup></div></div>
+                <p class="edtime">本帖子最后于<span>{$Article->TimeHandle($Article->getData('art_lasttime'))}</span>编辑</p>
                 {if condition="$Article->art_status==2"}<div class="lock"><img src="__ADMIN__/study/img/lock.gif" alt="帖子被锁定" title="帖子被锁定" />该帖子已被锁定，仅限查看</div>{/if}
                 <div class="postf">
                     {$Article->getData('art_content')|htmlspecialchars_decode}
@@ -55,6 +55,8 @@
                 </div>
                 {/if}
                 <div class="pret">
+                    
+                    {if condition="$Article->isFav($Article->art_id,$Think.session.UserId)==0"}<a href="fav?aid={$Article->art_id}" class="fav">收藏</a>{else /}<a href="canfav?aid={$Article->art_id}" class="fav">取消收藏</a>{/if}
                     <a href="#editor" class="pretbtn" id="re">回复</a>
                     {if condition="($Article->user_id == $Think.session.UserId)||($auth==true)"}
                     <a href="{:url('edit?aid=' . $Article->art_id)}">编辑</a>
@@ -85,13 +87,13 @@
             
                 
             <div class="posttcon postretcon">
-                <div class="useratime"><div><span><a href="{:url('User/index?uid='.$comment->User->user_id)}">{$comment->User->nick_name}</a></span>　　发表于 <span>{$comment->com_time}</span></div><div class="lounum"><span id="c{$comment->com_count}" name="c{$comment->com_count}">{$comment->com_count}</span><sup>#</sup></div></div>
+                <div class="useratime"><div><span><a href="{:url('User/index?uid='.$comment->User->user_id)}">{$comment->User->nick_name}</a></span>　　发表于 <span>{$Article->TimeHandle($comment->com_time)}</span></div><div class="lounum"><span id="c{$comment->com_count}" name="c{$comment->com_count}">{$comment->com_count}</span><sup>#</sup></div></div>
 
                 {if condition="$comment->re_com_id!=''"}
                 <div class="whatre">
                     <div class="lkh"></div>
                     <blockquote>
-                        <p>{$comment::get($comment->re_com_id)->User->nick_name} 发表于 {$comment::get($comment->re_com_id)->com_time}</p>
+                        <p>{$comment::get($comment->re_com_id)->User->nick_name} 发表于 {$Article->TimeHandle($comment::get($comment->re_com_id)->com_time)}</p>
                         <div>
                         {switch name="$comment::get($comment->re_com_id)->com_status" }
                             {case value="0"}{$comment::get($comment->re_com_id)->com_content|htmlspecialchars_decode}{/case}

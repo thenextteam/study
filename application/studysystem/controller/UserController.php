@@ -3,6 +3,7 @@ namespace app\studysystem\controller;     //命名空间，也说明了文件所
 use think\Controller;
 use app\common\model\User;      // 引入用户
 use app\common\model\Article;      // 引入帖子
+use app\common\model\Board;      // 引入版块
 use app\common\model\Comment;      // 引入回复
 use app\common\model\Friend;      // 引入好友
 use think\Session;
@@ -30,7 +31,7 @@ class UserController extends Controller
         if(!$User){
             return $this->error('用户不存在！');
         }
-        if($fid!=1&&$fid!=2&&$fid!=0){
+        if($fid!=1&&$fid!=2&&$fid!=3&&$fid!=0){
             $fid = 0;
         }
         $this->assign('User',$User);
@@ -76,10 +77,47 @@ class UserController extends Controller
         else if($fid==2){
             //所有好友（不分页）
         }
+        else if($fid==3){
+            //所有好友（不分页）
+            $uid = Request::instance()->param('uid/d');
+            $fid = Request::instance()->param('fid/d');
+            $type = Request::instance()->param('type');
+            if(($type!='fboa'&&$type!='fart')||$type==null){
+                $type = 'fboa';
+            }
+            if($type=='fboa'){
+                $favoriteboard = $User->Favorite()->where('art_id',0)->paginate(10,false, [
+                    'query' => [
+                        'uid' => $uid,
+                        'fid' => 3,
+                        'type' => 'fboa',
+                        ]
+                    ]);
+                // 获取分页显示
+                $page = $favoriteboard->render();
+                $this->assign('favoriteboard', $favoriteboard);
+            }
+            else if($type=='fart'){
+                $favoriteart = $User->Favorite()->where('board_id',0)->paginate(10,false, [
+                    'query' => [
+                        'uid' => $uid,
+                        'fid' => 3,
+                        'type' => 'fart',
+                        ]
+                    ]);
+                // 获取分页显示
+                $page = $favoriteart->render();
+                $this->assign('favoriteart', $favoriteart);
+            }
+            
+            $this->assign('page', $page);
+            $this->assign('type', $type);
+        }
         $this->assign('fid',$fid);
         return $this->fetch();
     }
 
+    //修改个人信息
     public function edit()
     {
         //获取当前用户
@@ -103,6 +141,7 @@ class UserController extends Controller
         return $this->fetch();
     }
 
+    //更新信息
     public function upload(){
         // 获取表单上传文件
         $Request = Request::instance();
@@ -124,6 +163,7 @@ class UserController extends Controller
         }
     }
 
+    //添加好友
     public function newfriend()
     {
         $Request = Request::instance();
@@ -155,6 +195,37 @@ class UserController extends Controller
         return $this->error('申请失败');
     }
 
+    //取消收藏
+    public function canfav()
+    {
+        $Request = Request::instance();
+        $bid = $Request->param('bid');
+        $aid = $Request->param('aid');
+        //$bid不为空则是取消收藏版块
+        if($bid!=null){
+            //防止用户乱写bid
+            if(!Board::get($bid)){
+                return $this->error('版块不存在！');
+            }
+            //在收藏表中执行删除操作
+            if((db('favorite')->where('user_id',Session::get('UserId'))->where('art_id',0)->where('board_id',$bid)->delete())==0){
+                return $this->error('取消收藏失败！');
+            }
+            return $this->success('取消收藏成功！');
+        }
+        //$aid不为空则是取消收藏帖子
+        else if($aid!=null){
+            //防止用户乱写aid
+            if(!Article::get($aid)){
+                return $this->error('帖子不存在！');
+            }
+            //在收藏表中执行删除操作
+            if((db('favorite')->where('user_id',Session::get('UserId'))->where('board_id',0)->where('art_id',$aid)->delete())==0){
+                return $this->error('取消收藏失败！');
+            }
+            return $this->success('取消收藏成功！');
+        }
+    }
     //备用暂留
     // public function newfriend()
     // {

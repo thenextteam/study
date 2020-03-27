@@ -58,7 +58,7 @@ class Board extends Model
     }
     /**
      * 获取版主名字
-     * $value user_id
+     * @param value 用户ID
      */
     public function GetBAname($value)
     {
@@ -145,6 +145,7 @@ class Board extends Model
 
     /**
      * 获取帖子总浏览数
+     * @param value 版块ID
      */
     public function GetView($value)
     {
@@ -154,6 +155,7 @@ class Board extends Model
 
     /**
      * 获取版块的总回复数
+     * @param value 版块ID
      */
     public function GetComnum($value)
     {
@@ -172,6 +174,7 @@ class Board extends Model
 
     /**
      * 版块下举报数量
+     * @param value 版块ID
      */
     public function tipnum($value)
     {
@@ -181,9 +184,25 @@ class Board extends Model
     /**
      * 获取该版块所有帖子数量
      */
-    public function GetAllart($value)
+    public function GetAllart()
     {
         $where['art_status'] = [ ['=',0], ['=',2] ,'or'];
         return $this->Article()->where($where)->count('art_id');
+    }
+
+    /**
+     * 判断是否已收藏
+     * @param boardid 版块ID
+     * @param userid 用户ID
+     */
+    public function isFav($boardid,$userid)
+    {
+        $isfav = db('favorite')->where('user_id',$userid)->where('board_id',$boardid)->count('favorite_id');
+        if($isfav>0){
+            //已收藏
+            return 1;
+        }
+        //未收藏
+        return 0;
     }
 }

@@ -32,6 +32,7 @@
             <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=0')}" {if condition="($fid==0)"} class="display" {/if}>个人资料</a></li>
             <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=1')}" {if condition="($fid==1)"} class="display" {/if}>所有帖子</a></li>
             <li><a href="{:url('User/index?uid='.$User->user_id.'&fid=2')}" {if condition="($fid==2)"} class="display" {/if}>{if condition="($User->user_id==$Think.session.UserId)"}我{else /}他{/if}的好友</a></li>
+            {if condition="($User->user_id==$Think.session.UserId)"}<li><a href="{:url('User/index?uid='.$User->user_id.'&fid=3')}" {if condition="($fid==3)"} class="display" {/if}>我的收藏</a></li>{/if}
         </ul>
         <div class="ucon">
             {if condition="($fid==0)"}
@@ -145,6 +146,45 @@
                     {/case}
                 {/switch}
             {/volist}
+            </div>
+            {elseif condition="($fid==3)"}
+            <ul class="aandr">
+                <li>
+                    <a {if condition="($type == 'fboa')"}class="displaybtn"{/if} href="{:url('User/index?uid='.$User->user_id.'&fid=3&type=fboa')}">版块</a>
+                </li>
+                <fuline>|</fuline>
+                <li>
+                    <a {if condition="($type == 'fart')"}class="displaybtn"{/if} href="{:url('User/index?uid='.$User->user_id.'&fid=3&type=fart')}">帖子</a>
+                </li>
+            </ul>
+            <div>
+                <table class="uarttable" cellspacing="0" cellpadding="0">
+                    <tr class="th">
+                        <td class="arttitle">{if condition="($type == 'fboa')"}版块名称{else /}帖子标题{/if}</td>
+                        <td>收藏时间</td>
+                        <td>操作</td>
+                    </tr>
+                {if condition="($type == 'fboa')"}
+                {volist name="$favoriteboard" id="favo"}
+                    <tr>
+                    <td class="arttitle">{$favo->Board->board_name}</td>
+                    <td>{$favo->Board->TimeHandle($favo->favorite_time)}</td>
+                    <td><a href="canfav?bid={$favo->board_id}">取消收藏</a></td>
+                    </tr>
+                {/volist}
+                {/if}
+
+                {if condition="($type == 'fart')"}
+                {volist name="$favoriteart" id="favo"}
+                    <tr>
+                    <td class="arttitle">{$favo->Article->art_title}</td>
+                    <td>{$favo->Board->TimeHandle($favo->favorite_time)}</td>
+                    <td><a href="canfav?aid={$favo->art_id}">取消收藏</a></td>
+                    </tr>
+                {/volist}
+                {/if}
+                </table>
+                <div class="pagecon">{$page}</div>
             </div>
             {/if}
         </div>

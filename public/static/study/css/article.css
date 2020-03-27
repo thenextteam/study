@@ -181,11 +181,16 @@
     bottom: 20px;
     width: 800px;
 }
-.pocon .posttcon .pret .pretbtn{
+.pocon .posttcon .pret .pretbtn,.pocon .posttcon .pret .fav{
     display: inline-block;
     width: 48px;
     text-align: right;
     background: url(../img/reimg.gif) no-repeat;
+}
+.pocon .posttcon .pret .fav{
+    background: url(../img/fav.gif) no-repeat!important;
+    padding-left: 20px;
+    width: auto!important;
 }
 .pocon .posttcon .pret>a{
     display: inline-block;
@@ -290,4 +295,7 @@
     text-overflow:ellipsis;
     white-space: nowrap;
     text-align: left;
+}
+.gop{
+    cursor: pointer;
 }
