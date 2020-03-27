@@ -73,7 +73,7 @@ class BoardsController extends BasicController
                 $data['status'] = '0';
                 $board = $Board->data(['board_name'=>$post['board_name'],'board_info'=>$post['board_info']
                 ,'board_top'=>$post['board_top'] ,'bhead_id'=>$post['bhead_id'] ,'board_th'=>$post['board_th']
-                ,'board_status'=>$post['board_status'],'board_img'=>'/uploads/board/base.png'
+                ,'board_status'=>$post['board_status'],'board_img'=>'/thinkphp/public/uploads/board/base.png'
                 ]);
                 $data['msg'] = '添加成功';
                 $board = $Board->save();
@@ -167,7 +167,7 @@ class BoardsController extends BasicController
             if($info){
                 // 成功上传后 获取上传信息
                 // 输出 jpg
-                $path = '/uploads/board/'.$info->getSaveName();
+                $path = '/thinkphp/public/uploads/board/'.$info->getSaveName();
                 $data = [];
                 $data['code'] = 0;
                 $data['path'] = $path;

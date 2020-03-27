@@ -27,13 +27,13 @@
           <input class="layui-input" name="id" id="searchID" autocomplete="off" placeholder="ID">
         </div>
         <div class="layui-inline">
-          <input class="layui-input" name="atypename" id="searchAtypeName" autocomplete="off" placeholder="文件名称">
+          <input class="layui-input" name="swipername" id="searchSwiperName" autocomplete="off" placeholder="活动名称">
         </div>
       </div>
       <button class="layui-btn" data-type="reload" style="margin-left: 1rem">搜索</button>
     </div>
 
-    <table class="layui-hide" id="file_table" lay-filter="file"></table>
+    <table class="layui-hide" id="swiper_table" lay-filter="swiper"></table>
   </div>
   <!-- 头部工具栏 -->
   <script type="text/html" id="toolbarDemo">
@@ -54,27 +54,28 @@
       var table = layui.table;
 
       table.render({
-        elem: '#file_table'
-        , id: 'file'
+        elem: '#swiper_table'
+        , id: 'swiper'
         // ,height: 'full-100'
-        , url: '{:url("Files/getFiles")}'//数据接口
-        , title: '分类列表'
+        , url: '{:url("Swipers/getSwipers")}'//数据接口
+        , title: '活动列表'
         , page: true //开启分页
         , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
         , totalRow: true //开启合计行
         , cols: [[ //表头
           { type: 'checkbox', fixed: 'left' }
-          , { field: 'file_id', title: 'ID', width: '5%', sort: true, fixed: 'left' }
-          , { field: 'file_name', title: '文件名', width: '20%' }
-          , { field: 'file_path', title: '文件路径', width: '25%' }
-          , { field: 'file_time', title: '上传时间', sort: true,width: '15%' }
-          , { field: 'nick_name', title: '上传者', sort: true,width: '10%' }
+          , { field: 'sp_id', title: 'ID', width: '5%', sort: true, fixed: 'left' }
+          , { field: 'sp_name', title: '活动名称', width: '20%' }
+          , { field: 'art_id', title: '文章ID',sort: true, width: '10%' }
+          , { field: 'art_title', title: '文章标题', width: '20%' }
+          , { field: 'sp_img', title: '图片地址', width: '15%' }
+          , { field: 'sp_time', title: '上传时间', sort: true,width: '10%' }
           , {
-            field: 'file_status', title: '状态', sort: true, width: '8%', templet: function (res) {
-              if (res.file_status == 0) {
+            field: 'sp_status', title: '状态', sort: true, width: '8%', templet: function (res) {
+              if (res.sp_status == 0) {
                 return "<p style='color:#009688'>正常</p>"
               } else {
-                return "<p style='color:#FF6666'>删除</p>"
+                return "<p style='color:#FF6666'>关闭</p>"
               }
             }
           }
@@ -82,7 +83,7 @@
         ]]
       });
       //监听头工具栏事件-----添加
-      table.on('toolbar(atype)', function (obj) {
+      table.on('toolbar(swiper)', function (obj) {
         var checkStatus = table.checkStatus(obj.config.id);
         switch (obj.event) {
           case 'add':
@@ -90,13 +91,13 @@
             // layer.alert(JSON.stringify(data));
             layer.open({
               type: 2 //此处以iframe举例
-              , title: '添加分类'
-              , area: ['400px', '400px']
+              , title: '添加活动'
+              , area: ['700px', '380px']
               , shade: 0
               , maxmin: true
               , scrollbar: true
               , resize: true
-              , content: "{:url('Atypes/addAtype')}"
+              , content: "{:url('Swipers/addSwiper')}"
               , zIndex: layer.zIndex //重点1
               , success: function (layero) {
                 layer.setTop(layero); //重点2
@@ -113,78 +114,25 @@
               list[i] = data[i].tid;
             }
             console.log(JSON.stringify(list));
-            $.ajax({
-              url: "getUsers",
-              type: 'post',
-              traditional: true,
-              data: { array: JSON.stringify(list) },
-              dataType: 'json',
-              success: function (json) {
-                layer.msg(json.msg, { time: 500 }, function () {
-                  table.reload('ticket', {
-                    method: 'get',
-                    page: {
-                      curr: 1 //重新从第 1 页开始
-                    },
-                    where: {}
-                  });
-                });
-              }
-            });
             break;
         };
       });
 
       //监听行工具事件---编辑---删除
-      table.on('tool(file)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      table.on('tool(swiper)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
         var data = obj.data //获得当前行数据
           , layEvent = obj.event; //获得 lay-event 对应的值
         if (layEvent === 'detail') {
-          layer.open({
-            type: 2 //此处以iframe举例
-            , title: '文章信息'
-            , area: ['800px', '480px']
-            , shade: 0
-            , scrollbar: true
-            , maxmin: true
-            , content: "{:url('Atypes/articlesShow')}?atype_id=" + data.atype_id
-            , zIndex: layer.zIndex //重点1
-            , success: function (layero) {
-              layer.setTop(layero); //重点2
-            }
-          });
         } else if (layEvent === 'del') {
-          layer.confirm('真的删除行么', function (index) {
-            //向服务端发送删除指令
-            $.ajax({
-              url: "deleteBoard",
-              type: 'get',
-              data: {
-                'board_id': data.board_id,
-              },
-              dataType: 'json',
-              success: function (json) {
-                  layer.msg(json.msg, { time: 500 }, function () {
-                  layer.close(index);
-                  table.reload('board', {
-                    method: 'get',
-                    page: {
-                      curr: 1 //重新从第 1 页开始
-                    },
-                    where: {}
-                  });
-              });
-              }
-            });
-          });
+         
         } else if (layEvent === 'edit') {
           layer.open({
             type: 2 //此处以iframe举例
-            , title: '修改分类信息'
-            , area: ['350px', '200px']
+            , title: '修改活动信息'
+            , area: ['700px', '400px']
             , shade: 0
             , maxmin: true
-            , content: "editFile?file_id=" + data.file_id
+            , content: "editSwiper?sp_id=" + data.sp_id
             , zIndex: layer.zIndex //重点1
             , success: function (layero) {
               layer.setTop(layero); //重点2
@@ -196,17 +144,17 @@
       var $ = layui.$, active = {
         reload: function () {
           var searchID = $('#searchID');
-          var searchAtypeName = $('#searchAtypeName');
+          var searchSwiperName = $('#searchSwiperName');
           //执行重载
-          table.reload('file', {
+          table.reload('swiper', {
             page: {
               curr: 1 //重新从第 1 页开始
               // ,limit:10
             }
             , where: {
               search: {
-                "file_id": searchID.val(),
-                "file_name": searchAtypeName.val(),
+                "sp_id": searchID.val(),
+                "sp_name": searchSwiperName.val(),
               }
               // ,pal:{
               //     page:1,

@@ -122,7 +122,7 @@ class UsersController extends BasicController
                 ,'user_regtime'=>$post['user_regtime'] ,'user_lasttime'=>$post['user_regtime']
                 ,'user_lv'=>$post['user_lv'] ,'user_point'=>$post['user_point']
                 ,'user_lv'=>$post['user_lv'] ,'user_money'=>$post['user_money']
-                ,'user_grant'=>$post['user_grant'],'user_img'=>'/uploads/icons/base.png'
+                ,'user_grant'=>$post['user_grant'],'user_img'=>'/thinkphp/public/uploads/icons/base.jpg'
                 ]);
                 $data['msg'] = '添加成功';
                 $user = $User->save();
@@ -160,7 +160,7 @@ class UsersController extends BasicController
             if($info){
                 // 成功上传后 获取上传信息
                 // 输出 jpg
-                $path = '/uploads/icons/'.$info->getSaveName();
+                $path = '/thinkphp/public/uploads/icons/'.$info->getSaveName();
                 $data = [];
                 $data['code'] = 0;
                 $data['path'] = $path;

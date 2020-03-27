@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+  <script type="text/javascript" src="__ADMINL__/jquery/jquery-3.4.1.min.js"></script>
+  <title>Document</title>
+  <style>
+    .layui-layout-body {
+      padding: 1rem;
+    }
+
+    .add_btn {
+      /* margin:0 auto; */
+    }
+
+    .left {
+      float: left;
+      padding-right: 2rem;
+      border-right: 1px solid #d1d1d1;
+    }
+
+    .right {
+      float: left;
+      margin-left: 2rem;
+    }
+
+    .icons {
+      border: 1px solid #d1d1d1;
+      padding: 0.3rem;
+    }
+
+    .upload {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body class="layui-layout-body ">
+  <form class="layui-form layui-form-pane" action="" method="POST">
+    {volist name="swiper" id="swiper"}
+    <div class="left">
+      <!-- start -->
+      <div class="layui-form-item" style="display: none;">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-inline">
+          <input type="text" name="sp_id" id="sp_id" lay-verify="sp_id" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$swiper.sp_id}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">活动名称</label>
+        <div class="layui-input-inline">
+          <input type="text" name="sp_name" lay-verify="sp_name" placeholder="请输入" autocomplete="off"
+            class="layui-input" value="{$swiper.sp_name}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">文章ID</label>
+        <div class="layui-input-inline">
+          <input type="text" name="art_id" lay-verify="art_id" placeholder="请输入" autocomplete="off" 
+          class="layui-input" value="{$swiper.art_id}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">发布时间</label>
+        <div class="layui-input-inline">
+          <input type="text" name="sp_time" id="sp_time" lay-verify="sp_time" class="layui-input" autocomplete="off"
+            class="layui-input" value="{$swiper.sp_time}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">状态</label>
+        <div class="layui-input-block" id="member">
+          {if condition="$swiper.sp_status == 0"}
+          <input type="radio" name="sp_status" value="0" title="正常" checked>
+          <input type="radio" name="sp_status" value="1" title="关闭">
+          {else /}
+          <input type="radio" name="sp_status" value="0" title="正常">
+          <input type="radio" name="sp_status" value="1" title="关闭" checked>
+          {/if}
+        </div>
+      </div>
+      <!-- end -->
+      <div class="layui-form-item add_btn">
+        <button class="layui-btn" lay-submit="" lay-filter="save">提交</button>
+        <button class="layui-btn" lay-submit="" type="reset">重置</button>
+      </div>
+      {/volist}
+  </form>
+  </div>
+  <div class="right">
+    <div class="icons">
+      <img src="{$swiper.sp_img}" id="icon" width="225" height="160">
+    </div>
+    <div class="upload">
+      <button type="button" class="layui-btn" id="test1">
+        <i class="layui-icon">&#xe67c;</i>上传图片
+      </button>
+    </div>
+    <div class="upload">
+      <button type="button" class="layui-btn  layui-btn-disabled" lay-filter="save_icon" id="ed_icon" disabled>
+        <i class="layui-icon">&#xe9aa;</i>&emsp;更新&emsp;
+      </button>
+    </div>
+  </div>
+
+
+  <script src="__ADMINL__/layui.js"></script>
+  <script>
+    layui.use(['form', 'layedit', 'laydate', 'upload'], function () {
+      var form = layui.form
+        , laydate = layui.laydate
+        , upload = layui.upload;
+
+      laydate.render({
+        elem: '#sp_time',
+        type: 'datetime'
+        , trigger: 'click'
+      });
+
+      //执行实例
+      var uploadInst = upload.render({
+        elem: '#test1' //绑定元素
+        , url: "{:url('upload')}" //上传接口
+        , size: 1024
+        , done: function (res) {
+          //上传完毕回调
+          if (res.code > 0) {
+            return layer.msg('上传失败')
+          } else {
+            $('#icon').attr("src", res.path);
+            $('#ed_icon').removeClass("layui-btn-disabled");
+            $('#ed_icon').attr("disabled", false);
+          }
+        }
+        , error: function () {
+          //请求异常回调
+        }
+      });
+
+      //监听提交
+      form.on('submit(save)', function (data) {
+        let url = "{:url('edit')}";
+        data.field['sp_id'] = '{$swiper.sp_id}';
+        let post = JSON.stringify(data.field);
+        console.log(url, post);
+        $.ajax({
+          type: 'post',
+          url: url,
+          data: 'post=' + post,
+          dataType: 'json',
+          success: function (json) {
+            layer.msg(json.msg, { time: 500 }, function () {
+              var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+              parent.layer.close(index); //再执行关闭
+              parent.layui.table.reload('swiper', { page: { curr: 1 } });
+            });
+          }
+        });
+        return false;
+      });
+
+      //更新按钮
+      $('#ed_icon').click(function () {
+        let url = "{:url('saveicon')}";
+        $.ajax({
+          type: 'get',
+          url: url,
+          data: {
+            sp_id: $('#sp_id').val(),
+            path: $('#icon').attr("src")
+          },
+          dataType: 'json',
+          success: function (res) {
+            layer.msg(res.msg);
+          }
+        });
+      })
+
+
+      //自定义验证规则
+      form.verify({
+        sp_name: function (value) {
+          if (value.length < 2)
+            return "输入长度2以上";
+        }
+        , art_id: [
+          /^[1-9]\d*|0$/
+          , '输入等级'
+        ]
+        , sp_time: [
+          /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])\s+(20|21|22|23|[0-1]\d):[0-5]\d:[0-5]\d$/
+          , '输入时间'
+        ]
+      });
+    });
+  </script>
+</body>
+
+</html>

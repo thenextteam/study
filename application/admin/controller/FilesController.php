@@ -48,4 +48,28 @@ class FilesController extends BasicController
         }
         echo json_encode($arr);
     }
+
+    public function editFile(){
+        $File = new File();
+        if(Request::instance()->has('file_id','get')){
+            $file_id = $_GET['file_id'];
+            $file = $File->where('file_id='.$file_id)->select();
+            $this->assign('file',$file);
+            return view('editFile');
+        }
+    }    
+
+    public function edit(){
+        $File = new File();
+        $data = [];
+        if(Request::instance()->has('post','post')){
+            $post = json_decode($_POST['post'], 1);
+            $file_id = $post['file_id'];
+            $file = $File->isUpdate(true,['file_id='.$file_id])->save($post);
+            $data['msg'] = '修改成功';
+        }else{
+            $data['msg'] = '修改失败';
+        }
+        echo json_encode($data);
+    }    
 }
