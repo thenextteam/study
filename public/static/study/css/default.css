@@ -237,3 +237,38 @@ fuline{
 .layui-unselect p{
     margin-top: 0px;
 }
+
+.fixed{
+    width: 100%;
+    position: fixed;
+    top: 0px;
+    opacity: 0.8;
+    z-index: 1000;
+}
+
+.backtop{
+    width: 40px;
+    height: 40px;
+    background: url(../img/top.png) no-repeat 0px -40px;
+    position: fixed;
+    right: 60px;
+    bottom: 120px;
+    opacity: 0;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+.backtop:hover{
+    background: url(../img/top.png) no-repeat 0px 0px;
+    transition: all 0.5s ease;
+}
+.tophidden{
+    opacity: 0;
+    transition: all 0.5s ease;
+    cursor:not-allowed;
+    pointer-events:none;
+}
+.topdisplay{
+    opacity: 0.8;
+    transition: all 0.5s ease;
+    cursor: pointer;
+}

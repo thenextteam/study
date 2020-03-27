@@ -243,6 +243,7 @@
     border: 1px solid #ddd;
     box-sizing: border-box;
     display: flex;
+    margin-top: 0px;
 }
 .rebox .newinput{
     margin: 20px 0px 0px 20px;
@@ -296,6 +297,34 @@
     white-space: nowrap;
     text-align: left;
 }
-.gop{
+.gop,.tip{
     cursor: pointer;
+}
+.poreser{
+    width: 1000px;
+    margin: 0px auto;
+    margin-top: 50px;
+    padding-left: 180px;
+    box-sizing: border-box;
+}
+.poreser span{
+    font-size: 12px;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    border: #ddd 1px solid;
+    border-bottom: #fff 1px solid;
+    margin-bottom: -1px;
+    padding: 0px 25px;
+    border-radius: 25px 25px 0 0;
+}
+
+.poreser span .canc{
+    font-size: 12px;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #125999;
+}
+.poreser span .canc:hover{
+    text-decoration: underline;
 }

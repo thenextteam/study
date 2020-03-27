@@ -17,6 +17,7 @@ class LoginController extends Controller
             $nowuser = new User;
             // $nowuser::get(Session::get('UserId'));
             $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+            return $this->success('登录成功', url('Index/index'));
         }
         else{
             $this->assign('nowuser','');

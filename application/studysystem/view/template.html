@@ -64,6 +64,27 @@
 
     <div class="footer"></div>
 
+    <div class="backtop tophidden"></div>
+
+    <script>
+        $(function(){
+            $(window).scroll(function(){
+                if($(window).scrollTop()>=160){
+                    $('.nav').addClass('fixed');
+                    $('.backtop').addClass('topdisplay').removeClass('tophidden');
+                }
+                else{
+                    $('.nav').removeClass('fixed');
+                    $('.backtop').removeClass('topdisplay').addClass('tophidden');
+                }
+            })
+            $(".backtop").click(function () {
+                var speed=200;//滑动的速度
+                $('body,html').animate({ scrollTop: 0 }, speed);
+                return false;
+            });
+        })
+    </script>
 
 </body>
 </html>

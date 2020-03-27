@@ -57,7 +57,7 @@
                 <div class="pret">
                     
                     {if condition="$Article->isFav($Article->art_id,$Think.session.UserId)==0"}<a href="fav?aid={$Article->art_id}" class="fav">收藏</a>{else /}<a href="canfav?aid={$Article->art_id}" class="fav">取消收藏</a>{/if}
-                    <a href="#editor" class="pretbtn" id="re">回复</a>
+                    <a href="#editor" class="pretbtn pfirst" id="re">回复</a>
                     {if condition="($Article->user_id == $Think.session.UserId)||($auth==true)"}
                     <a href="{:url('edit?aid=' . $Article->art_id)}">编辑</a>
                     <a href="{:url('deleteArt?aid=' . $Article->art_id)}">删除</a>
@@ -139,7 +139,7 @@
                 </div>
                 {/if}
                 <div class="pret">
-                    <a href="#editor" class="pretbtn" id="re{$comment->com_id}">回复</a>
+                    <a href="#editor" class="pretbtn" id="re{$comment->com_id}" name="{$comment->com_count}">回复</a>
                     {if condition="($comment->User->user_id==$Think.session.UserId)||($auth==true)"}
                         {switch name="$comment->com_status" }
                             {case value="0"}<a href="{:url('delete?cid=' . $comment->com_id)}" class="del">删除</a>{/case}
@@ -159,6 +159,7 @@
     {switch name="$Article->art_status"}
         {case value="2"}{/case}
         {default /}
+        <div class="poreser"><span class="fcount">回复楼主</span></div>
         <!-- 回复框 -->
         <div class="rebox">
             <div class="rele"></div>
@@ -237,7 +238,14 @@
                 //多次点击回复楼层所必须的处理
                 $i=$i.substring($i.lastIndexOf('|')+1, 0);
 
-                $newname=$i+$(this).attr('id').replace('re','');
+                $cid=$(this).attr('id').replace('re','');
+                $newname=$i+$cid;
+                if(!$(this).hasClass('pfirst')){
+                    $('.fcount').text('回复'+$(this).attr('name')+'楼').append("<a class='canc'>取消</a>");
+                }
+                else{
+                    $('.fcount').text('回复楼主');
+                }
                 $('#par').attr('value',$newname);
             })
             //删除确认
@@ -302,6 +310,10 @@
                         }
                     });
                 }
+            })
+
+            $("body").on('click', ".canc",function(){
+                $('.pfirst').click();
             })
         })
     </script>
