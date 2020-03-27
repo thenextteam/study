@@ -191,7 +191,7 @@ class BoardController extends Controller
         if(!$Board){
             return $this->error('版块不存在！');
         }
-        if((db('favorite')->where('user_id',Session::get('UserId'))->where('board_id',$bid)->count('favorite_id'))>0){
+        if((db('favorite')->where('user_id',Session::get('UserId'))->where('board_id',$bid)->where('art_id',0)->count('favorite_id'))>0){
             return $this->error('您已收藏此版块！');
         }
         $Favorite = new Favorite;

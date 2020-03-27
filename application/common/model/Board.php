@@ -197,7 +197,7 @@ class Board extends Model
      */
     public function isFav($boardid,$userid)
     {
-        $isfav = db('favorite')->where('user_id',$userid)->where('board_id',$boardid)->count('favorite_id');
+        $isfav = db('favorite')->where('user_id',$userid)->where('board_id',$boardid)->where('art_id',0)->count('favorite_id');
         if($isfav>0){
             //已收藏
             return 1;

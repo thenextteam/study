@@ -505,7 +505,7 @@ class ArticleController extends Controller
         if(!$Article){
             return $this->error('帖子不存在！');
         }
-        if((db('favorite')->where('user_id',Session::get('UserId'))->where('art_id',$aid)->count('favorite_id'))>0){
+        if((db('favorite')->where('user_id',Session::get('UserId'))->where('art_id',$aid)->where('board_id',0)->count('favorite_id'))>0){
             return $this->error('您已收藏此帖子！');
         }
         $Favorite = new Favorite;
