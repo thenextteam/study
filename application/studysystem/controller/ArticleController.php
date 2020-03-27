@@ -468,7 +468,7 @@ class ArticleController extends Controller
         $imags = [];
         $errors = [];
         foreach($files as $file){
-            // 移动图片到/public/uploads/ 目录下
+            // 移动图片到/public/uploads/artimgs/ 目录下
             $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . 'artimgs');
             if($info){
                // 成功上传 图片地址加入到数组
