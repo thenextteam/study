@@ -31,6 +31,7 @@ class ArticlesController extends BasicController
                     unset($get[$key]);
                 }
             }
+            // $arr['msg']=$get;
             $articles = $Article->alias('a')
                         ->join('user u','a.user_id=u.user_id')
                         ->join('board b','a.art_board_id=b.board_id')
