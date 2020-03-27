@@ -78,7 +78,6 @@ class UserController extends Controller
             //所有好友（不分页）
         }
         else if($fid==3){
-            //所有好友（不分页）
             $uid = Request::instance()->param('uid/d');
             $fid = Request::instance()->param('fid/d');
             $type = Request::instance()->param('type');
@@ -86,7 +85,7 @@ class UserController extends Controller
                 $type = 'fboa';
             }
             if($type=='fboa'){
-                $favoriteboard = $User->Favorite()->where('art_id',0)->paginate(10,false, [
+                $favoriteboard = $User->Favorite()->where('art_id',0)->order('favorite_time desc')->paginate(10,false, [
                     'query' => [
                         'uid' => $uid,
                         'fid' => 3,
@@ -98,7 +97,7 @@ class UserController extends Controller
                 $this->assign('favoriteboard', $favoriteboard);
             }
             else if($type=='fart'){
-                $favoriteart = $User->Favorite()->where('board_id',0)->paginate(10,false, [
+                $favoriteart = $User->Favorite()->where('board_id',0)->order('favorite_time desc')->paginate(10,false, [
                     'query' => [
                         'uid' => $uid,
                         'fid' => 3,
