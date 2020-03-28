@@ -25,21 +25,25 @@ class ArticlesController extends BasicController
 
         if(Request::instance()->has('search','get')){
             $get = $_GET['search'];
-            foreach ($get as $key=>$value)
-            {
-                if(empty($value)){  
-                    unset($get[$key]);
-                }
-            }
-            // $arr['msg']=$get;
+            // foreach ($get as $key=>$value)
+            // {
+            //     if(empty($value)){  
+            //         unset($get[$key]);
+            //     }
+            // }
+            $art_id = $get['art_id'];
+            $art_title = $get['art_title'];
+            $map = [];
+            $art_id==""?:$map['art_id']=['=',$art_id];
+            $art_title==""?:$map['art_title']=['LIKE','%'.$art_title.'%'];
             $articles = $Article->alias('a')
                         ->join('user u','a.user_id=u.user_id')
                         ->join('board b','a.art_board_id=b.board_id')
                         ->join('atype t','a.atype_id=t.atype_id')
                         ->limit(($page-1)*$limit,$limit)
-                        ->where($get)
+                        ->where($map)
                         ->select();
-            $arr['count'] = $Article->where($get)->count();
+            $arr['count'] = $Article->where($map)->count();
             $arr['data']=$articles;
         }else{
             $articles = $Article->alias('a')

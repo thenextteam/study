@@ -25,18 +25,17 @@ class FilesController extends BasicController
 
         if(Request::instance()->has('search','get')){
             $get = $_GET['search'];
-            foreach ($get as $key=>$value)
-            {
-                if(empty($value)){  
-                    unset($get[$key]);
-                }
-            }
+            $file_id = $get['file_id'];
+            $file_name = $get['file_name'];
+            $map = [];
+            $file_id==""?:$map['file_id']=['=',$file_id];
+            $file_name==""?:$map['file_name']=['LIKE','%'.$file_name.'%'];
             $files = $File->alias('f')
                       ->join('user u','f.user_id=u.user_id')
                       ->limit(($page-1)*$limit,$limit)
-                      ->where($get)
+                      ->where($map)
                       ->select();
-            $arr['count'] = $File->where($get)->count();
+            $arr['count'] = $File->where($map)->count();
             $arr['data']=$files;
         }else{
             $files = $File->alias('f')

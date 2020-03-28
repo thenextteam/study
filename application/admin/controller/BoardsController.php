@@ -27,19 +27,18 @@ class BoardsController extends BasicController
         if(Request::instance()->has('search','get')){
             $get = $_GET['search'];
            
-            foreach ($get as $key=>$value)
-            {
-                if(empty($value)){  
-                    unset($get[$key]);
-                }
-            }
+            $board_id = $get['board_id'];
+            $board_name = $get['board_name'];
+            $map = [];
+            $board_id==""?:$map['board_id']=['=',$board_id];
+            $board_name==""?:$map['board_name']=['LIKE','%'.$board_name.'%'];
             $arr['msg']= $get;
             $boards = $Board->alias('b')
                       ->join('bhead bh','b.bhead_id=bh.bhead_id')
                       ->limit(($page-1)*$limit,$limit)
-                      ->where($get)
+                      ->where($map)
                       ->select();
-            $arr['count'] = $Board->where($get)->count();
+            $arr['count'] = $Board->where($map)->count();
             $arr['data']=$boards;
         }else{
             $boards = $Board->alias('b')

@@ -24,19 +24,19 @@ class CommentsController extends BasicController
 
         if(Request::instance()->has('search','get')){
             $get = $_GET['search'];
-            foreach ($get as $key=>$value)
-            {
-                if(empty($value)){  
-                    unset($get[$key]);
-                }
-            }
-            // $comments = $Comment->limit(($page-1)*$limit,$limit)->where($get)->select();
+            $com_id = $get['com_id'];
+            $user_id = $get['user_id'];
+            $art_id = $get['art_id'];
+            $map = [];
+            $com_id==""?:$map['com_id']=['=',$com_id];
+            $user_id==""?:$map['user_id']=['=',$user_id];
+            $art_id==""?:$map['art_id']=['=',$art_id];
             $comments = $Comment->alias('c')
                         ->join('user u','c.user_id=u.user_id')
                         ->limit(($page-1)*$limit,$limit)
-                        ->where($get)
+                        ->where($map)
                         ->select();
-            $arr['count'] = $Comment->where($get)->count();
+            $arr['count'] = $Comment->where($map)->count();
             $arr['data']=$comments;
         }else{
             $comments = $Comment->alias('c')

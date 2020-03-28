@@ -24,15 +24,17 @@ class UsersController extends BasicController
 
         if(Request::instance()->has('search','get')){
             $get = $_GET['search'];
-            foreach ($get as $key=>$value)
-            {
-                if(empty($value)){  
-                    unset($get[$key]);
-                }
-            }
-            $arr['msg']=$get;
-            $users = $User->limit(($page-1)*$limit,$limit)->where($get)->select();
-            $arr['count'] = $User->where($get)->count();
+            $user_id = $get['user_id'];
+            $user_name = $get['user_name'];
+            $nick_name = $get['nick_name'];
+            $user_email = $get['user_email'];
+            $map = [];
+            $user_id==""?:$map['user_id']=['=',$user_id];
+            $user_name==""?:$map['user_name']=['LIKE','%'.$user_name.'%'];
+            $nick_name==""?:$map['nick_name']=['LIKE','%'.$nick_name.'%'];
+            $user_email==""?:$map['user_email']=['LIKE','%'.$user_email.'%'];
+            $users = $User->limit(($page-1)*$limit,$limit)->where($map)->select();
+            $arr['count'] = $User->where($map)->count();
             $arr['data']=$users;
         }else{
             $users = $User->limit(($page-1)*$limit,$limit)->select();

@@ -25,18 +25,17 @@ class SwipersController extends BasicController
 
         if(Request::instance()->has('search','get')){
             $get = $_GET['search'];
-            foreach ($get as $key=>$value)
-            {
-                if(empty($value)){  
-                    unset($get[$key]);
-                }
-            }
+            $sp_id = $get['sp_id'];
+            $sp_name = $get['sp_name'];
+            $map = [];
+            $sp_id==""?:$map['sp_id']=['=',$sp_id];
+            $sp_name==""?:$map['sp_name']=['LIKE','%'.$sp_name.'%'];
             $swipers = $Swiper->alias('s')
                       ->join('article a','s.art_id=a.art_id')
                       ->limit(($page-1)*$limit,$limit)
-                      ->where($get)
+                      ->where($map)
                       ->select();
-            $arr['count'] = $Swiper->where($get)->count();
+            $arr['count'] = $Swiper->where($map)->count();
             $arr['data']=$swipers;
         }else{
             $swipers = $Swiper->alias('s')

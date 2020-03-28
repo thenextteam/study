@@ -27,6 +27,9 @@
           <input class="layui-input" name="username" id="searchUsername" autocomplete="off" placeholder="用户名">
         </div>
         <div class="layui-inline">
+          <input class="layui-input" name="nickname" id="searchNickname" autocomplete="off" placeholder="昵称">
+        </div>
+        <div class="layui-inline">
           <input class="layui-input" name="email" id="searchEmail" autocomplete="off" placeholder="邮箱">
         </div>
       </div>  
@@ -196,6 +199,7 @@
             reload: function(){
               var searchID = $('#searchID');
               var searchUsername = $('#searchUsername');
+              var searchNickname = $('#searchNickname');
               var searchEmail = $('#searchEmail');
               //执行重载
               table.reload('user', {
@@ -208,6 +212,7 @@
                       "user_id": searchID.val(),
                       "user_name":searchUsername.val(),
                       "user_email":searchEmail.val(),
+                      "nick_name":searchNickname.val(),
                     }
                 }
               });

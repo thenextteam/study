@@ -27,18 +27,17 @@ class AtypesController extends BasicController
 
         if(Request::instance()->has('search','get')){
             $get = $_GET['search'];
-            foreach ($get as $key=>$value)
-            {
-                if(empty($value)){  
-                    unset($get[$key]);
-                }
-            }
+            $atype_id = $get['atype_id'];
+            $atype_name = $get['atype_name'];
+            $map = [];
+            $atype_id==""?:$map['atype_id']=['=',$atype_id];
+            $atype_name==""?:$map['atype_name']=['LIKE','%'.$atype_name.'%'];
             $atypes = $Atype->alias('a')
                       ->join('board b','a.board_id=b.board_id')
                       ->limit(($page-1)*$limit,$limit)
-                      ->where($get)
+                      ->where($map)
                       ->select();
-            $arr['count'] = $Atype->where($get)->count();
+            $arr['count'] = $Atype->where($map)->count();
             $arr['data']=$atypes;
         }else{
             $atypes = $Atype->alias('a')
