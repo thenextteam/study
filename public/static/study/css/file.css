@@ -2,25 +2,25 @@
 
 /* 内容 */
 .content{
-  margin: auto;
-  width: 1000px;
-  background: #fff;
-  margin-top: 20px;
-  margin-bottom: 40px;
-  display: flex;
-  flex-wrap: wrap;
+    margin: auto;
+    width: 1000px;
+    background: #fff;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .upload{
-  width: 100%;
-  /* background-color: #98FB98; */
-  /* float: left; */
+    width: 100%;
+    /* background-color: #98FB98; */
+    /* float: left; */
 }
 .upload input{
-  margin:15px 0;
+    margin:15px 0;
 }
 .up{
-  background-color: #4CAF50;
+    background-color: #4CAF50;
     border: none;
     color: white;
     border-radius: 5px;
@@ -32,70 +32,73 @@
     cursor: pointer;
 }
 .showFileName{
-  margin-top: 10px;
-  font-size: 16px;
-  color:#4CAF50;
+    margin-top: 10px;
+    font-size: 16px;
+    color:#4CAF50;
 }
 .fileerrorTip{
-  margin-top: 10px;
-  font-size: 16px;
+    margin-top: 10px;
+    font-size: 16px;
 }
 .list{
-  margin-top: 20px;
+    margin-top: 20px;
 }
 .content .list table{
-  width: 100%;
+    width: 100%;
 }
 .content .list table .th td{
-  border-top: 1px solid #aaa;
-  padding-top: 3px;
-  padding-bottom: 3px;
+    border-top: 1px solid #aaa;
+    padding-top: 3px;
+    padding-bottom: 3px;
 }
 .content .list table td{
-  padding-left: 10px;
-  padding-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .content .list table .userrow{
   background: #eee;
   height: 40px;
 }
+.content .list table .userrow:nth-child(odd){
+  background: #fff;
+}
 
 .content .list table .signrow td{
-  background: #fff;
-  padding: 5px 10px;
+    background: #fff;
+    padding: 5px 10px;
 }
 /*a  upload */
 .a-upload {
-  font-size: 16px;
-  padding: 4px 10px;
-  height: 20px;
-  line-height: 20px;
-  position: relative;
-  cursor: pointer;
-  color: #888;
-  background: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  overflow: hidden;
-  display: inline-block;
-  *display: inline;
-  *zoom: 1
+    font-size: 16px;
+    padding: 4px 10px;
+    height: 20px;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1
 }
 
 .a-upload  input {
-  position: absolute;
-  font-size: 100px;
-  right: 0;
-  top: 0;
-  opacity: 0;
-  filter: alpha(opacity=0);
-  cursor: pointer
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer
 }
 
 .a-upload:hover {
-  color: #444;
-  background: #eee;
-  border-color: #ccc;
-  text-decoration: none
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none
 }

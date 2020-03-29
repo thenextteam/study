@@ -52,6 +52,8 @@ class IndexController extends Controller
         $allArt = Db::name('Article')->where('art_status',0)->field(['art_content','text'],true)->count('art_id');
         //所有会员
         $allUser = Db::name('User')->count('user_id');
+        //轮播
+        $cars = Db::name('swiper')->limit(5)->order('sp_time desc')->select();
         $Bhead = new Bhead;
         $Board = new Board;
         $bheads = $Bhead->where('bhead_status',0)->order('bhead_top desc')->select();
@@ -63,6 +65,7 @@ class IndexController extends Controller
         $this->assign('allUser',$allUser);
         $this->assign('bheads',$bheads);
         $this->assign('Board',$Board);
+        $this->assign('cars',$cars);
         return $this->fetch(); 
     }
 

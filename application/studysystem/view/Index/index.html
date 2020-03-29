@@ -3,13 +3,37 @@
 学习论坛
 {/block}
 {block name="cssname"}index{/block}
+{block name="addcss"}<link rel="stylesheet" href="__ADMIN__/study/css/car.css">{/block}
 
 {block name="content"}
 <div class="crumb"><a href="{:url('Index/index')}"><span class="fa fa-home fa-lg"></span></a><fuline>></fuline>论坛</div>
     <div class="content">
         <div class="cnews">今日：{$Board->GetNewArt('all')}<fuline>|</fuline>昨日：{$Board->GetNewArt('yes')}<fuline>|</fuline>帖子：{$allArt}<fuline>|</fuline>会员：{$allUser}<fuline>|</fuline>欢迎新会员：<a href="{:url('User/index?uid='.$newUser['user_id'])}">{$newUser['nick_name']}</a></div>
         <div class=" conb conb1">
-            <div class="lcar"></div>
+            <div class="lcar">
+                <div class="information-box">
+                    <div class="information-main clearfix">
+                        <div class="information-main-fl">
+                            <div class="bd">
+                                <ul>
+                                    {volist name="$cars" id="car" offset="0" length='5'}
+                                    <li>
+                                        <img src="{$car['sp_img']}" alt="" width="450">
+                                        <div class="information-main-back"></div>
+                                        <p class="information-main-text">
+                                            <span>{$car['sp_name']}</span>
+                                            <a href="{:url('Article/index?aid='.$car['art_id'])}" class="main-btn">查看详情</a>
+                                        </p>
+                                    </li>
+                                    {/volist}
+                                </ul>
+                            </div>
+                            <a href="javascript:void(0)" class="prev"></a>
+                            <a href="javascript:void(0)" class="next"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="rlist">
                 <div class="listtitle">
                     <div>排行榜</div>
@@ -102,4 +126,14 @@
     </script>
 
     <script type="text/javascript" src="__CHAT__/chat.js"></script>
+    <script type="text/javascript" src="__ADMIN__/study/js/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript">
+        jQuery(".information-main-fl").slide({
+            mainCell: ".bd ul",
+            effect: "leftLoop",
+            autoPlay: true,
+            trigger: "click",
+            mouseOverStop: false
+        });//轮播
+    </script>
 {/block}
