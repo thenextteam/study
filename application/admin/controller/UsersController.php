@@ -158,7 +158,7 @@ class UsersController extends BasicController
         $file = request()->file('file');
         // 移动到框架应用根目录/public/uploads/ 目录下
         if($file){
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads' . DS .'icons');
+            $info = $file->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS .'icons');
             if($info){
                 // 成功上传后 获取上传信息
                 // 输出 jpg

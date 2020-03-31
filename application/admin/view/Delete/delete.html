@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+  <meta name="renderer" content="webkit">
+  <style>
+
+  </style>
+</head>
+
+<body style="padding: 15px;">
+  <div style="background-color: white; padding: 10px">
+    <form class="layui-form" action="delSave" enctype="multipart/form-data" method="post">
+      <!-- <input type="submit" value="清除" /> -->
+      <div class="layui-form-item">
+        <select name="time" lay-verify="">
+          <option value="">请选择时间</option>
+          <option value="86400">1天前</option>
+          <option value="604800‬">1周前</option>
+          <option value="2592000">1个月前</option>
+        </select>
+      </div>
+      <button class="layui-btn" lay-submit lay-filter="formDemo">清除</button>
+    </form>
+
+
+
+    <script src="__ADMINL__/layui.js"></script>
+    <script>
+      layui.use('form', function () {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+          // layer.msg(JSON.stringify(data.field));
+          // return false;
+        });
+      });
+    </script>
+</body>
+
+</html>
