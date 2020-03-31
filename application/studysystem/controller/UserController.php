@@ -116,7 +116,7 @@ class UserController extends Controller
         return $this->fetch();
     }
 
-    //修改个人信息
+    //修改个人信息页面
     public function edit()
     {
         //获取当前用户
@@ -141,7 +141,43 @@ class UserController extends Controller
     }
 
     //更新信息
-    public function upload(){
+    public function save()
+    {
+        // 获取表单上传文件
+        $Request = Request::instance();
+        $uid = $Request->param('id');
+        $User = User::get($uid);
+        if(!$User){
+            return $this->error('用户不存在');
+        }
+        if($Request->param('changepwd')==1){
+            if(md5($Request->param('opwd'))!=$User->user_pwd){
+                return $this->error('原密码不正确！');
+            }
+            //记忆旧密码，当用户还是使用旧密码时返回成功提示
+            $oldpwd = $User->user_pwd;
+            
+            $User->user_pwd = md5($Request->param('npwd'));
+        }
+        else if(($Request->param('changepwd')==0)&&($User->user_email == $Request->param('email'))&&($User->nick_name == $Request->param('name'))){
+            return $this->success('修改成功', $Request->header('referer'));
+        }
+        $User->user_email = $Request->param('email');
+        $User->nick_name = $Request->param('name');
+        
+    	if(!$User->validate()->save()){
+            //密码没有修改时还是返回修改成功
+            if($oldpwd==md5($Request->param('npwd'))){
+                return $this->success('修改成功', $Request->header('referer'));
+            }
+            return $this->error('修改失败！'.$User->getError());
+        }
+        return $this->success('修改成功', $Request->header('referer'));
+    }
+
+    //更新头像
+    public function upload()
+    {
         // 获取表单上传文件
         $Request = Request::instance();
         $file = request()->file('image');
@@ -157,7 +193,7 @@ class UserController extends Controller
                 return $this->success('上传成功', $Request->header('referer'));
             }else{
                 // 上传失败获取错误信息
-                return $this->error('上传失败',$file->getError());
+                return $this->error('上传失败');
             }
         }
     }

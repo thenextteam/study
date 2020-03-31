@@ -16,12 +16,18 @@
         <div class="right">
             {if condition="($type == 'resume')"}
             <form action="save" method="POST">
+                <input type="hidden" name="id" value="{$nowuser->user_id}" />
                 <div class="row"><div class="rowleft">用户名</div>{$nowuser->user_name}</div>
-                <div class="row"><div class="rowleft">邮箱</div><input type="text" value="{$nowuser->user_email}" /></div>
-                <div class="row"><div class="rowleft">昵称</div><input type="text" value="{$nowuser->nick_name}" /></div>
-                <div class="row"><div class="rowleft">修改密码</div><input type="password" /></div>
-                <div class="row"><div class="rowleft">确认密码</div><input type="password" /></div>
-                <div class="row"><button type="submit">保存</button></div>
+                <div class="row"><div class="rowleft">邮箱</div><input type="text" name="email" id="email" value="{$nowuser->user_email}" /><span class="sp sp1 sphidden">请输入邮箱</span></div>
+                <div class="row"><div class="rowleft">昵称</div><input type="text" name="name" id="name" value="{$nowuser->nick_name}" /><span class="sp sp2 sphidden">请输入昵称</span></div>
+                <div class="row">
+                    <div class="rowleft"></div>
+                    <input name="changepwd" type="radio" id="cp1" class="cp" value="0" checked /><label for="cp1">不修改密码</label>
+                    <input name="changepwd" type="radio" id="cp2" class="cp" value="1" /><label for="cp2">修改密码</label>
+                </div>
+                <div class="row"><div class="rowleft">原密码</div><input class="cpwd cpwd1" name="opwd" type="password" disabled="disabled" /><span class="sp sp3 sphidden">请输入原密码</span></div>
+                <div class="row"><div class="rowleft">新密码</div><input class="cpwd cpwd2" name="npwd" type="password" disabled="disabled" /><span class="sp sp4 sphidden">请输入新密码</span></div>
+                <div class="row"><button class="btn0" type="submit">保存</button></div>
             </form>
             {elseif condition="($type == 'userimg')"}
             <div class="chimtitle">我现在的头像</div>
@@ -36,4 +42,71 @@
             {/if}
         </div>
     </div>
+    <script>
+        $(function(){
+            $('#cp1').click(function(){
+                $('.cpwd').attr('disabled','disabled');
+                $('.sp3,.sp4').addClass('sphidden');
+            })
+            $('#cp2').click(function(){
+                $('.cpwd').removeAttr('disabled');
+            })
+
+            $('#email').blur(function(){
+                //验证邮箱
+                var reg = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+                if($(this).val()==null||$(this).val()==""){
+                    $('.sp1').text('请输入邮箱').removeClass('sphidden');
+                }
+                else if(!reg.test($(this).val())){
+                    $('.sp1').text('邮箱格式不正确！').removeClass('sphidden');
+                }
+                else{
+                    $('.sp1').addClass('sphidden');
+                }
+            })
+
+            $('#name').blur(function(){
+                //验证昵称
+                if($(this).val()==null||$(this).val()==""){
+                    $('.sp2').text('请输入昵称').removeClass('sphidden');
+                }
+                else{
+                    $('.sp2').addClass('sphidden');
+                }
+            })
+
+            $('.cpwd1').blur(function(){
+                if(!$(this).attr('disabled')){
+                    if($(this).val()==null||$(this).val()==""){
+                        $('.sp3').text('请输入原密码').removeClass('sphidden');
+                    }
+                    else{
+                        $('.sp3').addClass('sphidden');
+                    }
+                }
+            })
+
+            $('.cpwd2').blur(function(){
+                if(!$(this).attr('disabled')){
+                    if($(this).val()==null||$(this).val()==""){
+                        $('.sp4').text('请输入新密码').removeClass('sphidden');
+                    }
+                    else{
+                        $('.sp4').addClass('sphidden');
+                    }
+                }
+            })
+
+            $('.btn0').click(function(){
+                $('#email').blur();
+                $('#name').blur();
+                $('#cpwd1').blur();
+                $('#cpwd2').blur();
+                if($('.sphidden').length!=4){
+                    event.preventDefault();
+                }
+            })
+        })
+    </script>
 {/block}
