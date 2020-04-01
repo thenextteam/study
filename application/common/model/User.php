@@ -100,7 +100,23 @@ class User extends Model
      * 获取等级对应的名称
      */
     public function getUserlvAttr($value){
-        $status = array('1'=>'[LV.1]新来乍到','2'=>'[LV.2]新手上路I','3'=>'[LV.3]新手上路II','4'=>'[LV.4]新手上路III');
+        $status = array(
+            '1'=>'[LV.1]新来乍到',
+            '2'=>'[LV.2]新手上路I',
+            '3'=>'[LV.3]新手上路II',
+            '4'=>'[LV.4]新手上路III',
+            '5'=>'[LV.5]新进会员I',
+            '6'=>'[LV.6]新进会员II',
+            '7'=>'[LV.7]新进会员III',
+            '8'=>'[LV.8]论坛高手I',
+            '9'=>'[LV.9]论坛高手II',
+            '10'=>'[LV.10]论坛高手III',
+            '11'=>'[LV.11]大佬之路I',
+            '12'=>'[LV.12]大佬之路II',
+            '13'=>'[LV.13]大佬之路III',
+            '14'=>'[LV.14]大佬之路IV',
+            '15'=>'[LV.15]论坛大佬',
+        );
         $lvname = $status[$value];
         if(isset($lvname)){
             return $lvname;
