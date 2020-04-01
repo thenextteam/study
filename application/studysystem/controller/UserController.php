@@ -156,7 +156,7 @@ class UserController extends Controller
             }
             //记忆旧密码，当用户还是使用旧密码时返回成功提示
             $oldpwd = $User->user_pwd;
-            
+
             $User->user_pwd = md5($Request->param('npwd'));
         }
         else if(($Request->param('changepwd')==0)&&($User->user_email == $Request->param('email'))&&($User->nick_name == $Request->param('name'))){
@@ -184,18 +184,38 @@ class UserController extends Controller
         
         // 移动到用户头像目录下
         if($file){
-            $saveName = Session::get('UserId'); 
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'static\study\img\userimg',$saveName,true);
+            // $saveName = Session::get('UserId'); 
+            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads\icons\temp');
             if($info){
                 $User = User::get(Session::get('UserId'));
-                $User->user_img = Session::get('UserId').'.jpg';
+                $path = '/thinkphp/public/uploads/icons/temp/'.$info->getSaveName();
+                $User->user_img = $path;
                 $User->save();
+                $oldpath = substr($path,0,45);
                 return $this->success('上传成功', $Request->header('referer'));
             }else{
                 // 上传失败获取错误信息
                 return $this->error('上传失败');
             }
         }
+        // // 获取表单上传文件
+        // $Request = Request::instance();
+        // $file = request()->file('image');
+        
+        // // 移动到用户头像目录下
+        // if($file){
+        //     $saveName = Session::get('UserId'); 
+        //     $info = $file->move(ROOT_PATH . 'public' . DS . 'static\study\img\userimg',$saveName,true);
+        //     if($info){
+        //         $User = User::get(Session::get('UserId'));
+        //         $User->user_img = Session::get('UserId').'.jpg';
+        //         $User->save();
+        //         return $this->success('上传成功', $Request->header('referer'));
+        //     }else{
+        //         // 上传失败获取错误信息
+        //         return $this->error('上传失败');
+        //     }
+        // }
     }
 
     //添加好友

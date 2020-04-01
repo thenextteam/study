@@ -13,6 +13,13 @@ class Tip extends Model
     {
         return $this->hasOne('User','user_id','user_id');
     }
+    /**
+     * 关联处理人
+     */
+    public function OpUser()
+    {
+        return $this->hasOne('User','user_id','op_user_id');
+    }
 
     public function Board()
     {

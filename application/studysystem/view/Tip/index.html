@@ -35,7 +35,7 @@
                 <td><div class="box">{if condition="$tip->com_id!=0"}{$tip->Comment->com_content|htmlspecialchars_decode|strip_tags}{else /}<div class="line">-</div>{/if}</div></td>
                 <td><div class="box">{$tip->tip_content}</div></td>
                 <td>{$tip->tip_time}{if condition="$tip->tip_over_time!=null"}<span class="overtime">{$tip->tip_over_time}</span>{/if}</td>
-                <td>{if condition="$tip->op_user_id!=0"}{$tip->User->nick_name}{else /}无{/if}</td>
+                <td>{if condition="$tip->op_user_id!=0"}{$tip->OpUser->nick_name}{else /}无{/if}</td>
                 <td>{$tip->tip_op}</td>
                 <td>{if condition="($tip->getData('tip_op')==0)"}
                     <a href="tipop?tid={$tip->tip_id}&type=1">正常</a>{if condition="$tip->com_id==0"}/<a href="tipop?tid={$tip->tip_id}&type=3">锁定</a>{/if}/<a class="del" href="tipop?tid={$tip->tip_id}&type=2">删除</a>
