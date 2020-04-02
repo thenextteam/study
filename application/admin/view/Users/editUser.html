@@ -105,10 +105,10 @@
         <div class="layui-input-block" id="member">
           {if condition="$user.user_grant == 0"}
           <input type="radio" name="user_grant" value="0" title="正常" checked>
-          <input type="radio" name="user_grant" value="1" title="锁定">
+          <input type="radio" name="user_grant" value="1" title="封禁">
           {else /}
           <input type="radio" name="user_grant" value="0" title="正常">
-          <input type="radio" name="user_grant" value="1" title="锁定" checked>
+          <input type="radio" name="user_grant" value="1" title="封禁" checked>
           {/if}
         </div>
       </div>
