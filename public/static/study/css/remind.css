@@ -104,3 +104,15 @@ body{
 .readop{
     cursor: pointer;
 }
+.allre{
+    width: 90px;
+    height: 30px;
+    cursor: pointer;
+    background: #222;
+    color: #fff;
+}
+
+.son{
+    margin-left: -112px;
+    margin-top: -68px;
+}

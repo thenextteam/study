@@ -91,6 +91,8 @@ class SignController extends Controller
         }
         $User->sign_id = db('sign')->where('user_id',Session::get('UserId'))->order('sign_time desc')->field('sign_id')->find()['sign_id'];
         $User->save();
+        //计算用户等级
+        User::userLv(Session::get('UserId'));
         return $this->success('签到成功，获得积分 '.$randpoint.' 分', $Request->header('referer'));
     }
 }

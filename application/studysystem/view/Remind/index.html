@@ -114,10 +114,12 @@
     {/if}
         </div>
         <div class="pagecon">{$page}</div>
+        <div><button class="allre">全部已读</button></div>
     </div>
 
     <div></div>
 </div>
+<div class="son">已读成功！</div>
 <script>
     $(document).ready(function(){
         $x = '已读';
@@ -156,6 +158,28 @@
             })
 
         })
+        $('.allre').click(function(){
+            $.ajax({
+                type: "GET",
+                url: 'allre',
+                success: function(data){
+                    if(data==true){
+                        $('.son').html('已读成功！<span id="time"></span>秒后自动关闭。').css('display','block');
+                        $('.son').animate({
+                            opacity: 1
+                            },200,"swing");
+                        var clock = setInterval(countDown, 5000);
+                    }
+                    else{
+                        $('.son').text('已读失败！').css('display','block');
+                    }
+                }
+            })
+        })
+        function countDown(){
+            $('.son').css('display','none');
+            clearInterval(clock);
+        }
     })
 </script>
 {/block}

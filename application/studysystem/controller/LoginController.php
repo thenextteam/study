@@ -43,6 +43,8 @@ class LoginController extends Controller
         if (User::login($postData['username'], $postData['password'])) {
             //登录后状态变成1
             Db::table('user')->where('user_id', Session::get('UserId'))->update(['status' => 1]);
+            //登录同时根据积分计算用户等级
+            User::userLv(Session::get('UserId'));
             return $this->success('登录成功', url('Index/index'));
         } else {
             return $this->error('用户名或密码错误', url('index'));

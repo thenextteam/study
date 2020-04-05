@@ -91,7 +91,7 @@ class RemindController extends Controller
     //设置已读（AJAX）
     public function read()
     {
-        
+
         if(request()->isAjax()){
             // $rrid = str_replace('sr','',input('rrid'));
             $rrid = input('rrid');
@@ -204,5 +204,21 @@ class RemindController extends Controller
 
         
 
+    }
+
+    public function allre()
+    {
+        if(!Session::get('UserId')){
+            return false;
+        }
+        //取出用户
+        $User = User::get(Session::get('UserId'));
+        $User->remind = 0;
+        $User->save();
+        db('rremind')->where('user_id',Session::get('UserId'))->update(['rremind_status' => 1]);
+        db('aremind')->where('user_id',Session::get('UserId'))->update(['aremind_status' => 1]);
+        db('friend')->where('user_id',Session::get('UserId'))->where('ismut',0)->update(['ismut' => 2]);
+        // $this->success('已读成功');
+        return true;
     }
 }

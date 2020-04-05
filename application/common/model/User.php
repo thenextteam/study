@@ -214,6 +214,58 @@ class User extends Model
         return true;
     }
 
+    /**
+     * 根据积分升级
+     * @param  string $value 用户ID
+     */
+    static public function userLv($value)
+    {
+        $point = db('user')->where('user_id',$value)->field('user_point')->find()['user_point'];
+        $lv =db('user')->where('user_id',$value)->field('user_lv')->find()['user_lv'];
+        if($point>=200&&$point<500&&$lv<2){
+            db('user')->where('user_id',$value)->update(['user_lv' => 2]);
+        }
+        else if($point>=500&&$point<850&&$lv<3){
+            db('user')->where('user_id',$value)->update(['user_lv' => 3]);
+        }
+        else if($point>=850&&$point<1250&&$lv<4){
+            db('user')->where('user_id',$value)->update(['user_lv' => 4]);
+        }
+        else if($point>=1250&&$point<1700&&$lv<5){
+            db('user')->where('user_id',$value)->update(['user_lv' => 5]);
+        }
+        else if($point>=1700&&$point<2200&&$lv<6){
+            db('user')->where('user_id',$value)->update(['user_lv' => 6]);
+        }
+        else if($point>=2200&&$point<2750&&$lv<7){
+            db('user')->where('user_id',$value)->update(['user_lv' => 7]);
+        }
+        else if($point>=2750&&$point<3350&&$lv<8){
+            db('user')->where('user_id',$value)->update(['user_lv' => 8]);
+        }
+        else if($point>=3350&&$point<4000&&$lv<9){
+            db('user')->where('user_id',$value)->update(['user_lv' => 9]);
+        }
+        else if($point>=4000&&$point<4700&&$lv<10){
+            db('user')->where('user_id',$value)->update(['user_lv' => 10]);
+        }
+        else if($point>=4700&&$point<5450&&$lv<11){
+            db('user')->where('user_id',$value)->update(['user_lv' => 11]);
+        }
+        else if($point>=5450&&$point<6250&&$lv<12){
+            db('user')->where('user_id',$value)->update(['user_lv' => 12]);
+        }
+        else if($point>=6250&&$point<7100&&$lv<13){
+            db('user')->where('user_id',$value)->update(['user_lv' => 13]);
+        }
+        else if($point>=7100&&$point<9000&&$lv<14){
+            db('user')->where('user_id',$value)->update(['user_lv' => 14]);
+        }
+        else if($point>=9000&&$lv<15){
+            db('user')->where('user_id',$value)->update(['user_lv' => 15]);
+        }
+    }
+
     //备用暂留
     // /**
     //  * 添加好友
