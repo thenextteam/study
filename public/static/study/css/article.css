@@ -265,6 +265,9 @@
     background: #222;
     color: #fff;
 }
+.rebox .eab button:hover{
+    background: #404040;
+}
 
 
 .rebox select{

@@ -225,6 +225,9 @@ body{
     color: #fff;
     margin-left: 100px;
 }
+.content .right button:hover{
+    background: #404040;
+}
 
 .content .right .chimtitle{
     margin-top: 10px;

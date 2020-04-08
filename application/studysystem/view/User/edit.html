@@ -33,7 +33,7 @@
             <div class="chimtitle">我现在的头像</div>
             <form action="upload" enctype="multipart/form-data" method="post">
             <p>如果您还没有设置自己的头像，系统会显示为默认头像，您需要自己上传一张新照片来作为自己的个人头像</p>
-            <img src="__ADMIN__/study/img/userimg/{$nowuser->user_img}" width="153" height="153" />
+            <img src="__UPLOAD__/userimgs/{$nowuser->user_img}" width="153" height="153" />
             <div class="chimtitle">设置我的新头像</div>
             <p>请选择一个新照片进行上传编辑。</p>
             <input type="file" name="image" /> <br> 

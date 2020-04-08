@@ -23,7 +23,7 @@
     {volist name="Rremind" id="rremind"}
             <div class="rrlist">
                 <div class="redarea">{if condition="$rremind->rremind_status==0"}<span class="red red{$rremind->rremind_id}"></span>{/if}</div>
-                <div class="userimg"><a href="{:url('User/index?uid='.$rremind->reUser->user_id)}"><img src="__ADMIN__/study/img/userimg/{$rremind->reUser['user_img']}" width="55" height="55" /></a></div>
+                <div class="userimg"><a href="{:url('User/index?uid='.$rremind->reUser->user_id)}"><img src="__UPLOAD__/userimgs/{$rremind->reUser['user_img']}" width="55" height="55" /></a></div>
                 <div class="reinfo">
                     <div class="info">
                         <div class="retime">{$rremind->TimeHandle($rremind->rremind_time)}</div>
@@ -51,7 +51,7 @@
                     {/case}
                     {default /}
                     <a href="{:url('User/index?uid='.$aremind->aoUser->user_id)}">
-                        <img src="__ADMIN__/study/img/userimg/{$aremind->aoUser['user_img']}" width="55" height="55" />
+                        <img src="__UPLOAD__/userimgs/{$aremind->aoUser['user_img']}" width="55" height="55" />
                     </a>
                     {/switch}
                 </div>
@@ -91,7 +91,7 @@
                 <div class="redarea">{if condition="$friend->ismut==0"}<span class="red red{$friend->friend_id}"></span>{/if}</div>
                 <div class="userimg">
                     <a href="{:url('User/index?uid='.$friend->friend_user_id)}">
-                        <img src="__ADMIN__/study/img/userimg/{$friend->FriendUser($friend->friend_user_id)->user_img}" width="55" height="55" />
+                        <img src="__UPLOAD__/userimgs/{$friend->FriendUser($friend->friend_user_id)->user_img}" width="55" height="55" />
                     </a>
                 </div>
                 <div class="reinfo">

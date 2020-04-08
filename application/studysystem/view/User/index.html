@@ -11,7 +11,7 @@
     <div class="content">
         <div class="userde">
             <div class="uimgana">
-                <img src="__ADMIN__/study/img/userimg/{$User->user_img}" alt="" width="70" height="70" />
+                <img src="__UPLOAD__/userimgs/{$User->user_img}" alt="" width="70" height="70" />
                 <div class="una">
                     <p>{$User->nick_name}
                         {if condition="($Think.session.UserId)==$User->user_id"}
@@ -129,7 +129,7 @@
                 <div class="userspan">
                     <div class="userimg">
                         <a href="{:url('User/index?uid='.$friend->friend_user_id)}">
-                            <img src="__ADMIN__/study/img/userimg/{$friend->FriendUser($friend->friend_user_id)->user_img}" />
+                            <img src="__UPLOAD__/userimgs/{$friend->FriendUser($friend->friend_user_id)->user_img}" />
                         </a>
                     </div>
                     <div class="userinfo">

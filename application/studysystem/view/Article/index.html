@@ -12,7 +12,7 @@
         <div class="pocon">
             <div class="postuser">
                 <div class="wanum">查看: <span>{$Article->getData('art_view')}</span>|回复: <span>{$Article->GetComNum($Article->art_id)}</span></div>
-                <div class="usi"><a href="{:url('User/index?uid='.$Article->User->user_id)}"><img src="__ADMIN__/study/img/userimg/{$Article->User->user_img}" alt="" width="125" height="125" /></a></div>
+                <div class="usi"><a href="{:url('User/index?uid='.$Article->User->user_id)}"><img src="__UPLOAD__/userimgs/{$Article->User->user_img}" alt="" width="125" height="125" /></a></div>
                 <div class="userxin">TA今天的心情<br />{$Article->User->getSign($Article->User->user_id)}</div>
                 <div class="userdays">签到天数: {$Article->User->user_days} 天</div>
                 <div class="userlv">{$Article->User->user_lv}</div>
@@ -44,7 +44,7 @@
                             </tr>
                             {volist name="$Article->Grade" id="grade"}
                             <tr>
-                                <td><img src="__ADMIN__/study/img/userimg/{$grade->User->user_img}" alt="" width="13" height="13" /><a href="{:url('User/index?uid='.$grade->User->user_id)}">{$grade->User->nick_name}</a></td>
+                                <td><img src="__UPLOAD__/userimgs/{$grade->User->user_img}" alt="" width="13" height="13" /><a href="{:url('User/index?uid='.$grade->User->user_id)}">{$grade->User->nick_name}</a></td>
                                 <td>+{$grade->grade_point}</td>
                                 <td>+{$grade->grade_money}</td>
                                 <td>{$grade->grade_content}</td>
@@ -74,7 +74,7 @@
         <!-- 回复的楼层模板 -->
         <div class="pocon">
             <div class="postuser">
-                <div class="usi"><a href="{:url('User/index?uid='.$comment->User->user_id)}"><img src="__ADMIN__/study/img/userimg/{$comment->User->user_img}" alt="" width="125" height="125" /></a></div>
+                <div class="usi"><a href="{:url('User/index?uid='.$comment->User->user_id)}"><img src="__UPLOAD__/userimgs/{$comment->User->user_img}" alt="" width="125" height="125" /></a></div>
                 <div class="userxin">TA今天的心情<br />{$comment->User->getSign($comment->User->user_id)}</div>
                 <div class="userdays">签到天数: {$comment->User->user_days} 天</div>
                 <div class="userlv">{$comment->User->user_lv}</div>
@@ -128,7 +128,7 @@
                             </tr>
                             {volist name="$comment->Grade" id="grade"}
                             <tr>
-                                <td><img src="__ADMIN__/study/img/userimg/{$grade->User->user_img}" alt="" width="13" height="13" /><a href="{:url('User/index?uid='.$grade->User->user_id)}">{$grade->User->nick_name}</a></td>
+                                <td><img src="__UPLOAD__/userimgs/{$grade->User->user_img}" alt="" width="13" height="13" /><a href="{:url('User/index?uid='.$grade->User->user_id)}">{$grade->User->nick_name}</a></td>
                                 <td>+{$grade->grade_point}</td>
                                 <td>+{$grade->grade_money}</td>
                                 <td>{$grade->grade_content}</td>
