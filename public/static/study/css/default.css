@@ -278,13 +278,23 @@ fuline{
     position: fixed;
     left: 50%;
     top: 50%;
-    background: rgba(180, 215, 255, 0.753);
+    background: #fff;
+    box-shadow: 0px 0px 20px #a5a5a5;
     text-align: center;
-    width: 65px;
+    /* width: 65px; */
     height: 17px;
     opacity: 0;
     border-radius: 10px;
     display: none;
     overflow: hidden;
     padding: 80px 100px;
+}
+.son .close{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    background: url(../img/close.png);
 }

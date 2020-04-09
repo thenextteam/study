@@ -16,7 +16,7 @@
                     {/volist}
                 </select>
                 <input name="arttitle" type="text" class="loinput" placeholder="请输入帖子标题" value="{$Article->art_title}" />
-                <span>还可以输入70个字符</span>
+                <span>还可以输入<span id="word">70</span>个字符</span>
             </div>
             <div class="eab">
                 <div id="editor">{$Article->art_content|htmlspecialchars_decode}</div>
@@ -52,6 +52,32 @@
     <script>
         $(document).ready(function(){
             $('#artcontent').val($('.w-e-text').html());
+            var len = $(".loinput").val().length;
+            if(len > 69){
+                $(".loinput").val($(".loinput").val().substring(0,70));
+                $("#word").text(0);
+            }
+            var num = 70 - len;
+            
+            $("#word").text(num);
+        })
+
+        // 限制字数
+        $(function(){
+            $(".loinput").keyup(function(){
+                var len = $(this).val().length;
+                if(len > 69){
+                    $(this).val($(this).val().substring(0,70));
+                    $("#word").text(0);
+                }
+                var num = 70 - len;
+
+                if(num<0){
+                    $("#word").text(0);
+                }else{
+                    $("#word").text(num);
+                }
+            });
         })
     </script>
 {/block}

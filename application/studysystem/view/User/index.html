@@ -11,7 +11,7 @@
     <div class="content">
         <div class="userde">
             <div class="uimgana">
-                <img src="__UPLOAD__/userimgs/{$User->user_img}" alt="" width="70" height="70" />
+                <img src="__UPLOAD__/userimgs/{$User->user_img}" width="70" height="70" />
                 <div class="una">
                     <p>{$User->nick_name}
                         {if condition="($Think.session.UserId)==$User->user_id"}
@@ -23,8 +23,8 @@
             </div>
             {if condition="($Think.session.UserId)!=$User->user_id"}
             <div class="opbtn">
-                <a href="newfriend?uid={$User->user_id}">加为好友</a>
-                <a href="#">发送消息</a>
+                {if condition="$ismut==0"}<a href="newfriend?uid={$User->user_id}">加为好友</a>{/if}
+                <!-- <a href="#">发送消息</a> -->
             </div>
             {/if}
         </div>
@@ -189,4 +189,15 @@
             {/if}
         </div>
     </div>
+    <script type="text/javascript">
+        var uid = "{$Think.session.UserId}";
+        var getuser = "{:url('Chat/getUserdata')}";
+        var getmember = "{:url('Chat/getMembers')}";
+        var changestatus = "{:url('Chat/changeStatus')}";
+        var getchatlog = "{:url('Chat/getChatLog')}"
+        var changesign = "{:url('Chat/changeSign')}"
+
+    </script>
+
+    <script type="text/javascript" src="__CHAT__/chat.js"></script>
 {/block}

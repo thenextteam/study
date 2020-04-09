@@ -119,7 +119,7 @@
 
     <div></div>
 </div>
-<div class="son">已读成功！</div>
+<div class="son"><div class="close"></div>已读成功！<br /><span id="time">5</span>秒后自动关闭。</div>
 <script>
     $(document).ready(function(){
         $x = '已读';
@@ -164,11 +164,12 @@
                 url: 'allre',
                 success: function(data){
                     if(data==true){
-                        $('.son').html('已读成功！<span id="time"></span>秒后自动关闭。').css('display','block');
+                        $('.son').fadeIn();
                         $('.son').animate({
                             opacity: 1
                             },200,"swing");
-                        var clock = setInterval(countDown, 5000);
+                        clock = setTimeout(countDown, 5000);
+                        clock2 = setInterval(timeout, 1000);
                     }
                     else{
                         $('.son').text('已读失败！').css('display','block');
@@ -176,9 +177,18 @@
                 }
             })
         })
+        $('.close').click(function(){
+            countDown();
+        })
         function countDown(){
-            $('.son').css('display','none');
-            clearInterval(clock);
+            $('.son').fadeOut(function(){
+                clearTimeout(clock);
+                clearInterval(clock2);
+                $('#time').text(5);
+            });
+        }
+        function timeout(){
+            $('#time').text($('#time').text()-1);
         }
     })
 </script>

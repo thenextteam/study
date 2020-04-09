@@ -35,6 +35,11 @@ class UserController extends Controller
             $fid = 0;
         }
         $this->assign('User',$User);
+        $this->assign('ismut', 0);
+        //判断是否好友
+        if(db('friend')->where('user_id',Session::get('UserId'))->where('friend_user_id',$uid)->where('ismut',1)->count('friend_id')==1){
+            $this->assign('ismut', 1);
+        }
         //所有帖子
         if($fid==1){
             $arts = $User::get($uid)->Article()->where('art_status',0)->order('art_time desc')->paginate(10,false, [
@@ -185,13 +190,13 @@ class UserController extends Controller
         // 移动到用户头像目录下
         if($file){
             // $saveName = Session::get('UserId'); 
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads\icons\temp');
+            $info = $file->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'uploads\userimgs');
             if($info){
                 $User = User::get(Session::get('UserId'));
-                $path = '/thinkphp/public/uploads/icons/temp/'.$info->getSaveName();
-                $User->user_img = $path;
+                // $path = '/thinkphp/public/uploads/userimgs'.$info->getSaveName();
+                $User->user_img = $info->getSaveName();
                 $User->save();
-                $oldpath = substr($path,0,45);
+                // $oldpath = substr($path,0,45);
                 return $this->success('上传成功', $Request->header('referer'));
             }else{
                 // 上传失败获取错误信息

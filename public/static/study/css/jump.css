@@ -1,0 +1,25 @@
+/* 跳转样式 */
+
+body{
+    background: #ebebeb;;
+}
+
+.system-message{
+    width: 500px;
+    height: 250px;
+    background: #fff;
+    text-align: center;
+    margin: 100px auto;
+    padding-top: 50px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #afafaf;
+}
+
+.system-message .success,.system-message .error{ 
+    font-size: 20px; 
+}
+
+.system-message a:hover{
+    text-decoration: underline;
+}

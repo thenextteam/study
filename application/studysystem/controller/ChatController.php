@@ -56,7 +56,7 @@ class ChatController extends Controller
                         $flist['username'] = $fri['nick_name'];
                         $flist['sign'] = $fri['sign'];
                         //这个路径需要根据具体情况修改，绝对路径
-                        $flist['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $fri['user_img'];
+                        $flist['avatar'] = "/thinkphp/public/uploads/userimgs/" . $fri['user_img'];
                         if ($fri['status'] == 1) {
                             $flist['status'] = "online";
                         } else {
@@ -93,7 +93,7 @@ class ChatController extends Controller
         $my['id'] = $user['user_id'];
         $my['username'] = $user['nick_name'];
         $my['sign'] = $user['sign'];
-        $my['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $user['user_img'];
+        $my['avatar'] = "/thinkphp/public/uploads/userimgs/" . $user['user_img'];
         if ($user['status'] == 1) {
             $my['status'] = "online";
         } else {
@@ -129,7 +129,7 @@ class ChatController extends Controller
             $m['id'] = $member['user_id'];
             $m['username'] = $member['nick_name'];
             $m['sign'] = $member['sign'];
-            $m['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $member['user_img'];
+            $m['avatar'] = "/thinkphp/public/uploads/userimgs/" . $member['user_img'];
             //1为在线
             if ($member['status'] == 1) {
                 $m['status'] = "online";
@@ -174,11 +174,11 @@ class ChatController extends Controller
             $friend = Db::table('user')->where('user_id', $id)->find();
 
             $mydata['username'] = $my['nick_name'];
-            $mydata['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $my['user_img'];
+            $mydata['avatar'] = "/thinkphp/public/uploads/userimgs/" . $my['user_img'];
             $mydata['id'] = $my['user_id'];
 
             $fridata['username'] = $friend['nick_name'];
-            $fridata['avatar'] = "/thinkphp/public/static/study/img/userimg/" . $friend['user_img'];
+            $fridata['avatar'] = "/thinkphp/public/uploads/userimgs/" . $friend['user_img'];
             $fridata['id'] = $friend['user_id'];
             for ($i = 0; count($msg) > $i; $i++) {
                 if ($msg[$i]['fromid'] == $uid) {

@@ -87,7 +87,7 @@ class Events
                             'type' => 'logMessage',
                             'data' => [
                                 'username' => $vo['nick_name'],
-                                'avatar' => "/thinkphp/public/static/study/img/userimg/".$vo['user_img'],
+                                'avatar' => "/thinkphp/public/uploads/userimgs/".$vo['user_img'],
                                 'id' => $vo['fromid'],
                                 'type' => 'friend',
                                 'content' => htmlspecialchars($vo['content']),
