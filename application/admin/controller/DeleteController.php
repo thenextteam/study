@@ -59,4 +59,16 @@ class DeleteController extends BasicController
     // rmdir(ROOT_PATH . 'public' . DS . 'uploads' .DS .'icons' . DS . $path);
     return $this->success('删除成功', 'delete');
   }
+
+  public function delBoard()
+  {
+    // $path = request()->param('path');
+    $path = 'board';
+    $time = 10;
+    $Request = Request::instance();
+    // $time = $Request->post('time');
+    $this->delDirAndFile(ROOT_PATH . 'public' . DS . 'uploads' . DS . $path, $time);
+    // rmdir(ROOT_PATH . 'public' . DS . 'uploads' .DS .'icons' . DS . $path);
+    return $this->success('删除成功', 'delete');
+  }
 }

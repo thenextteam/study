@@ -72,7 +72,7 @@ class BoardsController extends BasicController
                 $data['status'] = '0';
                 $board = $Board->data(['board_name'=>$post['board_name'],'board_info'=>$post['board_info']
                 ,'board_top'=>$post['board_top'] ,'bhead_id'=>$post['bhead_id'] ,'board_th'=>$post['board_th']
-                ,'board_status'=>$post['board_status'],'board_img'=>'/thinkphp/public/uploads/board/base.png'
+                ,'board_status'=>$post['board_status'],'board_img'=>'base.png'
                 ]);
                 $data['msg'] = '添加成功';
                 $board = $Board->save();
@@ -162,13 +162,14 @@ class BoardsController extends BasicController
         $file = request()->file('file');
         // 移动到框架应用根目录/public/uploads/ 目录下
         if($file){
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads' . DS .'board');
+            $info = $file->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS .'board');
             if($info){
                 // 成功上传后 获取上传信息
                 // 输出 jpg
                 $path = '/thinkphp/public/uploads/board/'.$info->getSaveName();
                 $data = [];
                 $data['code'] = 0;
+                $data['savename'] = $info->getSaveName();
                 $data['path'] = $path;
                 $data['msg'] = '上传成功';
                 echo json_encode($data);
@@ -189,8 +190,17 @@ class BoardsController extends BasicController
         $data = [];
         if(Request::instance()->has('board_id','get')){
             $board_id = $_GET['board_id'];
-            $board_img = $_GET['path'];
-            $board = $Board->save(['board_img' => $board_img],['board_id' => $board_id]);
+            $board_img = $_GET['board_img'];
+            $savename = $_GET['savename'];
+            $path = ROOT_PATH . 'public/uploads/board/' . $savename;
+            $re_path = ROOT_PATH . 'public/uploads/boardimgs/' . $savename;
+            rename($path, $re_path);
+            if ($board_img != 'base.png') {
+                $path0 = ROOT_PATH . 'public/uploads/boardimgs/' . $board_img;
+                $re_path0 = ROOT_PATH . 'public/uploads/board/' .  $board_img;
+                rename($path0, $re_path0);
+            }
+            $board = $Board->save(['board_img' => $savename],['board_id' => $board_id]);
             $data['msg'] = '上传成功';
         }else{
             $data['msg'] = '上传失败';

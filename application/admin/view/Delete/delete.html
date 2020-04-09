@@ -25,10 +25,21 @@
           <option value="2592000">1个月前</option>
         </select>
       </div>
-      <button class="layui-btn" lay-submit lay-filter="formDemo">清除</button>
+      <button class="layui-btn" lay-submit lay-filter="formDemo">清除头像图片</button>
     </form>
-
-
+    <div style="width:100%;height:20px;"></div>
+    <form class="layui-form" action="delBoard" enctype="multipart/form-data" method="post">
+      <!-- <input type="submit" value="清除" /> -->
+      <div class="layui-form-item">
+        <select name="time" lay-verify="">
+          <option value="">请选择时间</option>
+          <option value="86400">1天前</option>
+          <option value="604800‬">1周前</option>
+          <option value="2592000">1个月前</option>
+        </select>
+      </div>
+      <button class="layui-btn" lay-submit lay-filter="formDemo">清除版块图片</button>
+    </form>
 
     <script src="__ADMINL__/layui.js"></script>
     <script>
