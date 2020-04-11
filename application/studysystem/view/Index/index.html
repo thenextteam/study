@@ -83,7 +83,7 @@
                 <!-- 此处最多显示10个 -->
                 {volist name="$bhead->GetBoardTop($bhead->bhead_id)" id="board"}
                 <div class="conbcon">
-                    <div class="bloimg"><a href="{:url('Board/index?bid='.$board['board_id'])}"><img src="__ADMIN__/study/img/boardimg/{$board['board_img']}" alt="321" width="220" height="75"></a></div>
+                    <div class="bloimg"><a href="{:url('Board/index?bid='.$board['board_id'])}"><img src="__UPLOAD__/boardimgs/{$board['board_img']}" alt="321" width="220" height="75"></a></div>
                     <div class="blotitle"><div class="blott"><a href="{:url('Board/index?bid='.$board['board_id'])}">{$board['board_name']}</a><span class="newnum">({$Board->GetNewArt($board['board_id'])})</span></div><div class="blotj">{$board['board_info']}</div></div>
                     <div class="blocon">
                         {if condition="($Board->LastComArt($board['board_id'])['art_id'])!=null"}

@@ -30,13 +30,17 @@
         <td>文件名</td>
         <td>上传者</td>
         <td>上传时间</td>
-        <td></td>
+        <td>下载数</td>
+        <td>所需金币</td>
+        <td>下载</td>
       </tr>
       {volist name="file" id="file"}
       <tr class="userrow">
         <td> {$file['file_name']}</td>
         <td> {$file['nick_name']}</td>
         <td> {$file['file_time']}</td>
+        <td> {$file['download']}</td>
+        <td> {$file['cost']}</td>
         <td>
           <form action="downloadFile" enctype="multipart/form-data" method="post">
             <input type="text" name="file_path" value="{$file['file_path']}" style="display: none;"/>

@@ -60,20 +60,30 @@
         </div>
         <div class="signright">
             <div>
-                <div class="blotit">今日心情TOP5</div>
+                <div class="blotit">签到统计</div>
                 <div class="blocon">
-                    <p><span>开心</span> <span>100人</span></p>
-                    <p><span>开心</span> <span>100人</span></p>
-                    <p><span>开心</span> <span>100人</span></p>
-                    <p><span>开心</span> <span>100人</span></p>
-                    <p><span>开心</span> <span>100人</span></p>
+                    <p>今日已签到 <span>{$TodaySign} 人</span></p>
+                    <p>昨日共签到 <span>{$YesSign} 人</span></p>
                 </div>
             </div>
             <div>
-                <div class="blotit">签到统计</div>
+                <div class="blotit">心情TOP5</div>
                 <div class="blocon">
-                    <p>今日已签到 <span>490 人</span></p>
-                    <p>昨日共签到 <span>100 人</span></p>
+                    {volist name="$mood" id="vo" offset="0" length='5'}
+                    <p><span>
+                        {switch name="$vo[0]"}
+                        {case value="0"}开心{/case}
+                        {case value="1"}难过{/case}
+                        {case value="2"}郁闷{/case}
+                        {case value="3"}无聊{/case}
+                        {case value="4"}怒{/case}
+                        {case value="5"}擦汗{/case}
+                        {case value="6"}奋斗{/case}
+                        {case value="7"}慵懒{/case}
+                        {case value="8"}衰{/case}
+                        {/switch}
+                    </span> <span>{$vo[1]}人</span></p>
+                    {/volist}
                 </div>
             </div>
         </div>

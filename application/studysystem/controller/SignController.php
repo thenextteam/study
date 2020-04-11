@@ -44,8 +44,38 @@ class SignController extends Controller
         $Sign = db('sign')->alias('a')->join($join)->order('sign_time desc')->paginate(10,false);
         // 获取分页显示
         $page = $Sign->render();
+
+        //今日签到人数
+        $TodaySign = db('sign')
+            ->where('sign_time','< time',date('Y-m-d', time()).'23:59:59')
+            ->where('sign_time','> time',date('Y-m-d', time()).'00:00:00')
+            ->count('sign_id');
+        //昨日签到人数
+        $YesSign = db('sign')
+        ->where('sign_time','< time',date('Y-m-d', time()-86400).'23:59:59')
+        ->where('sign_time','> time',date('Y-m-d', time()-86400).'00:00:00')
+        ->count('sign_id');
+
+        // 心情人数
+        $mood0 = array(0,db('sign')->where('user_mood',0)->count('sign_id'));
+        $mood1 = array(1,db('sign')->where('user_mood',1)->count('sign_id'));
+        $mood2 = array(2,db('sign')->where('user_mood',2)->count('sign_id'));
+        $mood3 = array(3,db('sign')->where('user_mood',3)->count('sign_id'));
+        $mood4 = array(4,db('sign')->where('user_mood',4)->count('sign_id'));
+        $mood5 = array(5,db('sign')->where('user_mood',5)->count('sign_id'));
+        $mood6 = array(6,db('sign')->where('user_mood',6)->count('sign_id'));
+        $mood7 = array(7,db('sign')->where('user_mood',7)->count('sign_id'));
+        $mood8 = array(8,db('sign')->where('user_mood',8)->count('sign_id'));
+        $moodall = array($mood0,$mood1,$mood2,$mood3,$mood4,$mood5,$mood6,$mood7,$mood8);
+        $moodnum = array_column($moodall,1);
+        //由心情人数排序
+        array_multisort($moodnum,SORT_DESC,$moodall);
+
         $this->assign('Sign',$Sign);
         $this->assign('page',$page);
+        $this->assign('TodaySign',$TodaySign);
+        $this->assign('YesSign',$YesSign);
+        $this->assign('mood',$moodall);
         return $this->fetch();
     }
 
@@ -75,12 +105,15 @@ class SignController extends Controller
         $Sign->user_id = Session::get('UserId');
         $Sign->user_mood = $usermood;
         $Sign->sign_con = $signcon;
-        //随机积分
+        //随机积分,50到100之间
         $randpoint = mt_rand(50,100);
-        $Sign->sign_reward = $randpoint;                
+        $Sign->sign_reward = $randpoint;
+        //随机金币,5到20之间
+        $randmoney = mt_rand(5,20);
         //更新积分、签到时间
         $User = User::get(Session::get('UserId'));
         $User->user_point = $User->user_point+$randpoint;
+        $User->user_money = $User->user_money+$randmoney;
         $User->user_days = $User->user_days+1;
         $User->save();
         // Db::table('article')->where('art_id', $pararr[0])->update(['last_com_time' => date("Y-m-d H:i:s")]);
@@ -93,6 +126,6 @@ class SignController extends Controller
         $User->save();
         //计算用户等级
         User::userLv(Session::get('UserId'));
-        return $this->success('签到成功，获得积分 '.$randpoint.' 分', $Request->header('referer'));
+        return $this->success('签到成功，获得积分 '.$randpoint.' 分，金币 '.$randmoney.' 个', $Request->header('referer'));
     }
 }
