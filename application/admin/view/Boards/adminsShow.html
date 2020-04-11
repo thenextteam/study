@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>layout 后台大布局 - Layui</title>
+  <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+  <meta name="renderer" content="webkit">
+
+</head>
+
+<body class="layui-layout-body">
+
+  <table class="layui-hide" id="admin_table" lay-filter="admin"></table>
+
+  <!-- 头部工具栏 -->
+  <script type="text/html" id="toolbarDemo">
+    <div class="layui-inline" title="添加" lay-event="add"><i class="layui-icon layui-icon-add-1"></i></div>
+    <!-- <div class="layui-inline" title="批量删除" lay-event="multidelete"><i class="layui-icon layui-icon-delete"></i></div> -->
+  </script>
+  <!-- 右侧工具栏 -->
+  <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+  </script>
+  <script src="__ADMINL__/layui.js"></script>
+  <script>
+    //JavaScript代码区域
+    layui.use('table', function () {
+      var table = layui.table;
+
+      table.render({
+        elem: '#admin_table'
+        , id: 'admin'
+        , height: 420
+        , url: '{:url("Boards/getAdmins")}?board_id=' + '{$board_id}'//数据接口
+        , title: '管理员'
+        , page: true //开启分页
+        , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+        , totalRow: true //开启合计行
+        , cols: [[ //表头
+          { field: 'user_id', title: '用户ID', width: '25%', fixed: 'left', totalRowText: '合计：' }
+          , { field: 'boardadmin_id', title: '版块ID', width: '20%',hide:true }
+          , { field: 'user_name', title: '用户名', width: '25%' }
+          , { field: 'nick_name', title: '昵称', width: '30%' }
+          , { fixed: 'right', align: 'center', toolbar: '#barDemo' }
+        ]]
+      });
+
+      //监听头工具栏事件-----添加
+      table.on('toolbar(admin)', function (obj) {
+        var checkStatus = table.checkStatus(obj.config.id);
+        switch (obj.event) {
+          case 'add':
+            // var board_id = "{{$board_id}}";
+            // console.log(board_id);
+            // var data = checkStatus.data;
+            // layer.alert(JSON.stringify(data));
+            layer.open({
+              type: 2 //此处以iframe举例
+              , title: '添加管理员'
+              , area: ['300px', '250px']
+              , shade: 0
+              , maxmin: true
+              , scrollbar: true
+              , resize: true
+              , content: "{:url('Boards/addAdmin')}?board_id=" +'{$board_id}'
+              , zIndex: layer.zIndex //重点1
+              , success: function (layero) {
+                layer.setTop(layero); //重点2
+              }
+            });
+            break;
+        };
+      });
+
+      //监听行工具事件---编辑---删除
+      table.on('tool(admin)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+        var data = obj.data //获得当前行数据
+          , layEvent = obj.event; //获得 lay-event 对应的值
+        if (layEvent === 'del') {
+          layer.confirm('真的删除行么', function (index) {
+            //向服务端发送删除指令
+            $.ajax({
+              url: "deleteAdmin",
+              type: 'get',
+              data: {
+                'boardadmin_id': data.boardadmin_id,
+              },
+              dataType: 'json',
+              success: function (json) {
+                layer.msg(json.msg, { time: 500 }, function () {
+                  layer.close(index);
+                  table.reload('admin', {
+                    method: 'get',
+                    page: {
+                      curr: 1 //重新从第 1 页开始
+                    },
+                    where: {}
+                  });
+                });
+              }
+            });
+          });
+        }
+      });
+
+      var $ = layui.$, active = {
+        reload: function () {
+          var searchID = $('#searchID');
+          var searchBoardName = $('#searchBoardName');
+          //执行重载
+          table.reload('board', {
+            page: {
+              curr: 1 //重新从第 1 页开始
+              // ,limit:10
+            }
+            , where: {
+              search: {
+                "board_id": searchID.val(),
+                "board_name": searchBoardName.val(),
+              }
+              // ,pal:{
+              //     page:1,
+              //     limit:10
+              // }
+            }
+          });
+        }
+      };
+      $('.demoTable .layui-btn').on('click', function () {
+        var type = $(this).data('type');
+        active[type] ? active[type].call(this) : '';
+      });
+    });
+
+  </script>
+</body>
+
+</html>
