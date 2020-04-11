@@ -106,9 +106,12 @@
                                 {if condition="($comment->com_status == '0') AND ($comment->user_id == $User->user_id)"}
                     <tr class="comrow">
                         <td class="arttitle comcontent">
-                            <img src="__ADMIN__/study/img/icon_quote_m_s.gif" width="15" height="14" />
-                            <a href="{:url('Article/index?aid='.$comart->art_id.'&page='.$comart->getPage($comment->com_count).'#c'.$comment->com_count)}">{$comment->com_content|htmlspecialchars_decode|strip_tags}</a>
-                            <img src="__ADMIN__/study/img/icon_quote_m_e.gif" width="15" height="14" />
+                            <div>
+                                <img src="__ADMIN__/study/img/icon_quote_m_s.gif" width="15" height="14" />
+                                <a href="{:url('Article/index?aid='.$comart->art_id.'&page='.$comart->getPage($comment->com_count).'#c'.$comment->com_count)}">{$comment->com_content|htmlspecialchars_decode|strip_tags}</a>
+                                <img src="__ADMIN__/study/img/icon_quote_m_e.gif" width="15" height="14" />
+                            </div>
+                            
                         </td>
                         <td></td>
                         <td></td>

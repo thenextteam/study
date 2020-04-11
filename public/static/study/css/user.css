@@ -111,6 +111,10 @@ body{
     width: 600px;
 }
 
+.uarttable .arttitle div{
+    min-height: 35px;
+}
+
 .uarttable .comrow{
     height: 35px!important;
     line-height: 35px;

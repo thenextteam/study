@@ -27,7 +27,7 @@
                 <div class="useratime"><div><span><a href="{:url('User/index?uid='.$Article->User->user_id)}">{$Article->User->nick_name}</a></span>　　发表于 <span>{$Article->TimeHandle($Article->art_time)}</span></div><div class="lounum"><span>1</span><sup>#</sup></div></div>
                 <p class="edtime">本帖子最后于<span>{$Article->TimeHandle($Article->getData('art_lasttime'))}</span>编辑</p>
                 {if condition="$Article->art_status==2"}<div class="lock"><img src="__ADMIN__/study/img/lock.gif" alt="帖子被锁定" title="帖子被锁定" />该帖子已被锁定，仅限查看</div>{/if}
-                <div class="postf">
+                <div class="postf artcon">
                     {$Article->getData('art_content')|htmlspecialchars_decode}
                 </div>
                 {if condition="($Article->com_grade==1)"}
@@ -108,7 +108,7 @@
                 
                 
 
-                <div class="postf">
+                <div class="postf comcon{$comment->com_count}">
                     {if condition="($comment->com_status==0)"}
                     {$comment->com_content|htmlspecialchars_decode}
                     {else /}<p><i>该回复已被删除</i></p>
@@ -150,7 +150,7 @@
                     {/if}
                     {if condition="($auth==true&&$comment->com_status==0)"}
                     <a class="gop" id="cg{$comment->com_id}">评分</a>
-                    {else /}{if condition="($comment->com_status==0)"}<a class="tip" id="ctip{$comment->com_id}">举报</a>{/if}
+                    {else /}{if condition="($comment->com_status==0)"}<a class="tip" id="ctip{$comment->com_id}" name="{$comment->com_count}">举报</a>{/if}
                     {/if}
                 </div>
             </div>
@@ -200,7 +200,7 @@
                 <div class="totitle">举报</div>
                 <div class="tocon">
                     <div class="poli">
-                        <div class="tiptitle">您将举报：{$Article->art_title}</div>
+                        <div class="tiptitle">您将举报<span class="comnn">{$Article->art_title}</span></div>
                     </div>
                     <div class="pore"><label for="reinput">请填写举报理由</label><fuline></fuline><input type="text" name="reinput" id="reinput" /></div>
                 </div>
@@ -268,17 +268,23 @@
 
             $('.cancel').click(function(){
                 event.preventDefault();
-                $('.topop').css('display','none');
+                $('.topop').fadeOut();
             })
             
             $('.gop').click(function(){
                 $('#aid').val($(this).attr('id'));
-                $('.topop').css('display','block');
+                $('.topop').fadeIn();
             })
 
             $('.tip').click(function(){
+                if($(this).attr('id').indexOf('ctip')>=0){
+                    $('.comnn').text('回复：'+$('.comcon'+$(this).attr('name')).text());
+                }
+                else{
+                    $('.comnn').text('帖子：'+$('.artcon').text());
+                }
                 $('#aid').val($(this).attr('id'));
-                $('.topop').css('display','block');
+                $('.topop').fadeIn();
             })
 
             $('.tipok').click(function(){

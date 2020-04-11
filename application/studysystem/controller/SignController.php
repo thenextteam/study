@@ -55,6 +55,8 @@ class SignController extends Controller
         ->where('sign_time','< time',date('Y-m-d', time()-86400).'23:59:59')
         ->where('sign_time','> time',date('Y-m-d', time()-86400).'00:00:00')
         ->count('sign_id');
+        //总签到人数
+        $AllSign = db('sign')->count('sign_id');
 
         // 心情人数
         $mood0 = array(0,db('sign')->where('user_mood',0)->count('sign_id'));
@@ -75,6 +77,7 @@ class SignController extends Controller
         $this->assign('page',$page);
         $this->assign('TodaySign',$TodaySign);
         $this->assign('YesSign',$YesSign);
+        $this->assign('AllSign',$AllSign);
         $this->assign('mood',$moodall);
         return $this->fetch();
     }

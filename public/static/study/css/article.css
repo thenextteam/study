@@ -180,6 +180,7 @@
     position: absolute;
     bottom: 20px;
     width: 800px;
+    height: 17px;
 }
 .pocon .posttcon .pret .pretbtn,.pocon .posttcon .pret .fav{
     display: inline-block;

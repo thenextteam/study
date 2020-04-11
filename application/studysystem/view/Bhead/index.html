@@ -20,7 +20,7 @@
         <div class="conblist">
             {volist name="allBoard" id="boards"}
             <div class="conbcon">
-                <div class="bloimg"><a href="{:url('board/index?bid='.$boards->board_id)}"><img src="__ADMIN__/study/img/boardimg/b55.png" alt="321" width="220" height="75"></a></div>
+                <div class="bloimg"><a href="{:url('board/index?bid='.$boards->board_id)}"><img src="__UPLOAD__/boardimgs/{$boards->board_img}" alt="321" width="220" height="75"></a></div>
                 <div class="blotitle"><div class="blott"><a href="{:url('board/index?bid='.$boards->board_id)}">{$boards->board_name}</a><span class="newnum">({$boards->GetNewArt($boards->board_id)})</span></div><div class="blotj">{$boards->board_info}</div></div>
                 {if condition="$boards->LastComArt($boards->board_id)!=null"}
                 <div class="blocon"><div class="bloct"><a href="{:url('article/index?aid='.$boards->LastComArt($boards->board_id)['art_id'])}">{$boards->LastComArt($boards->board_id)['art_title']}</a></div><div class="lastre">最后回复：<a href="#">{$boards->LastComArt($boards->board_id)['nick_name']}</a></div><div class="tietime">{$boards->TimeHandle($boards->LastComArt($boards->board_id)['last_com_time'])}</div></div>

@@ -3,6 +3,7 @@ namespace app\studysystem\controller;     //命名空间，也说明了文件所
 use think\Controller;
 use app\common\model\User;      // 引入用户
 use app\common\model\Board;      // 引入板块
+use app\common\model\Boardadmin;      // 引入板主
 use app\common\model\Article;      // 引入帖子
 use app\common\model\Favorite;      // 引入收藏
 use think\Session;
@@ -72,6 +73,7 @@ class BoardController extends Controller
         }
 
         $this->assign('auth',$auth);
+
         //获取置顶贴
         $BoardTops = Board::get($bid)->Article()->where('art_top','>',0)->where('art_status',0)->order('art_top desc')->select();
 

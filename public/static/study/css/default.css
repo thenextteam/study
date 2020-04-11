@@ -130,8 +130,20 @@ fuline{
 .footer{
     height: 120px;
     background: #222;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 30px;
 }
 
+.footer p{
+    color: #a1a1a1;
+}
+.footer fuline{
+    color: #e5e5e5;
+}
+.footer a{
+    color: #d3d3d3;
+}
 
 /* 分页 */
 .pagecon{

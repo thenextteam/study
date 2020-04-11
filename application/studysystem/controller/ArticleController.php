@@ -421,7 +421,7 @@ class ArticleController extends Controller
                 //举报帖子
                 $newaid = str_replace('atip','',$aid);
                 $Tip->art_id = $newaid;
-                $isTip = $Tip->where('user_id',Session::get('UserId'))->where('art_id',$newaid)->find();
+                $isTip = $Tip->where('user_id',Session::get('UserId'))->where('art_id',$newaid)->where('tip_op',0)->find();
                 if($isTip){
                     return 'isTip';
                 }
