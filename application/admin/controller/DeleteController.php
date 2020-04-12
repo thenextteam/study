@@ -4,6 +4,8 @@ namespace app\admin\controller;
 
 use app\common\model\File;
 use app\common\model\User;
+use app\common\model\Article;
+use app\common\model\Comment;
 use think\Request;
 
 class DeleteController extends BasicController
@@ -71,4 +73,19 @@ class DeleteController extends BasicController
     // rmdir(ROOT_PATH . 'public' . DS . 'uploads' .DS .'icons' . DS . $path);
     return $this->success('删除成功', 'delete');
   }
+  public function delArticle()
+  {
+    Article::destroy(['art_status' =>1]);
+    return $this->success('删除成功', 'delete');
+  }
+  public function delComment()
+  {
+    Comment::destroy(['art_status' =>1]);
+    return $this->success('删除成功', 'delete');
+  }
+  // public function delFile()
+  // {
+  //   Comment::destroy(['art_status' =>1]);
+  //   return $this->success('删除成功', 'delete');
+  // }
 }
