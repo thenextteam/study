@@ -37,7 +37,7 @@
   </div>
   <!-- 头部工具栏 -->
   <script type="text/html" id="toolbarDemo">
-      <div class="layui-inline" title="移动" lay-event="add"><i class="layui-icon layui-icon-export"></i></div>
+      <!-- <div class="layui-inline" title="移动" lay-event="add"><i class="layui-icon layui-icon-export"></i></div> -->
       <div class="layui-inline" title="批量删除" lay-event="multidelete"><i class="layui-icon layui-icon-delete"></i></div>
     </script>
   <!-- 右侧工具栏 -->
@@ -121,20 +121,19 @@
             //layer.msg('选中了：'+ data.length + ' 个');
             //layer.alert(JSON.stringify(data));
             var list = [];
-            //alert(data[0].tid);
             for (var i = 0; i < checkStatus.data.length; i++) {
-              list[i] = data[i].tid;
+              list[i] = data[i].art_id;
             }
-            console.log(JSON.stringify(list));
+            console.log(list);
             $.ajax({
-              url: "getUsers",
+              url: "{:url('Articles/multiDelete')}",  
               type: 'post',
               traditional: true,
               data: { array: JSON.stringify(list) },
               dataType: 'json',
               success: function (json) {
                 layer.msg(json.msg, { time: 500 }, function () {
-                  table.reload('ticket', {
+                  table.reload('article', {
                     method: 'get',
                     page: {
                       curr: 1 //重新从第 1 页开始

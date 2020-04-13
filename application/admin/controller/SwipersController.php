@@ -65,7 +65,7 @@ class SwipersController extends BasicController
             $art0 = Article::get(['art_id' => $post['art_id']]);
             if (!$art0) {
                 $data['status'] = '1';
-                $data['msg'] = '文章不存在，添加失败';
+                $data['msg'] = '帖子不存在，添加失败';
             } else {
                 $data['status'] = '0';
                 $swiper = $Swiper->data([
