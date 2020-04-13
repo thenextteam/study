@@ -40,7 +40,7 @@
   </div>
   <!-- 头部工具栏 -->
   <script type="text/html" id="toolbarDemo">
-      <div class="layui-inline" title="添加" lay-event="add"><i class="layui-icon layui-icon-add-1"></i></div>
+      <!-- <div class="layui-inline" title="添加" lay-event="add"><i class="layui-icon layui-icon-add-1"></i></div> -->
       <div class="layui-inline" title="批量删除" lay-event="multidelete"><i class="layui-icon layui-icon-delete"></i></div>
     </script>
   <!-- 右侧工具栏 -->
@@ -89,7 +89,7 @@
         ]]
       });
       //监听头工具栏事件-----添加
-      table.on('toolbar(article)', function (obj) {
+      table.on('toolbar(comment)', function (obj) {
         var checkStatus = table.checkStatus(obj.config.id);
         switch (obj.event) {
           case 'add':
@@ -117,18 +117,18 @@
             var list = [];
             //alert(data[0].tid);
             for (var i = 0; i < checkStatus.data.length; i++) {
-              list[i] = data[i].tid;
+              list[i] = data[i].com_id;
             }
             console.log(JSON.stringify(list));
             $.ajax({
-              url: "getUsers",
+              url: "{:url('Comments/multiDelete')}",  
               type: 'post',
               traditional: true,
               data: { array: JSON.stringify(list) },
               dataType: 'json',
               success: function (json) {
                 layer.msg(json.msg, { time: 500 }, function () {
-                  table.reload('ticket', {
+                  table.reload('comment', {
                     method: 'get',
                     page: {
                       curr: 1 //重新从第 1 页开始

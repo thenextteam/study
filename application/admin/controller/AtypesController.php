@@ -112,29 +112,27 @@ class AtypesController extends BasicController
 
 
      //删除一行
-    //  public function deleteBoard(){
-    //     $Atype = new Atype();
-    //     $Board = new Board();
-    //     $data = [];
-    //     if(Request::instance()->has('board_id','get')){
-    //         // $post = json_decode($_POST['board_id'], 1);
-    //         // $board_id = $post['board_id'];
-    //         $board_id = $_GET['board_id'];
-    //         $atype = Atype::get(['board_id' => $board_id]);
-    //         if($atype){
-    //             $data['status'] = 0;
-    //             $data['msg'] = '子类不为空，删除失败';
-    //         }else{
-    //             $board = $Board->save(['board_status'=>1],['board_id' => $board_id]);
-    //             $data['status'] = 1;
-    //             $data['msg'] = '删除成功';
-    //         }
-    //     } else{
-    //         $data['status'] = 2;
-    //         $data['msg'] = '删除失败';
-    //     }   
-    //     echo json_encode($data);
-    // }
+     public function deleteAtype(){
+        $Atype = new Atype();
+        $Article = new Article();
+        $data = [];
+        if(Request::instance()->has('atype_id','get')){
+            $atype_id = $_GET['atype_id'];
+            $article = Article::get(['atype_id' => $atype_id]);
+            if($article){
+                $data['status'] = 0;
+                $data['msg'] = '子类不为空，删除失败';
+            }else{
+                Atype::destroy(['atype_id' =>$atype_id]);
+                $data['status'] = 1;
+                $data['msg'] = '删除成功';
+            }
+        } else{
+            $data['status'] = 2;
+            $data['msg'] = '删除失败';
+        }   
+        echo json_encode($data);
+    }
     
     public function articlesShow(){
         if(Request::instance()->has('atype_id','get')){
