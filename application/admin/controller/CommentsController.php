@@ -32,7 +32,7 @@ class CommentsController extends BasicController
             $art_id = $get['art_id'];
             $map = [];
             $com_id == "" ?: $map['com_id'] = ['=', $com_id];
-            $user_id == "" ?: $map['user_id'] = ['=', $user_id];
+            $user_id == "" ?: $map['comment.user_id'] = ['=', $user_id];
             $art_id == "" ?: $map['art_id'] = ['=', $art_id];
             $comments = $Comment->alias('c')
                 ->where($map)
