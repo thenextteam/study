@@ -18,7 +18,29 @@ class BheadController extends Controller
             $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
         }
         else{
-            $this->assign('nowuser','');
+            $Key="safe";
+            //如果Session中没有登录信息，尝试从Cookie中加载用户信息
+            if(isset($_COOKIE['Login'])){
+                $Value = $_COOKIE['Login'];
+                // 去掉魔术引号
+                if (get_magic_quotes_gpc()) {
+                    $Value = stripslashes($Value);
+                }
+                $Str = substr($Value,0,32);
+                $Value = substr($Value,32);
+                //校验
+                if (md5($Value . $Key) == $Str) {
+                    $User = unserialize($Value);
+                    session('UserId', $User[0]);
+                    session('UserName', $User[1]);
+                    session('NickName', $User[2]);
+                    $nowuser = new User;
+                    $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+                }
+            }
+            else{
+                $this->assign('nowuser','');
+            }
         }
         $hid = Request::instance()->param('hid/d');
         if($hid==null){

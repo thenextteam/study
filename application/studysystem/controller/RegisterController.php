@@ -16,6 +16,7 @@ class RegisterController extends Controller
             $nowuser = new User;
             // $nowuser::get(Session::get('UserId'));
             $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+            return $this->error('请先注销当前账号，再进行注册', url('Index/index'));
         }
         else{
             $this->assign('nowuser','');

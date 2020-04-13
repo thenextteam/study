@@ -8,7 +8,6 @@ use think\Session;
 
 class LoginController extends Controller
 {
-
     // 用户登录表单
     public function index()
     {
@@ -17,10 +16,12 @@ class LoginController extends Controller
             $nowuser = new User;
             // $nowuser::get(Session::get('UserId'));
             $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
-            return $this->success('登录成功', url('Index/index'));
+            return $this->error('您已登录', url('Index/index'));
         }
         else{
-            $this->assign('nowuser','');
+            
+                $this->assign('nowuser','');
+            
         }
         return $this->fetch();
     }
@@ -30,7 +31,6 @@ class LoginController extends Controller
     {
         // 接收post信息
         $Request = Request::instance();
-    
         $captcha = $Request->post('veri');
         if(!captcha_check($captcha)){
             //验证失败
@@ -41,6 +41,15 @@ class LoginController extends Controller
 
         // 直接调用M层方法，进行登录。
         if (User::login($postData['username'], $postData['password'])) {
+            //用户选择了自动登录
+            if($Request->post('aulo/a')!=null){
+                $Key="safe";
+                //将登录信息，存放在Cookie中
+                $Value = serialize(array(Session::get('UserId'),Session::get('UserName'),Session::get('NickName')));            
+                $Str = md5($Value.$Key);
+                //有效期30天
+                setcookie('Login', $Str . $Value,time()+60*60*24*30,'/');
+            }
             //登录后状态变成1
             Db::table('user')->where('user_id', Session::get('UserId'))->update(['status' => 1]);
             //登录同时根据积分计算用户等级
