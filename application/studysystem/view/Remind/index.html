@@ -124,6 +124,7 @@
     $(document).ready(function(){
         $x = '已读';
         $('.readop').click(function(){
+            $del = '';
             if($(this).attr('name')==null){
                 $sr = $(this).attr('id');
                 $red ='.red'+ $sr.replace('sr','');
@@ -131,6 +132,7 @@
                 if($(this).hasClass('fre')){
                     $x = '已同意';
                     $red ='.red'+ $sr.replace('fr','');
+                    $del = $(this).attr('id').replace('fr','');
                 }
                 else if($(this).hasClass('ign')){
                     $x = '已忽略';
@@ -151,6 +153,7 @@
                 dataType: "json",
                 success: function(data){
                     if(data==true){
+                        $('#ign'+$del).remove();
                         $($red).css('display','none');
                         $($str).text($x).removeClass('readop');
                     }

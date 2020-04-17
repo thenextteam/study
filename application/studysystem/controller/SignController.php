@@ -54,6 +54,10 @@ class SignController extends Controller
                     session('NickName', $User[2]);
                     $nowuser = new User;
                     $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+                    //更新登录时间
+                    $IsUser = User::get($User[0]);
+                    $IsUser->user_lasttime = date('Y-m-d H:i:s', time());
+                    $IsUser->save();
                 }
             }
             else{
@@ -125,7 +129,7 @@ class SignController extends Controller
         $signcon=$Request->post('say');
 
         
-        // 实例化回复并赋值
+        // 实例化签到并赋值
         $Sign = new Sign();
         $Sign->user_id = Session::get('UserId');
         $Sign->user_mood = $usermood;

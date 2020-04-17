@@ -43,6 +43,10 @@ class ArticleController extends Controller
                     session('NickName', $User[2]);
                     $nowuser = new User;
                     $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+                    //更新登录时间
+                    $IsUser = User::get($User[0]);
+                    $IsUser->user_lasttime = date('Y-m-d H:i:s', time());
+                    $IsUser->save();
                 }
             }
             else{
@@ -400,7 +404,7 @@ class ArticleController extends Controller
         $Grade->grade_money = $Request->post('moinput');
         $Grade->grade_content = $Request->post('reinput');
 
-        // 删除
+        // 失败
         if(!$Grade->validate(true)->save()){
             return $this->error('评分失败:' . $Grade->getError());
         }
@@ -447,33 +451,37 @@ class ArticleController extends Controller
                 if($isTip){
                     return 'isTip';
                 }
-                //获取所在版块
-                $newboard = Article::get($newaid)->art_board_id;
-                $Tip->board_id = $newboard;
-
-                //通知版主
-                $x = Board::get($newboard)->boardadmin;
-                foreach($x as $i){
-                    $Aremind = new Aremind;
-                    $User = User::get($i->user_id);
-                    $Aremind->user_id = $i->user_id;
-                    $Aremind->board_id = $newboard;
-                    $Aremind->aremind_op = 4;//操作类型：举报通知版主
-                    $Aremind->save();
-                    $User->remind = $User->remind+1;
-                    $User->save();
-                }
             }
             else if(strstr($aid,'ctip')!=null){
                 //举报回复
                 $newcid = str_replace('ctip','',$aid);
                 $Tip->com_id = $newcid;
-                $isTip = $Tip->where('user_id',Session::get('UserId'))->where('com_id',$newcid)->find();
+                $isTip = $Tip->where('user_id',Session::get('UserId'))->where('com_id',$newcid)->where('tip_op',0)->find();
                 if($isTip){
                     return 'isTip';
                 }
                 $Tip->board_id = Article::get(Comment::get($newcid)->art_id)->art_board_id;
+
+                $newaid = Comment::get($newcid)->art_id;
             }
+
+            //获取所在版块
+            $newboard = Article::get($newaid)->art_board_id;
+            $Tip->board_id = $newboard;
+
+            //通知版主
+            $x = Board::get($newboard)->boardadmin;
+            foreach($x as $i){
+                $Aremind = new Aremind;
+                $User = User::get($i->user_id);
+                $Aremind->user_id = $i->user_id;
+                $Aremind->board_id = $newboard;
+                $Aremind->aremind_op = 4;//操作类型：举报通知版主
+                $Aremind->save();
+                $User->remind = $User->remind+1;
+                $User->save();
+            }
+
             if($Tip->validate(true)->save()){
                 return true;
             }

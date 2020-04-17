@@ -39,6 +39,10 @@ class BoardController extends Controller
                     session('NickName', $User[2]);
                     $nowuser = new User;
                     $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+                    //更新登录时间
+                    $IsUser = User::get($User[0]);
+                    $IsUser->user_lasttime = date('Y-m-d H:i:s', time());
+                    $IsUser->save();
                 }
             }
             else{
@@ -149,10 +153,6 @@ class BoardController extends Controller
         }
 
         // 帖子类型arttype、标题arttitle、内容artcontent
-        // 实例化回复并赋值
-        
-        // $x = htmlspecialchars_decode($x);
-        // return strip_tags($x);
         $text = $Request->post('artcontent');
 
         $Article = new Article();

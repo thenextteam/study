@@ -40,6 +40,10 @@ class RemindController extends Controller
                     session('NickName', $User[2]);
                     $nowuser = new User;
                     $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+                    //更新登录时间
+                    $IsUser = User::get($User[0]);
+                    $IsUser->user_lasttime = date('Y-m-d H:i:s', time());
+                    $IsUser->save();
                 }
             }
             else{

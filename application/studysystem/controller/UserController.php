@@ -40,6 +40,10 @@ class UserController extends Controller
                     session('NickName', $User[2]);
                     $nowuser = new User;
                     $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+                    //更新登录时间
+                    $IsUser = User::get($User[0]);
+                    $IsUser->user_lasttime = date('Y-m-d H:i:s', time());
+                    $IsUser->save();
                 }
             }
             else{
@@ -170,7 +174,6 @@ class UserController extends Controller
     //更新信息
     public function save()
     {
-        // 获取表单上传文件
         $Request = Request::instance();
         $uid = $Request->param('id');
         $User = User::get($uid);
@@ -216,9 +219,12 @@ class UserController extends Controller
             if($info){
                 $User = User::get(Session::get('UserId'));
                 // $path = '/thinkphp/public/uploads/userimgs'.$info->getSaveName();
+                $oldimg = $User->user_img;
                 $User->user_img = $info->getSaveName();
                 $User->save();
                 // $oldpath = substr($path,0,45);
+                //删除旧头像
+                unlink(ROOT_PATH.'/public/uploads/userimgs/'.$oldimg);
                 return $this->success('上传成功', $Request->header('referer'));
             }else{
                 // 上传失败获取错误信息

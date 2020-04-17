@@ -1,0 +1,36 @@
+{extend name="template"/}
+{block name="title"}
+忘记密码 - 学习论坛
+{/block}
+{block name="cssname"}logreg{/block}
+
+{block name="content"}
+    <div class="logincon">
+        <div class="lotitle">
+            <h3>忘记密码</h3>
+        </div>
+        <div class="loginin">
+            <form action="{:url('login/save')}" method="post">
+                <div class="inrow"><label for="user" class="inlabel">用户名：</label><input type="text" name="username" id="username" class="loinput" placeholder="请输入用户名" /></div>
+                <div class="inrow"><label for="pwd" class="inlabel">邮箱：</label><input type="email" name="email" id="email" class="loinput" placeholder="请输入注册邮箱" /></div>
+                <div class="inrow"><label for="pwd" class="inlabel">新密码：</label><input type="password" name="password" id="password" class="loinput" placeholder="请输入注册邮箱" /></div>
+                <div class="inrow"><label for="veri" class="inlabel">验证码：</label><input type="text" name="veri" id="veri" class="loinput" placeholder="请输入验证码" /></div>
+                <div class="cap"><img id="captcha_img" class="verifyimg" src="{:captcha_src()}" alt="captcha" onclick="refreshVerify()" width="200" height="50" /></div>
+                <div class="inrow2"><button class="logbtn" style="width: 80px;margin-top:10px">取回密码</button></div>
+            </form>
+        </div>
+    </div>
+    <script>
+        $(function(){
+            // 刷新验证码
+            var verifyimg = $(".verifyimg").attr("src");
+            $(".verifyimg").click(function(){
+                if( verifyimg.indexOf('?')>0){
+                    $(".verifyimg").attr("src", verifyimg+'&random='+Math.random());
+                }else{
+                    $(".verifyimg").attr("src", verifyimg.replace(/\?.*$/,'')+'?'+Math.random());
+                }
+            });
+        })
+    </script>
+{/block}

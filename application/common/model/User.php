@@ -164,8 +164,15 @@ class User extends Model
     public function getSign($value)
     {
         $signid = $this->where('user_id',$value)->field('sign_id')->find()['sign_id'];
-        $usermood = db('Sign')->where('sign_id',$signid)->field('user_mood')->find()['user_mood'];
-
+        //从未签到
+        if($signid==0){
+            $usermood = 9;
+        }
+        //签到过
+        else{
+            $usermood = db('Sign')->where('sign_id',$signid)->field('user_mood')->find()['user_mood'];
+        }
+        
         $status = array('0'=>'开心','1'=>'难过','2'=>'郁闷','3'=>'无聊','4'=>'怒','5'=>'擦汗','6'=>'奋斗','7'=>'慵懒','8'=>'衰','9'=>'该用户从未签到');
         $umname = $status[$usermood];
         if(isset($umname)){

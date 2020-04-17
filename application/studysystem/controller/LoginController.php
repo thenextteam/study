@@ -35,7 +35,7 @@ class LoginController extends Controller
         if(!captcha_check($captcha)){
             //验证失败
             return $this->error('验证码错误');
-        };
+        }
 
         $postData = $Request->post();
 
@@ -70,4 +70,47 @@ class LoginController extends Controller
         }
     }
 
+    public function forget()
+    {
+        //获取当前用户
+        if(Session::get('UserId')){
+            $nowuser = new User;
+            // $nowuser::get(Session::get('UserId'));
+            $this->assign('nowuser',$nowuser::get(Session::get('UserId')));
+        }
+        else{
+            $this->assign('nowuser','');
+        }
+
+        return $this->fetch();
+    }
+
+    //更新
+    public function save()
+    {
+        // 接收post信息
+        $Request = Request::instance();
+        $captcha = $Request->post('veri');
+        if(!captcha_check($captcha)){
+            //验证失败
+            return $this->error('验证码错误');
+        }
+        $user = db('user')->where('user_name',$Request->post('username'))->find();
+        if($Request->post('email')==$user['user_email']){
+            $User = User::get($user['user_id']);
+            //记忆旧密码
+            $oldpwd = $User->user_pwd;
+            //新密码
+            $User->user_pwd = md5($Request->post('password'));
+
+            if(!$User->validate(true)->save()){
+                //没有修改密码
+                if($oldpwd==md5($Request->post('password'))){
+                    return $this->error('您输入的密码是旧密码，无修改');
+                }
+                return $this->error('修改失败');
+            }
+            return $this->success('修改成功');
+        }
+    }
 }
