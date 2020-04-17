@@ -3,14 +3,6 @@
 namespace app\studysystem\controller;
 //命名空间，也说明了文件所在的文件夹
 use think\Controller;
-use app\common\model\User;      // 引入用户
-use app\common\model\Article;      // 引入帖子
-use app\common\model\Board;      // 引入版块
-use app\common\model\Comment;      // 引入回复
-use app\common\model\Rremind;      // 引入回复提醒
-use app\common\model\Aremind;
-use app\common\model\Grade;
-use app\common\model\Tip;
 use think\Session;
 use think\Request;
 use think\Db;
@@ -47,7 +39,7 @@ class ChatController extends Controller
             for ($g = 0; sizeof($friendgroup) - 1 >= $g; $g++) {
                 $gid = $friendgroup[$g]['id'];
                 //遍历第二层为获取到的gid去获取fid
-                for ($i = 0; count($fg_id) -1 >= $i; $i++) {
+                for ($i = 0; count($fg_id) - 1 >= $i; $i++) {
                     //查询每一条数据是否有符合分组id下面的好友
                     if ($gid == $fg_id[$i]['gid']) {
                         $fid = $fg_id[$i]['friend_user_id'];
@@ -197,13 +189,40 @@ class ChatController extends Controller
             $allmsg['msg'] = "";
             $allmsg['data'] = $data;
             return $allmsg;
-        }else{
+        } else {
 
         }
     }
-    public  function changeSign(){
+
+    public function changeSign()
+    {
         $sign = $_POST['sign'];
 
-        Db::table('user')->where('user_id',Session::get('UserId'))->update(['sign' => $sign]);
+        Db::table('user')->where('user_id', Session::get('UserId'))->update(['sign' => $sign]);
+    }
+
+    public function uploadimg()
+    {
+
+        $arr = array();
+        $data = array();
+        $file = request()->file('file');
+        // 移动到框架应用根目录/public/uploads/ 目录下
+        if ($file) {
+            $info = $file->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . 'chatimgs');
+            if ($info) {
+                // 成功上传后 获取上传信息
+                // 输出 jpg
+                $path = '/thinkphp/public/uploads/chatimgs/' . $info->getSaveName();
+                $arr['code'] = 0;
+                $data['src'] = $path;
+                $arr['data'] = $data;
+                $arr['msg'] = '上传成功';
+                return $arr;
+            } else {
+                // 上传失败获取错误信息
+                echo $file->getError();
+            }
+        }
     }
 }

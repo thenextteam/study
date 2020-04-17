@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title></title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="__ADMINL__/css/layui.css" media="all">
+    <script type="text/javascript" src="__ADMINL__/jquery/jquery-3.4.1.min.js"></script>
+    <script src="__ADMINL__/layui.js" charset="utf-8"></script>
+    <!-- 注意加载js的顺序 -->
+    <script src="__ADMINL__/echarts.js"></script>
+    <script src="__ADMINL__/macarons.js"></script>
+    <script src="__ADMINL__/roma.js"></script>
+    <script src="__ADMINL__/shine.js"></script>
+    <style>
+        .layui-elem-quote {
+            margin: 0px;
+            background-color: white;
+            border-radius: 5px
+        }
+
+        .my_input {
+            background-color: white;
+            display: block
+        }
+    </style>
+</head>
+
+<body class="layui-fluid" style="padding: 15px;">
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+        <blockquote class="layui-elem-quote">
+            <input class="my_input" type="text" id="adminname" style="border:none;" value="欢迎您 {$name} 管理员"
+                   disabled="true">
+            <input class="my_input" type="text" id="nowtime" style="border:none; width: 300px;  margin-top: 5px"
+                   disabled="true"></input>
+        </blockquote>
+    </div>
+</div>
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header" style="font-size: 20px; padding-left: 20px">总用户人数</div>
+            <div class="layui-card-body">
+                <div style="font-size: 30px; padding: 10px; color: #666666">{$usernum}</div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header" style="font-size: 20px; padding-left: 20px">总帖子数</div>
+            <div class="layui-card-body">
+                <div style="font-size: 30px; padding: 10px; color: #666666">{$articles}</div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md3">
+        <div class="layui-card">
+            <div class="layui-card-header" style="font-size: 20px; padding-left: 20px">总版块数</div>
+            <div class="layui-card-body">
+                <div style="font-size: 30px; padding: 10px;  color: #666666">{$board}</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md6">
+        <div id="recent_art"
+             style="width: 100%;height:350px; background-color: white; border-radius: 5px; box-shadow: 3px 3px 5px #F0F0F0">
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div id="recent_user"
+             style="width: 100%;height:350px ;background-color: white; border-radius: 5px; box-shadow: 3px 3px 5px #F0F0F0">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    // 基于准备好的dom，初始化echarts实例
+
+    var recent_art = echarts.init(document.getElementById('recent_art'), 'macarons');
+    var option = {
+        title: {
+            text: '近7天新增帖子数',
+            textStyle: {
+                fontFamily: 'Microsoft YaHei',
+                fontWeight: 'normal'
+            },
+            x: 'center',
+            top: 10
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {},
+        dataset: {
+            source: []
+        },
+        xAxis: {
+            data: [],
+            boundaryGap: false,
+        },
+        yAxis: {},
+        series: [{
+            areaStyle: {},
+            type: 'line',
+            smooth: true,
+            data: []
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    recent_art.showLoading();
+    recent_art.setOption(option);
+    var date = []; //日期数组（实际用来盛放X轴坐标值）
+    var count = []; //统计数量数组（实际用来盛放Y坐标值）
+
+    $.ajax({
+        url: "{:url('Index/getRecArt')}",
+        type: 'post',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            var day = data.data;
+            var art = data.art;
+            var l = data.art.length;
+            if (data) {
+                for (var i = 0; i < 7; i++) {
+                    date.push(day[i + 1] + "号"); //挨个取出日期并填入日期数组
+                }
+                for (var i = 0; i < 7; i++) {
+                    for (var j = 0; j < l; j++) {
+                        if (art[j]['days'] == day[i + 1]) {
+                            count.push(art[j]['count']); //挨个取出数量并填入数量数组
+                            break;
+                        } else {
+                            if (j + 1 == l) {
+                                count.push(0); //挨个取出数量并填入数量数组
+                            }
+                        }
+                    }
+                }
+            }
+            recent_art.hideLoading();
+            recent_art.setOption({
+                xAxis: {
+                    data: date,
+                },
+                series: [{
+                    data: count,
+
+                }]
+            });
+        },
+        error: function () {
+        }
+    });
+
+
+    var recent_user = echarts.init(document.getElementById('recent_user'), 'roma');
+    var option2 = {
+        title: {
+            text: '近7天新增用户人数',
+            textStyle: {
+                fontFamily: 'Microsoft YaHei',
+                fontWeight: 'normal'
+            },
+            x: 'center',
+            top: 10
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {},
+        dataset: {
+            source: []
+        },
+        xAxis: {
+            data: [],
+            boundaryGap: false,
+        },
+        yAxis: {},
+        series: [{
+            areaStyle: {},
+            type: 'line',
+            smooth: true,
+            data: []
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    recent_user.showLoading();
+    recent_user.setOption(option2);
+    var date2 = []; //日期数组（实际用来盛放X轴坐标值）
+    var count2 = []; //统计数量数组（实际用来盛放Y坐标值）
+
+    $.ajax({
+        url: "{:url('Index/getRecUser')}",
+        type: 'post',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data);
+            var day = data.data;
+            var user = data.user;
+            var l = data.user.length;
+            if (data) {
+                for (var i = 0; i < 7; i++) {
+                    date2.push(day[i + 1] + "号"); //挨个取出日期并填入日期数组
+                }
+                for (var i = 0; i < 7; i++) {
+                    for (var j = 0; j < l; j++) {
+                        if (user[j]['days'] == day[i + 1]) {
+                            count2.push(user[j]['count']); //挨个取出数量并填入数量数组
+                            break;
+                        } else {
+                            if (j + 1 == l) {
+                                count2.push(0); //挨个取出数量并填入数量数组
+                            }
+                        }
+                    }
+                }
+            }
+            recent_user.hideLoading();
+            recent_user.setOption({
+                xAxis: {
+                    data: date2,
+                },
+                series: [{
+                    data: count2,
+
+                }]
+            });
+        },
+        error: function () {
+        }
+    });
+
+    function showTime() {
+        var t = new Date()
+        var year = t.getFullYear();
+        var month = t.getMonth();
+        var day = t.getDate();
+        var week = t.getDay();
+        var arr = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
+        var hour = t.getHours();
+        var minturs = t.getMinutes();
+        var second = t.getSeconds();
+        var showtime = year + "/" + month + "/" + day + " " + arr[week] + " " + hour + ((minturs < 10) ? ":0" :
+            ":") + minturs + ((second < 10) ? ":0" : ":") + second + ((hour > 12) ? ".pm" : ".am");
+        // console.log(showtime);
+        document.getElementById("nowtime").value = "现在时间：" + showtime;
+    }
+
+    setInterval("showTime()", 1000);
+</script>
+</body>
+
+</html>

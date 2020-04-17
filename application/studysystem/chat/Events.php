@@ -61,9 +61,7 @@ class Events
      */
     public static function onMessage($client_id, $message)
     {
-//        echo $message;
         $message_data = json_decode($message, true);
-//        var_dump($message_data['uid']);
         switch ($message_data['type']) {
             case 'bind':
                 $db = Db::instance('db1');
@@ -72,13 +70,11 @@ class Events
                     Gateway::joinGroup($client_id, $values['gid']);
                 }
                 Gateway::bindUid($client_id, $message_data['uid']);
-
                 //最近一周时间
                 $time = time() - 7 * 3600 * 24;
                 $resMsg =$db->select('chatmsg.*, user.nick_name, user.user_img')->from('chatmsg')
                     ->innerJoin('user','chatmsg.fromid = user.user_id')
                     ->where("toid= {$message_data['uid']} and timeline > {$time} and type = 'friend' and needsend = 1")->query();
-//                print_r($resMsg);
                 if (!empty($resMsg)) {
 
                     foreach ($resMsg as $key => $vo) {

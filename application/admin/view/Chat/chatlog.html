@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="stylesheet" href="__ADMINL__/css/layui.css">
+    <meta name="renderer" content="webkit">
+    <style>
+        .searchleft {
+            float: left;
+        }
+
+        .layui-table-tool {
+            z-index: 1;
+        }
+    </style>
+</head>
+<body style="padding: 15px;">
+<div style="background-color: white; padding: 10px">
+    <div class="demoTable">
+        <div class="searchleft">
+            <div class="layui-inline">
+                <input class="layui-input" name="id" id="searchID" autocomplete="off" placeholder="发话人ID">
+            </div>
+            <div class="layui-inline">
+                <input class="layui-input" name="nickname" id="searchNickname" autocomplete="off" placeholder="发话人昵称">
+            </div>
+        </div>
+        <button class="layui-btn" data-type="reload" style="margin-left: 1rem">搜索</button>
+    </div>
+
+    <table class="layui-hide" id="chatmsg_table" lay-filter="chatmsg"></table>
+</div>
+<!-- 头部工具栏 -->
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-inline" title="批量删除" lay-event="multidelete"><i class="layui-icon layui-icon-delete"></i></div>
+</script>
+<!-- 右侧工具栏 -->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-xs layui-btn-warm" lay-event="del">删除</a>
+</script>
+
+<script src="__ADMINL__/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('table', function () {
+        var table = layui.table;
+
+        table.render({
+            elem: '#chatmsg_table'
+            , id: 'chatmsg'
+            // ,height: 'full-100'
+            , url: '{:url("Chat/getChatLog")}'//数据接口
+            , title: '聊天内容列表'
+            , page: true //开启分页
+            , toolbar: '#toolbarDemo' //开启工具栏，此处显示默认图标，可以自定义模板，详见文档
+            , totalRow: true //开启合计行
+            , cols: [[ //表头
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'ID', width: '12%', sort: true, fixed: 'left'}
+                , {field: 'fromname', title: '发话人', width: '12%'}
+                , {field: 'toname', title: '收话人', width: '12%'}
+                , {field: 'timeline', title: '对话时间', width: '12%'}
+                , {field: 'content', title: '对话内容', sort: true, width: '12%'}
+                , {
+                    field: 'needsend', title: '状态', sort: true, width: '12%', templet: function (res) {
+                        if (res.needsend == 0) {
+                            return '已推送'
+                        } else {
+                            return '未推送'
+                        }
+                    },
+                }, {
+                    field: 'type', title: '对话类型', sort: true, width: '12%', templet: function (res) {
+                        if (res.type == 'friend') {
+                            return '好友'
+                        } else {
+                            return '群聊'
+                        }
+                    },
+                }, {fixed: 'right', align: 'center', toolbar: '#barDemo'}
+            ]]
+        });
+        //监听头工具栏事件
+        table.on('toolbar(chatmsg)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            switch (obj.event) {
+                case 'multidelete':
+                    var data = checkStatus.data;
+                    var list = [];
+                    //alert(data[0].tid);
+                    for (var i = 0; i < checkStatus.data.length; i++) {
+                        list[i] = data[i].id;
+                    }
+                    console.log(JSON.stringify(list));
+                    layer.confirm('确定删除？', function (index) {
+                        $.ajax({
+                            url: "{:url('Chat/multiDelete')}",
+                            type: 'post',
+                            traditional: true,
+                            data: {'allid': JSON.stringify(list)},
+                            dataType: 'text',
+                            success: function (json) {
+                                layer.msg(json, {time: 500}, function () {
+                                    table.reload('chatmsg', {
+                                        method: 'get',
+                                        page: {
+                                            curr: 1 //重新从第 1 页开始
+                                        },
+                                        where: {}
+                                    });
+                                });
+                            }
+                        });
+                    });
+                    break;
+            }
+            ;
+        });
+
+        //监听行工具事件---编辑---
+        table.on('tool(chatmsg)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+            if (layEvent === 'del') {
+                layer.confirm('确认删除', function (index) {
+                    //向服务端发送删除指令
+                    $.ajax({
+                        url: "{:url('Chat/Dellog')}",
+                        type: 'post',
+                        data: {
+                            'id': data.id,
+                        },
+                        dataType: 'text',
+                        success: function (json) {
+                            layer.msg(json, {time: 500}, function () {
+                                obj.del(); //删除对应行（tr）的DOM结构
+                                layer.close(index);
+                            });
+                        }
+                    });
+                });
+            }
+        });
+
+        var $ = layui.$, active = {
+            reload: function () {
+                var searchID = $('#searchID');
+                var searchNickname = $('#searchNickname');
+                //执行重载
+                table.reload('chatmsg', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                        // ,limit:10
+                    }
+                    , where: {
+                        search: {
+                            "user_id": searchID.val(),
+                            "nick_name": searchNickname.val(),
+                        }
+                    }
+                });
+            }
+        };
+        $('.demoTable .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+</body>
+</html>

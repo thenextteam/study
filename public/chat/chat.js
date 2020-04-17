@@ -11,7 +11,6 @@ if (uid == null || uid == undefined || uid == '') {
             min: true,
             copyright: true,
             chatLog: '/thinkphp/public/chat/chatlog.html?'+getchatlog,
-            // find: '/thinkphp/public/static/admin/dist/css/modules/layim/html/find.html',
             init: {
                 url: getuser,
                 type: "get",
@@ -22,6 +21,9 @@ if (uid == null || uid == undefined || uid == '') {
                 , type: 'get' //默认get
                 , data: {} //额外参数
             },
+            uploadImage:{
+                url:uploadimg
+            }
         });
         //
         ws = new WebSocket("ws://127.0.0.1:8282");
@@ -29,7 +31,7 @@ if (uid == null || uid == undefined || uid == '') {
         //监听收到的消息
         ws.onmessage = function (res) {
             var data = eval("(" + res.data + ")");
-            // console.log(data);
+            console.log(data);
             var type = data.type || '';
             switch (type) {
                 // Events.php中返回的init类型的消息，将client_id发给后台进行uid绑定
@@ -62,10 +64,7 @@ if (uid == null || uid == undefined || uid == '') {
 
         layim.on('ready', function (res) {
             layim.on('sendMessage', function (res) {
-                // console.log(res);
-                // var mine = JSON.stringify(res.mine);
-                // var to = JSON.stringify(res.to);
-                // var login_data = '{"type":"chatMessage","data":'+res+'}';
+
                 console.log(JSON.stringify({
                     type: 'chatMessage' //随便定义，用于在服务端区分消息类型
                     , data: res
