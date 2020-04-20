@@ -19,28 +19,49 @@
       <div class="fileerrorTip">请选择RAR文件上传</div>
       <!-- <input type="file" name="file" /> <br> -->
       <input type="text" name="file_name" placeholder="文件名称" required="required" />
+      <select name="file_type">
+        {volist name="board" id="list1"}
+        <option value ="{$list1['board_id']}">{$list1['board_name']}</option>
+        {/volist}
+      </select>
       <!-- <input type="text" name="file_name" placeholder="文件名称" required="required"/> -->
       <button type="submit" class="up">上传</button>
       <!-- <input type="submit" value="上传" /> -->
     </form>
   </div>
   <div class="list">
+    <div>
+      <ul class="ftype">
+        <li><a href="{:url('File/index')}">全部</a></li>
+        {volist name="board" id="list2"}
+        <li><a href="{:url('File/index?file_type='.$list2['board_id'])}">{$list2['board_name']}</a></li>
+        {/volist}
+      </ul>
+    </div>
     <table cellspacing="0" cellpadding="0">
       <tr class="th">
         <td>文件名</td>
         <td>上传者</td>
         <td>上传时间</td>
-        <td>下载数</td>
-        <td>所需金币</td>
-        <td>下载</td>
+        <td>分类</td>
+        <!-- <td>下载数</td>
+        <td>所需金币</td> -->
+        <td></td>
       </tr>
       {volist name="file" id="file"}
       <tr class="userrow">
         <td> {$file['file_name']}</td>
         <td> {$file['nick_name']}</td>
         <td> {$file['file_time']}</td>
-        <td> {$file['download']}</td>
-        <td> {$file['cost']}</td>
+        <td> 
+          {volist name="board" id="list3"}
+          {if condition="$file.file_type==$list3['board_id']"}
+            {$list3['board_name']}
+          {/if}
+          {/volist}
+        </td>
+        <!-- <td> {$file['download']}</td>
+        <td> {$file['cost']}</td> -->
         <td>
           <form action="downloadFile" enctype="multipart/form-data" method="post">
             <input type="text" name="file_path" value="{$file['file_path']}" style="display: none;"/>
@@ -49,6 +70,7 @@
         </td>
       </tr>
       {/volist}
+ 
     </table>
     <!-- 分页 -->
     <div class="pagecon">{$page}</div>

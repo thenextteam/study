@@ -68,6 +68,23 @@
     background: #fff;
     padding: 5px 10px;
 }
+.content .list .ftype{
+    height: 35px;
+}
+.content .list .ftype li{
+    margin: 5px;
+    border: 1px #1e1e1e solid;
+    border-radius: 5px;
+    padding:3px;
+    float: left;
+}
+.content .list .ftype li:hover{
+    background-color: #4CAF50;
+    border-color:#fff;
+}
+.content .list .ftype li:hover a{
+    color:#fff;
+}
 /*a  upload */
 .a-upload {
     font-size: 16px;

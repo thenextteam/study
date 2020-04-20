@@ -2,7 +2,8 @@
 namespace app\studysystem\controller;     
 use think\Controller;
 use app\common\model\User;      // 引入用户
-use app\common\model\File;      // 引入签到
+use app\common\model\File;      
+use app\common\model\Board;      
 use think\Session;
 use think\Db;
 use think\Request;              // 请求
@@ -69,11 +70,21 @@ class FileController extends Controller
         ];
         $File = new File();
         $User = new User();
-        $file = $File->alias('a')->join($join)->order('file_time desc')->paginate(5,false);
+        $map=[];
+        if(Request::instance()->has('file_type','get')){
+            $map['file_type']  = $_GET['file_type'];
+            $file = $File->alias('a')->join($join)->where($map)->order('file_time desc')->paginate(5,false);
+        }else{
+            $file = $File->alias('a')->join($join)->order('file_time desc')->paginate(5,false);
+        }
+        //$file = $File->alias('a')->join($join)->order('file_time desc')->paginate(5,false);
         // $user = $User->select();
         $page = $file->render();
         $this->assign('page',$page);
         $this->assign('file',$file);
+        $Board = new Board();
+        $board = $Board->select();
+        $this->assign('board', $board);
         // $this->assign('user',$User);
         return $this->fetch();
     }
@@ -85,6 +96,7 @@ class FileController extends Controller
        $Request = Request::instance();
        $file = $Request->file('file');
        $file_name = $Request->post('file_name');
+       $file_type = $Request->post('file_type');
       // 移动到框架应用根目录/public/uploads/ 目录下
       if($file){
           $info = $file->validate(['ext'=>'rar'])->move(ROOT_PATH . 'public' . DS . 'uploads' . DS .'files');
@@ -96,6 +108,7 @@ class FileController extends Controller
               $File = new File();
               $file = $File->data(['file_name'=>$file_name,'file_path'=>$path,
               'user_id'=>Session::get('UserId'),'file_path'=>$path,'file_time'=>date("Y-m-d H:i:s")
+              ,'file_type'=>$file_type
               ]);
               $file = $File->save();
               return $this->success('上传成功', $Request->header('referer'));
