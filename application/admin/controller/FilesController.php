@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 use app\common\model\File;
 use app\common\model\User;
+use app\common\model\Board;
 use think\Request;
 
 class FilesController extends BasicController
@@ -32,6 +33,7 @@ class FilesController extends BasicController
             $file_name==""?:$map['file_name']=['LIKE','%'.$file_name.'%'];
             $files = $File->alias('f')
                       ->join('user u','f.user_id=u.user_id')
+                      ->join('board b','f.file_type=b.board_id')
                       ->limit(($page-1)*$limit,$limit)
                       ->where($map)
                       ->select();
@@ -40,6 +42,7 @@ class FilesController extends BasicController
         }else{
             $files = $File->alias('f')
                     ->join('user u','f.user_id=u.user_id')
+                    ->join('board b','f.file_type=b.board_id')
                     ->limit(($page-1)*$limit,$limit)
                     ->select();
             $arr['count'] = $File->count();
@@ -50,9 +53,12 @@ class FilesController extends BasicController
 
     public function editFile(){
         $File = new File();
+        $Board = new Board();
         if(Request::instance()->has('file_id','get')){
             $file_id = $_GET['file_id'];
             $file = $File->where('file_id='.$file_id)->select();
+            $board = $Board->select();
+            $this->assign('board', $board);
             $this->assign('file',$file);
             return view('editFile');
         }

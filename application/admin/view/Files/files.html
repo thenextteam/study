@@ -66,7 +66,8 @@
           { type: 'checkbox', fixed: 'left' }
           , { field: 'file_id', title: 'ID', width: '5%', sort: true, fixed: 'left' }
           , { field: 'file_name', title: '文件名', width: '20%' }
-          , { field: 'file_path', title: '文件路径', width: '25%' }
+          , { field: 'file_path', title: '文件路径', width: '15%' }
+          , { field: 'board_name', title: '文件分类',sort: true, width: '10%' }
           , { field: 'file_time', title: '上传时间', sort: true,width: '15%' }
           , { field: 'nick_name', title: '上传者', sort: true,width: '10%' }
           , {
@@ -181,7 +182,7 @@
           layer.open({
             type: 2 //此处以iframe举例
             , title: '修改分类信息'
-            , area: ['350px', '200px']
+            , area: ['350px', '250px']
             , shade: 0
             , maxmin: true
             , content: "editFile?file_id=" + data.file_id

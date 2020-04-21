@@ -18,14 +18,21 @@
       <div class="showFileName"></div>
       <div class="fileerrorTip">请选择RAR文件上传</div>
       <!-- <input type="file" name="file" /> <br> -->
-      <input type="text" name="file_name" placeholder="文件名称" required="required" />
-      <select name="file_type">
-        {volist name="board" id="list1"}
-        <option value ="{$list1['board_id']}">{$list1['board_name']}</option>
-        {/volist}
-      </select>
+      <div>
+        <span>文件名称</span>
+        <input type="text" name="file_name" placeholder="文件名称" required="required" />
+      </div>
+      <div>
+        <span>文件类型</span>
+        <select name="file_type">
+          {volist name="board" id="list1"}
+          <option value="{$list1['board_id']}">{$list1['board_name']}</option>
+          {/volist}
+        </select>
+      </div>
+
       <!-- <input type="text" name="file_name" placeholder="文件名称" required="required"/> -->
-      <button type="submit" class="up">上传</button>
+      <div class="right"><button type="submit" class="up">上传</button></div>
       <!-- <input type="submit" value="上传" /> -->
     </form>
   </div>
@@ -36,6 +43,12 @@
         {volist name="board" id="list2"}
         <li><a href="{:url('File/index?file_type='.$list2['board_id'])}">{$list2['board_name']}</a></li>
         {/volist}
+        <div class="searchfile">
+          <form action="index" method="get">
+            <input type="text" name="file_name" placeholder="文件名称">
+            <input type="submit" value="搜索" />
+          </form>
+        </div>
       </ul>
     </div>
     <table cellspacing="0" cellpadding="0">
@@ -53,10 +66,10 @@
         <td> {$file['file_name']}</td>
         <td> {$file['nick_name']}</td>
         <td> {$file['file_time']}</td>
-        <td> 
+        <td>
           {volist name="board" id="list3"}
           {if condition="$file.file_type==$list3['board_id']"}
-            {$list3['board_name']}
+          {$list3['board_name']}
           {/if}
           {/volist}
         </td>
@@ -64,13 +77,13 @@
         <td> {$file['cost']}</td> -->
         <td>
           <form action="downloadFile" enctype="multipart/form-data" method="post">
-            <input type="text" name="file_path" value="{$file['file_path']}" style="display: none;"/>
+            <input type="text" name="file_path" value="{$file['file_path']}" style="display: none;" />
             <input type="submit" value="下载" />
           </form>
         </td>
       </tr>
       {/volist}
- 
+
     </table>
     <!-- 分页 -->
     <div class="pagecon">{$page}</div>

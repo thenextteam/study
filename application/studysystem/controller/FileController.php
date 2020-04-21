@@ -71,11 +71,15 @@ class FileController extends Controller
         $File = new File();
         $User = new User();
         $map=[];
+        $search=[];
         if(Request::instance()->has('file_type','get')){
             $map['file_type']  = $_GET['file_type'];
-            $file = $File->alias('a')->join($join)->where($map)->order('file_time desc')->paginate(5,false);
+            $file = $File->alias('a')->join($join)->where($map)->where('file_status',0)->order('file_time desc')->paginate(5,false);
+        }else if(Request::instance()->has('file_name','get')){
+            $search['file_name']  = ['LIKE','%'.$_GET['file_name'].'%'];
+            $file = $File->alias('a')->join($join)->where($search)->where('file_status',0)->order('file_time desc')->paginate(5,false);
         }else{
-            $file = $File->alias('a')->join($join)->order('file_time desc')->paginate(5,false);
+            $file = $File->alias('a')->join($join)->where('file_status',0)->order('file_time desc')->paginate(5,false);
         }
         //$file = $File->alias('a')->join($join)->order('file_time desc')->paginate(5,false);
         // $user = $User->select();

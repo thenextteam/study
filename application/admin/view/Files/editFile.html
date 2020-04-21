@@ -25,6 +25,20 @@
     {volist name="file" id="file"}
       <!-- start -->
       <div class="layui-form-item">
+        <label class="layui-form-label">选择分类</label>
+        <div class="layui-input-inline">
+          <select name="file_type" lay-filter="select_board">
+            {volist name="board" id="board"}
+            {if condition="$board.board_id == $file.file_type"}
+            <option value="{$board.board_id}" selected>{$board.board_name}</option>
+            {else /}
+            <option value="{$board.board_id}">{$board.board_name}</option>
+            {/if}
+            {/volist}
+          </select>
+        </div>
+      </div>
+      <div class="layui-form-item">
         <label class="layui-form-label">状态</label>
         <div class="layui-input-block" id="member">
           {if condition="$file.file_status == 0"}
