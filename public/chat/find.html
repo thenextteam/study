@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>搜索群</title>
+
+    <link rel="stylesheet" href="../static/admin/dist/css/layui.css">
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div style="margin: 50px;">
+    <div class="layui-row layui-col-space12">
+      <div class="layui-inline">
+        <input type="text" name="groupname" required  lay-verify="required"  placeholder="请输入群名" autocomplete="off" class="layui-input" style="width: 600px">
+
+      </div>
+      <button class="layui-btn" lay-submit lay-filter="formDemo" style="width: 100px">搜索</button>
+    </div>
+  <hr>
+    <div class="layui-row layui-col-space12">
+      <a>ss</a>
+    </div>
+</div>
+
+
+<script src="../static/admin/dist/layui.js"></script>
+<script>
+    layui.use(['layim', 'laypage'], function () {
+        var layim = layui.layim
+            , layer = layui.layer
+            , laytpl = layui.laytpl
+            , $ = layui.jquery
+            , laypage = layui.laypage;
+
+        //一些添加好友请求之类的交互参见文档
+
+    });
+</script>
+</body>
+</html>

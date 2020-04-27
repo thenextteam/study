@@ -29,10 +29,10 @@ class IndexController extends BasicController
 
     public function getRecArt(){
         $arr = array();
-        $date = date('Y-m-d');
+        $da = date('Y-m-d');
 
-        $art_recent = Db::query("select date_format(art_time,'%d') days,count(art_time) count  from article where(art_time>'2020-03-13') group by days");
-        $data = $this->get_weeks('2020-03-20');
+        $art_recent = Db::query("select date_format(art_time,'%d') days,count(art_time) count  from article where(art_time>".$da.") group by days");
+        $data = $this->get_weeks();
         $arr['art'] = $art_recent;
         $arr['data'] = $data;
         echo json_encode($arr);
@@ -40,10 +40,10 @@ class IndexController extends BasicController
 
     public function getRecUser(){
         $arr = array();
-        $date = date('Y-m-d');
+        $da = date('Y-m-d');
 
-        $user_recent = Db::query("select date_format(user_regtime,'%d') days,count(user_regtime) count from user where(user_regtime>'2020-03-26') group by days");;
-        $data = $this->get_weeks('2020-04-01');
+        $user_recent = Db::query("select date_format(user_regtime,'%d') days,count(user_regtime) count from user where(user_regtime>".$da.") group by days");;
+        $data = $this->get_weeks();
         $arr['user'] = $user_recent;
         $arr['data'] = $data;
         echo json_encode($arr);

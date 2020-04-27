@@ -13,10 +13,14 @@ class ChatController extends BasicController
         return view('chatlog');
     }
 
+    public function group()
+    {
+        return view('group');
+    }
+
     public function getChatLog()
     {
         $arr = array();
-        $data = array();
         $arr['code'] = 0;
         $arr['msg'] = "";
 
@@ -73,19 +77,80 @@ class ChatController extends BasicController
 //            $i[] = $allid[$j];
 //        }
 //        Db::table('chatmsg')->where('id',$id)->delete();
-            var_dump(array_values($allid));
+        var_dump(array_values($allid));
 //        }
     }
 
 
-//    删除多行
-    public
-    function Dellog()
+    public function Dellog()
     {
         $id = $_POST['id'];
         Db::table('chatmsg')->where('id', $id)->delete();
-        echo $id;
+        echo '删除成功';
     }
 
+    public function Delgroup()
+    {
+        $id = $_POST['id'];
+        Db::table('groups')->where('id', $id)->delete();
+        echo '删除成功';
+    }
 
+    public function getGroup()
+    {
+        $arr = array();
+        $arr['code'] = 0;
+        $arr['msg'] = "";
+
+        $page = $_GET['page'];
+        $limit = $_GET['limit'];
+
+        $MsgCount = Db::name('groups')->count();
+
+        if (Request::instance()->has('search', 'get')) {
+
+            $get = $_GET['search'];
+            $groupname = $get['groupname'];
+
+            $map = [];
+            $groupname == "" ?: $map['groupname'] = ['LIKE', '%' . $groupname . '%'];
+
+            $Count = Db::table('groups')
+                ->where($map)->count();
+
+            $groups = Db::table('groups')
+                ->limit(($page - 1) * $limit, $limit)
+                ->where($map)->select();
+            $arr['count'] = $Count;
+            $arr['data'] = $groups;
+            return $arr;
+        } else {
+            $groups = Db::table('groups')
+                ->limit(($page - 1) * $limit, $limit)->select();
+            $arr['count'] = $MsgCount;
+            $arr['data'] = $groups;
+        }
+        return $arr;
+    }
+
+    public function editGroup(){
+        $id = $_GET['gid'];
+        $group = Db::table('groups')->where('id', $id)->select();
+        $this->assign('group',$group);
+
+        return view('editGroup');
+    }
+
+    public function edit(){
+        $data = [];
+        if (Request::instance()->has('post', 'post')) {
+            $post = json_decode($_POST['post'], 1);
+            $id = $post['id'];
+            Db::table('groups')->where('id',$id)->update($post);
+            $data['msg'] = '修改成功';
+        } else {
+            $data['msg'] = '修改失败';
+        }
+        echo json_encode($data);
+    }
 }

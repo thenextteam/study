@@ -64,9 +64,6 @@ class ChatController extends Controller
             }
         }
 
-        //通过id获取用户的好友分组名称
-
-
         //获取用户的群聊id
         $g = Db::table('groupmember')->where('uid', Session::get('UserId'))->select();
         for ($gr = 0; sizeof($g) - 1 >= $gr; $gr++) {
@@ -206,7 +203,7 @@ class ChatController extends Controller
 
         $arr = array();
         $data = array();
-        $file = request()->file('file');
+        $file = request()->file('file');;
         // 移动到框架应用根目录/public/uploads/ 目录下
         if ($file) {
             $info = $file->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . 'chatimgs');
@@ -223,6 +220,26 @@ class ChatController extends Controller
                 // 上传失败获取错误信息
                 echo $file->getError();
             }
+        }
+    }
+
+    public function uploadfile()
+    {
+        $arr = array();
+        $data = array();
+        $file = $_FILES["file"];
+        if ($file){
+            $info = move_uploaded_file($file['tmp_name'], ROOT_PATH . 'public/uploads/chatfiles/' . $file['name']);
+            if ($info){
+                $path = '/thinkphp/public/uploads/chatfiles/' . $file['name'];
+                $arr['code'] = 0;
+                $data['src'] = $path;
+                $data['name'] = $file['name'];
+                $arr['data'] = $data;
+                $arr['msg'] = '上传成功';
+                return $arr;
+            }
+
         }
     }
 }

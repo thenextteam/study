@@ -11,6 +11,7 @@ if (uid == null || uid == undefined || uid == '') {
             min: true,
             copyright: true,
             chatLog: '/thinkphp/public/chat/chatlog.html?'+getchatlog,
+            // find: '/thinkphp/public/chat/find.html',
             init: {
                 url: getuser,
                 type: "get",
@@ -23,6 +24,8 @@ if (uid == null || uid == undefined || uid == '') {
             },
             uploadImage:{
                 url:uploadimg
+            },uploadFile: {
+                url: uploadfile
             }
         });
         //
