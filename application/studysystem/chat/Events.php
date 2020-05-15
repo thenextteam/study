@@ -141,6 +141,11 @@ class Events
                 }
                 return;
                 break;
+            case 'online':
+                $d['id'] = $message_data['uid'];
+                $d['type'] = $message_data['status'];
+                return Gateway::sendToAll(json_encode($d));
+                break;
         }
         // 向所有人发送
 

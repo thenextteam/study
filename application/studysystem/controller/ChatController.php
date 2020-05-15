@@ -228,9 +228,9 @@ class ChatController extends Controller
         $arr = array();
         $data = array();
         $file = $_FILES["file"];
-        if ($file){
+        if ($file) {
             $info = move_uploaded_file($file['tmp_name'], ROOT_PATH . 'public/uploads/chatfiles/' . $file['name']);
-            if ($info){
+            if ($info) {
                 $path = '/thinkphp/public/uploads/chatfiles/' . $file['name'];
                 $arr['code'] = 0;
                 $data['src'] = $path;
@@ -239,7 +239,15 @@ class ChatController extends Controller
                 $arr['msg'] = '上传成功';
                 return $arr;
             }
-
         }
+    }
+
+
+
+    public function find(){
+        $group = Db::table('groups')->select();
+        $this->assign('group', $group);
+        var_dump($group);
+        return $this->fetch();
     }
 }

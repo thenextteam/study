@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>群聊</title>
+    <link rel="stylesheet" href="../../../../public/static/admin/dist/css/layui.css">
+    <script type="text/javascript" src="__ADMIN__/study/js/jquery.min.js"></script>
+
+</head>
+<body style="background: #f2f2f2">
+
+<div class="layui-col-sm12">
+    <div class="layui-row">
+        <div class="layui-col-sm3"><label id="search_title">所有群聊</label></div>
+    </div>
+    <div class="layui-row" id="search_data">
+        {if !empty($group)}
+        {foreach name="group" item="vo" key="k"}
+        <div class="layui-col-sm3">
+            <div class="layui-card float-e-margins" style="margin-right: 10px">
+                <div class="layui-card-header">
+                    <h5>{$vo.groupname}</h5>
+                </div>
+                <div class="layui-card-body" style="text-align: center">
+                    <div style="margin: 0 auto">
+                        <img src="{$vo.avatar}" width="55px" height="55px" style="text-align: center"/>
+                    </div>
+                    <div style="margin:10px 50px">
+                        <button class="layui-btn" type="button" data-id="{$vo.id}" style="width: 90px; height: auto"
+                                id=""
+                                onclick="addGroup(this)">加入
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/foreach}
+        {/if}
+    </div>
+</div>
+
+<script src="../../../../public/static/admin/dist/layui.js"></script>
+
+<!--<script type="text/javascript">-->
+<!--    var uid = "{$Think.session.UserId}";-->
+<!--    var getuser = "{:url('Chat/getUserdata')}";-->
+<!--    var getmember = "{:url('Chat/getMembers')}";-->
+<!--    var changestatus = "{:url('Chat/changeStatus')}";-->
+<!--    var getchatlog = "{:url('Chat/getChatLog')}"-->
+<!--    var changesign = "{:url('Chat/changeSign')}"-->
+<!--    var uploadimg = "{:url('Chat/uploadimg')}"-->
+<!--    var uploadfile = "{:url('Chat/uploadfile')}"-->
+<!--    var seachgroup = "{:url('Find/index')}"-->
+
+<!--</script>-->
+<!--<script type="text/javascript" src="__CHAT__/chat.js"></script>-->
+
+<script>
+    layui.use(['layim', 'laypage', 'element'], function () {
+        var layim = layui.layim
+            , layer = layui.layer
+            , laytpl = layui.laytpl
+            , $ = layui.jquery
+            , laypage = layui.laypage
+            , element = layui.element;
+
+        $ = layui.jquery;
+        //一些添加好友请求之类的交互参见文档
+
+    });
+
+    function addGroup(obj) {
+        console.log($(obj).attr('data-id'));
+
+    }
+</script>
+</body>
+</html>
