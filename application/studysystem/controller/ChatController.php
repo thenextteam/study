@@ -203,7 +203,7 @@ class ChatController extends Controller
 
         $arr = array();
         $data = array();
-        $file = request()->file('file');;
+        $file = request()->file('file');
         // 移动到框架应用根目录/public/uploads/ 目录下
         if ($file) {
             $info = $file->rule('uniqid')->move(ROOT_PATH . 'public' . DS . 'uploads' . DS . 'chatimgs');

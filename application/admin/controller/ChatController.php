@@ -77,7 +77,6 @@ class ChatController extends BasicController
 //            $i[] = $allid[$j];
 //        }
 //        Db::table('chatmsg')->where('id',$id)->delete();
-        var_dump(array_values($allid));
 //        }
     }
 

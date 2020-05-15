@@ -4,7 +4,6 @@ if (uid == null || uid == undefined || uid == '') {
     console.log("不渲染聊天组件");
 
 } else {
-
     console.log("渲染聊天组件");
     layui.use(['layim'], function (layim) {
         layim.config({
@@ -31,7 +30,7 @@ if (uid == null || uid == undefined || uid == '') {
                 alias: 'code' //工具别名
                 , title: '代码' //工具名称
                 , icon: '&#xe64e;' //工具图标，参考图标文档
-            }]
+            }],
         });
         //
         ws = new WebSocket("ws://127.0.0.1:8282");
@@ -75,7 +74,6 @@ if (uid == null || uid == undefined || uid == '') {
                 // 当mvc框架调用GatewayClient发消息时直接alert出来
                 default:
                     ;
-
             }
         };
 
@@ -96,46 +94,52 @@ if (uid == null || uid == undefined || uid == '') {
         layim.on('ready', function (res) {
 //初始化菜单
             layui.layim.on('sendMessage', function (res) {
-                ws.send(JSON.stringify({
-                    type: 'chatMessage'
-                    , data: res
-                }));
+                layim.on('sendMessage', function (res) {
+
+                    console.log(JSON.stringify({
+                        type: 'chatMessage' //随便定义，用于在服务端区分消息类型
+                        , data: res
+                    }));
+                    ws.send(JSON.stringify({
+                        type: 'chatMessage'
+                        , data: res
+                    }));
+                });
             });
+
+            layim.on('online', function (status) {
+                console.log(status); //获得online或者hide
+                var change_data = '{"type":"online", "status":"' + status + '", "uid":"' + uid + '"}';
+                ws.send(change_data);
+                $.ajax({
+                    type: 'post',
+                    url: changestatus,
+                    data: {mystatus: status},
+                    dataType: "text",
+                })
+            });
+            layim.on('sign', function (value) {
+                // console.log(value); //获得新的签名
+
+                $.ajax({
+                    type: 'post',
+                    url: changesign,
+                    data: {sign: value},
+                    dataType: "text",
+                })
+            });
+
         });
 
-        layim.on('online', function (status) {
-            console.log(status); //获得online或者hide
-            var change_data = '{"type":"online", "status":"' + status + '", "uid":"' + uid + '"}';
-            ws.send(change_data);
-            $.ajax({
-                type: 'post',
-                url: changestatus,
-                data: {mystatus: status},
-                dataType: "text",
-            })
-        });
-        layim.on('sign', function (value) {
-            // console.log(value); //获得新的签名
 
-            $.ajax({
-                type: 'post',
-                url: changesign,
-                data: {sign: value},
-                dataType: "text",
-            })
-        });
-
-    });
+        var uname = document.getElementById("username");
 
 
-    var uname = document.getElementById("username");
-
-
-    function sendM() {
-        msg = document.getElementById("msg");
-        var sendmsg = {'type': 'say', 'msg': msg.value}
-        console.log(JSON.stringify(sendmsg));
-        ws.send(JSON.stringify(sendmsg));
-    }
-
+        function sendM() {
+            msg = document.getElementById("msg");
+            var sendmsg = {'type': 'say', 'msg': msg.value}
+            console.log(JSON.stringify(sendmsg));
+            ws.send(JSON.stringify(sendmsg));
+        }
+    })
 }
